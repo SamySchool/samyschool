@@ -297,6 +297,7 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       <button class="admin-tab" data-tab="exams">📝 الامتحانات</button>
       <button class="admin-tab" data-tab="codes">🔑 الأكواد</button>
       <button class="admin-tab" data-tab="students">👥 الطلاب</button>
+      <button class="admin-tab" data-tab="live" style="color:#ff4444;">🔴 البث المباشر</button>
     </nav>
 
     <!-- ===== تبويب الوحدات ===== -->
@@ -484,11 +485,63 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       </div>
     </div>
 
+    <!-- ===== تبويب البث المباشر ===== -->
+    <div class="admin-panel" id="panel-live">
+      <div class="section-title">🔴 التحكم في البث المباشر <span>الطلاب يشوفوه داخل المنصة فقط</span></div>
+
+      <div class="form-card" style="border-color:rgba(255,68,68,.3);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div>
+            <div style="font-size:15px;font-weight:800;margin-bottom:4px;">حالة البث</div>
+            <div style="font-size:12px;color:var(--text-3);">لما تفعّل البث، تبويب "بث مباشر" يظهر للطلاب فوراً</div>
+          </div>
+          <div id="live-status-badge" style="padding:6px 16px;border-radius:999px;font-size:12px;font-weight:800;background:rgba(255,255,255,.06);color:var(--text-3);">غير نشط</div>
+        </div>
+
+        <div class="form-field">
+          <label>عنوان البث</label>
+          <input type="text" id="live-title-input" placeholder="مثال: مراجعة ليلة الامتحان — الجرامر كامل">
+        </div>
+
+        <div class="form-field">
+          <label>رابط YouTube Live *</label>
+          <input type="text" id="live-url-input" placeholder="https://youtube.com/live/xK9mP2qR أو رابط البث المباشر">
+          <div class="form-hint">
+            من YouTube Studio → Go Live → انسخ رابط البث هنا.
+            تأكد إن البث على وضع <b>Unlisted</b> عشان ميظهرش على قناتك للعامة.
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap;">
+          <button class="btn-add" id="btn-start-live" style="background:#ff4444;box-shadow:0 8px 24px -8px rgba(255,68,68,.4);">
+            🔴 تفعيل البث — يظهر للطلاب فوراً
+          </button>
+          <button id="btn-stop-live" style="background:transparent;border:1.5px solid var(--line-strong);color:var(--text-2);padding:12px 20px;border-radius:8px;font-family:'Cairo',sans-serif;font-weight:800;font-size:13.5px;cursor:pointer;">
+            ⏹ إيقاف البث
+          </button>
+        </div>
+      </div>
+
+      <div class="form-card" style="margin-top:16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:12px;">📋 خطوات البث خطوة بخطوة</div>
+        <div style="font-size:12.5px;color:var(--text-3);line-height:2.2;">
+          <b style="color:var(--highlight);">1.</b> روح على <b>studio.youtube.com</b> → دوس على أيقونة الكاميرا فوق → <b>Go Live</b><br>
+          <b style="color:var(--highlight);">2.</b> اختار <b>Unlisted</b> من إعدادات الخصوصية (مهم جداً — ميظهرش للعامة)<br>
+          <b style="color:var(--highlight);">3.</b> ابدأ البث → انسخ الرابط من شريط العنوان<br>
+          <b style="color:var(--highlight);">4.</b> ارجع هنا → حط الرابط في الخانة فوق → دوس "تفعيل البث"<br>
+          <b style="color:var(--highlight);">5.</b> الطلاب هيشوفوا تبويب 🔴 بث مباشر يظهر تلقائياً في المنصة<br>
+          <b style="color:var(--highlight);">6.</b> بعد ما تخلص → دوس "إيقاف البث" والتبويب يختفي من عند الطلاب
+        </div>
+      </div>
+    </div>
+
   </div><!-- wrap -->
 </section>
 
 <!-- Toast للإشعارات -->
 <div class="toast" id="toast"></div>
+
+<!-- ===== panel البث المباشر ===== -->
 
 <script>
 /* ============================================================
@@ -548,6 +601,7 @@ function loadAll(){
   loadCodes();
   loadStudents();
   initExamBuilder();
+  loadLiveStatus();
 }
 
 /* ============================================================
@@ -882,8 +936,51 @@ async function loadStudents(){
 }
 
 /* ============================================================
-   دالة حذف عامة
+   البث المباشر — التحكم من الأدمن
    ============================================================ */
+async function loadLiveStatus(){
+  try{
+    const snap = await db.collection('settings').doc('live').get();
+    const data = snap.exists ? snap.data() : {};
+    const badge = document.getElementById('live-status-badge');
+    if(data.active){
+      badge.style.background='rgba(255,68,68,.15)';
+      badge.style.color='#ff6666';
+      badge.textContent='🔴 نشط الآن';
+      document.getElementById('live-title-input').value = data.title || '';
+      document.getElementById('live-url-input').value = data.url || '';
+    } else {
+      badge.style.background='rgba(255,255,255,.06)';
+      badge.style.color='var(--text-3)';
+      badge.textContent='⚫ غير نشط';
+    }
+  }catch(e){}
+}
+
+document.getElementById('btn-start-live').addEventListener('click', async()=>{
+  const url = document.getElementById('live-url-input').value.trim();
+  const title = document.getElementById('live-title-input').value.trim() || 'بث مباشر — المستر سامي';
+  if(!url){ showToast('حط رابط البث الأول', 'error'); return; }
+  const btn = document.getElementById('btn-start-live');
+  btn.disabled=true; btn.textContent='جاري التفعيل...';
+  try{
+    await db.collection('settings').doc('live').set({ active:true, url, title, startedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    showToast('🔴 البث اتفعّل — الطلاب يشوفوه دلوقتي');
+    loadLiveStatus();
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+  finally{ btn.disabled=false; btn.textContent='🔴 تفعيل البث — يظهر للطلاب فوراً'; }
+});
+
+document.getElementById('btn-stop-live').addEventListener('click', async()=>{
+  if(!confirm('هتوقف البث؟ التبويب هيختفي من عند الطلاب فوراً.')) return;
+  try{
+    await db.collection('settings').doc('live').set({ active:false, url:'', title:'' });
+    showToast('⏹ البث اتوقف');
+    loadLiveStatus();
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+});
+
+
 async function deleteDoc(collection, id, listId, reloadFn){
   if(!confirm('هتحذف العنصر ده نهائياً؟')) return;
   try{

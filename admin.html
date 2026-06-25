@@ -313,11 +313,35 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
             <input type="text" id="unit-en" placeholder="مثال: Reading & Comprehension">
           </div>
         </div>
-        <div class="form-field">
-          <label>رابط التسجيل الصوتي (Google Drive)</label>
-          <input type="text" id="unit-audio" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-          <div class="form-hint">ارفع الملف على Google Drive → كليك يمين → Share → Anyone with the link → انسخ الرابط هنا</div>
+
+        <div style="border-top:1px solid var(--line);margin:16px 0;padding-top:16px;">
+          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:12px;">📎 روابط المحتوى</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>📋 سبورة الشرح (PDF — Google Drive)</label>
+              <input type="text" id="unit-pdf-board" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">ارفع PDF على Drive → Share → Anyone with link → انسخ الرابط</div>
+            </div>
+            <div class="form-field">
+              <label>📖 ملخص الكلمات (PDF — Google Drive)</label>
+              <input type="text" id="unit-pdf-words" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">نفس الطريقة — ملف PDF منفصل لملخص الكلمات</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>📝 امتحان الوحدة (رابط ملف HTML)</label>
+              <input type="text" id="unit-exam-url" placeholder="https://samyschool.github.io/samyschool/exam-unit1.html">
+              <div class="form-hint">ارفع ملف الامتحان HTML على GitHub وحط رابطه هنا</div>
+            </div>
+            <div class="form-field">
+              <label>🎧 فويس الجرامر (MP3 — Google Drive)</label>
+              <input type="text" id="unit-audio" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">ارفع ملف MP3 على Drive → Share → Anyone with link → انسخ الرابط</div>
+            </div>
+          </div>
         </div>
+
         <button class="btn-add" id="btn-add-unit">➕ إضافة الوحدة</button>
       </div>
 
@@ -533,27 +557,43 @@ document.getElementById('btn-add-unit').addEventListener('click', async () => {
   const ar = document.getElementById('unit-ar').value.trim();
   const en = document.getElementById('unit-en').value.trim();
   const audio = document.getElementById('unit-audio').value.trim();
+  const pdfBoard = document.getElementById('unit-pdf-board').value.trim();
+  const pdfWords = document.getElementById('unit-pdf-words').value.trim();
+  const examUrl = document.getElementById('unit-exam-url').value.trim();
   if(!ar){ showToast('اكتب اسم الوحدة بالعربي على الأقل', 'error'); return; }
 
   const btn = document.getElementById('btn-add-unit');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
 
-  try{
-    // تحويل رابط Drive لرابط تشغيل مباشر
-    let audioUrl = '';
-    if(audio){
-      const match = audio.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      audioUrl = match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : audio;
-    }
+  // تحويل روابط Drive لروابط تشغيل/عرض مباشر
+  function driveDirectUrl(url){
+    if(!url) return '';
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : url;
+  }
 
+  function drivePdfUrl(url){
+    if(!url) return '';
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+  }
+
+  try{
     await db.collection('units').add({
-      titleAr: ar, titleEn: en, audioUrl: audioUrl,
-      done: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      titleAr: ar,
+      titleEn: en,
+      audioUrl: driveDirectUrl(audio),
+      pdfBoard: drivePdfUrl(pdfBoard),
+      pdfWords: drivePdfUrl(pdfWords),
+      examUrl: examUrl,
+      done: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    document.getElementById('unit-ar').value = '';
-    document.getElementById('unit-en').value = '';
-    document.getElementById('unit-audio').value = '';
-    showToast('✅ الوحدة اتضافت بنجاح');
+    // مسح الحقول
+    ['unit-ar','unit-en','unit-audio','unit-pdf-board','unit-pdf-words','unit-exam-url'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    showToast('✅ الوحدة اتضافت بنجاح — هتظهر للطلاب فوراً');
     loadUnits();
   }catch(e){ showToast('حصل خطأ: ' + e.message, 'error'); }
   finally{ btn.disabled = false; btn.textContent = '➕ إضافة الوحدة'; }
@@ -566,10 +606,16 @@ async function loadUnits(){
     if(snap.empty){ list.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:16px;">لسه مفيش وحدات</div>'; return; }
     list.innerHTML = snap.docs.map(d => {
       const u = d.data();
+      const resources = [
+        u.pdfBoard ? '📋 سبورة' : '',
+        u.pdfWords ? '📖 كلمات' : '',
+        u.examUrl  ? '📝 امتحان' : '',
+        u.audioUrl ? '🎧 فويس' : '',
+      ].filter(Boolean).join(' · ') || 'لا يوجد محتوى بعد';
       return `<div class="item-row">
         <div class="item-row-info">
-          <div class="item-row-title">${u.titleAr}</div>
-          <div class="item-row-sub">${u.titleEn || '—'} | ${u.audioUrl ? '🎧 فيه تسجيل صوتي' : 'مفيش تسجيل'}</div>
+          <div class="item-row-title">${u.titleAr} ${u.titleEn ? '— '+u.titleEn : ''}</div>
+          <div class="item-row-sub">${resources}</div>
         </div>
         <button class="btn-delete" onclick="deleteDoc('units','${d.id}','units-list',loadUnits)">حذف</button>
       </div>`;

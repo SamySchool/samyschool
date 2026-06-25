@@ -289,8 +289,18 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
     <div class="login-card">
       <div class="brand-eyebrow">منصة المراجعة الخاصة</div>
       <h1 class="brand-name">Samy<span>School</span></h1>
-      <p class="brand-sub">المراجعة النهائية في اللغة الإنجليزية — الصف الثالث الثانوي. ادخل بالكود الخاص بيك بس.</p>
-      <label class="field-label" for="student-code">اكتب كود الكارت بتاعك</label>
+      <p class="brand-sub">المراجعة النهائية في اللغة الإنجليزية — الصف الثالث الثانوي</p>
+
+      <label class="field-label" for="student-name">
+        اسمك الثنائي بالإنجليزي
+        <span style="font-size:10.5px;color:var(--text-3);font-weight:600;margin-right:6px;">(مثال: Ahmed Mohamed)</span>
+      </label>
+      <div class="code-input-row" style="margin-bottom:14px;">
+        <input type="text" id="student-name" placeholder="First Last" autocomplete="name" maxlength="40"
+          style="width:100%;background:rgba(0,0,0,.25);border:1.5px solid var(--line-strong);border-radius:10px;padding:13px 16px;color:var(--text-1);font-family:'Lora',serif;font-size:16px;font-style:italic;transition:border-color .2s;">
+      </div>
+
+      <label class="field-label" for="student-code">كود الكارت (كلمة المرور)</label>
       <div class="code-input-row">
         <input type="text" id="student-code" placeholder="مثال: SAM-7K2P9X" autocomplete="off" maxlength="20">
       </div>
@@ -304,18 +314,28 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
 <!-- ===== لوحة الطالب ===== -->
 <section id="screen-dashboard" class="screen">
 
+  <!-- بانر المنصة (يظهر بدل شاشة الدخول بعد الولوج) -->
+  <div style="background:linear-gradient(135deg,#0B1220,#16223B);border-bottom:2px solid rgba(212,225,87,.3);padding:22px 24px;text-align:center;position:relative;z-index:5;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,42px);font-weight:700;color:#F6F4EC;letter-spacing:.04em;line-height:1.2;">
+      English Night Exam
+    </div>
+    <div style="font-family:'Lora',serif;font-style:italic;font-size:clamp(13px,2vw,18px);color:var(--highlight-dim);margin-top:6px;letter-spacing:.02em;">
+      Mr. Mohamed Samy
+    </div>
+  </div>
+
   <!-- تايمر العد التنازلي -->
   <div class="countdown-bar">
     <div class="countdown-inner">
       <span class="countdown-label">⏳ EXAM COUNTDOWN</span>
       <div class="countdown-blocks">
-        <div class="countdown-unit"><div class="countdown-num" id="cd-days">--</div><div class="countdown-unit-label">DAYS</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-days" style="color:#ff4444;">--</div><div class="countdown-unit-label">DAYS</div></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-unit-label">HRS</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-hours" style="color:#F6F4EC;">--</div><div class="countdown-unit-label">HRS</div></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-unit-label">MIN</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-mins" style="color:#ff4444;">--</div><div class="countdown-unit-label">MIN</div></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-unit-label">SEC</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-secs" style="color:#F6F4EC;">--</div><div class="countdown-unit-label">SEC</div></div>
       </div>
       <span class="countdown-label">July 5 — 9:00 AM</span>
     </div>
@@ -329,7 +349,10 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
         <div class="topbar-name">SamySchool</div>
       </div>
       <div class="topbar-right">
-        <div class="student-code-badge" id="student-code-badge">--</div>
+        <div style="text-align:left;">
+          <div style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--text-1);font-weight:600;" id="student-name-badge">--</div>
+          <div class="student-code-badge" id="student-code-badge" style="margin-top:2px;display:inline-block;">--</div>
+        </div>
         <button class="btn-logout" id="btn-logout">خروج</button>
       </div>
     </div>
@@ -391,7 +414,18 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
         </div>
       </div>
 
-      <footer>SamySchool © 2026 — منصة خاصة لطلاب المستر سامي فقط</footer>
+      <footer>
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;color:var(--text-2);font-weight:700;margin-bottom:10px;">للتواصل مع المستر مباشرة</div>
+          <a href="https://wa.me/201500044047" target="_blank"
+            style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:12px 24px;border-radius:999px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 6px 20px rgba(37,211,102,.35);transition:transform .15s;"
+            onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            واتساب — 01500044047
+          </a>
+        </div>
+        <div style="color:var(--text-3);font-size:11.5px;">SamySchool © 2026 — منصة خاصة لطلاب المستر سامي فقط</div>
+      </footer>
     </div>
 
     <!-- لوحة الإنجاز -->
@@ -407,7 +441,7 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
 
       <div class="progress-card">
         <div class="progress-section">
-          <div class="progress-section-label">📚 الوحدات (12)</div>
+          <div class="progress-section-label">📚 مذاكرة الوحدات (12)</div>
           <div class="progress-items" id="progress-units"></div>
         </div>
       </div>
@@ -421,7 +455,7 @@ footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;borde
 
       <div class="progress-card">
         <div class="progress-section">
-          <div class="progress-section-label">📋 الامتحانات الشاملة (20)</div>
+          <div class="progress-section-label">📋 امتحانات شاملة ث.ع (20)</div>
           <div class="progress-items" id="progress-general-exams"></div>
         </div>
       </div>
@@ -506,18 +540,28 @@ document.getElementById('btn-login').addEventListener('click', handleLogin);
 document.getElementById('student-code').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
 
 function handleLogin(){
+  const nameInput = document.getElementById('student-name').value.trim();
   const code = document.getElementById('student-code').value.trim().toUpperCase();
-  if(!code){ showLoginError("اكتب الكود الأول."); return; }
+
+  // التحقق من الاسم — لازم يكون ثنائي بالإنجليزي
+  if(!nameInput){ showLoginError("اكتب اسمك الثنائي بالإنجليزي الأول."); return; }
+  const nameParts = nameInput.trim().split(/\s+/);
+  if(nameParts.length < 2){ showLoginError("الاسم لازم يكون ثنائي (اسم أول + اسم تاني) بالإنجليزي."); return; }
+  const hasArabic = /[\u0600-\u06FF]/.test(nameInput);
+  if(hasArabic){ showLoginError("الاسم لازم يكون بالإنجليزي بس."); return; }
+
+  if(!code){ showLoginError("اكتب كود الكارت."); return; }
+
   const btn = document.getElementById('btn-login');
   btn.disabled=true; btn.textContent='جاري التحقق...';
-  validateCode(code).finally(()=>{ btn.disabled=false; btn.textContent='دخول المنصة'; });
+  validateCode(code, nameInput).finally(()=>{ btn.disabled=false; btn.textContent='دخول المنصة'; });
 }
 
 function showLoginError(msg){
   const e=document.getElementById('login-error'); e.textContent=msg; e.classList.add('show');
 }
 
-async function validateCode(code){
+async function validateCode(code, studentName){
   if(!window.__firebaseReady){ showLoginError("في مشكلة في الاتصال. حاول تاني."); return; }
   try{
     const ref=window.__db.collection('students').doc(code);
@@ -525,13 +569,18 @@ async function validateCode(code){
     if(!snap.exists){ showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت."); return; }
     const data=snap.data(); const deviceId=getDeviceId();
     if(data.used && data.deviceId && data.deviceId!==deviceId){ showLoginError("الكود ده اتفعّل على جهاز تاني. كلم المستر سامي لو فيه مشكلة."); return; }
-    if(!data.used){ await ref.set({used:true,deviceId,usedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }
-    loginSuccess(code);
+    if(!data.used){
+      await ref.set({used:true,deviceId,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:studentName},{merge:true});
+    } else {
+      await ref.set({studentName:studentName},{merge:true});
+    }
+    loginSuccess(code, studentName);
   }catch(e){ showLoginError("في مشكلة في الاتصال. حاول تاني."); }
 }
 
-function loginSuccess(code){
-  document.getElementById('student-code-badge').textContent=code;
+function loginSuccess(code, studentName){
+  document.getElementById('student-name-badge').textContent = studentName || '';
+  document.getElementById('student-code-badge').textContent = code;
   switchScreen('screen-dashboard');
   startCountdown();
   loadProgress(code);
@@ -539,12 +588,12 @@ function loginSuccess(code){
   loadVideos();
   loadExams();
   loadLive();
-  // تحديث البث كل 30 ثانية تلقائياً
   setInterval(loadLive, 30000);
 }
 
 document.getElementById('btn-logout').addEventListener('click',()=>{
   document.getElementById('student-code').value='';
+  document.getElementById('student-name').value='';
   document.getElementById('login-error').classList.remove('show');
   switchScreen('screen-login');
 });
@@ -597,8 +646,8 @@ async function loadUnits(){
       <div class="unit-card" id="unit-card-${i}">
         <div class="unit-card-header">
           <div>
-            <div class="unit-card-title">${u.titleAr||''}</div>
-            <div class="unit-card-en">${u.titleEn||''}</div>
+            <div class="unit-card-title">${u.titleEn||u.titleAr||''}</div>
+            <div class="unit-card-en"></div>
           </div>
           <span class="unit-done-badge" id="unit-done-badge-${i}">UNIT ${i+1}</span>
         </div>

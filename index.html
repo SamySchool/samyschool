@@ -11,10 +11,10 @@
 <!-- ============================================================
      Firebase SDK (مجاني — حدوده سخية جدًا لحجم 30-100 طالب)
      ============================================================ -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+<!-- Firebase SDK - Compat version (أكثر استقراراً مع GitHub Pages) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",
     authDomain: "samyschool-2014.firebaseapp.com",
@@ -25,14 +25,12 @@
   };
 
   try {
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    window.__db = db;
-    window.__firestoreFunctions = { doc, getDoc, setDoc, serverTimestamp };
+    firebase.initializeApp(firebaseConfig);
+    window.__db = firebase.firestore();
     window.__firebaseReady = true;
     console.log("✅ Firebase جاهز");
   } catch(e) {
-    console.error("❌ Firebase فشل في التهيئة:", e);
+    console.error("❌ Firebase فشل:", e);
     window.__firebaseReady = false;
   }
 </script>
@@ -978,23 +976,16 @@ function loginSuccess(code){
    { used: false, deviceId: null, usedAt: null } */
 async function validateCodeWithFirebase(code){
   try{
-    // انتظر Firebase لو لسه بيتحمل
-    let attempts = 0;
-    while(!window.__firebaseReady && attempts < 20){
-      await new Promise(r => setTimeout(r, 200));
-      attempts++;
-    }
-
     if(!window.__firebaseReady || !window.__db){
       showLoginError("في مشكلة في الاتصال. حاول تاني.");
       return;
     }
 
-    const { doc, getDoc, setDoc, serverTimestamp } = window.__firestoreFunctions;
-    const ref = doc(window.__db, "students", code);
-    const snap = await getDoc(ref);
+    const db = window.__db;
+    const ref = db.collection("students").doc(code);
+    const snap = await ref.get();
 
-    if(!snap.exists()){
+    if(!snap.exists){
       showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت.");
       return;
     }
@@ -1008,10 +999,10 @@ async function validateCodeWithFirebase(code){
     }
 
     if(!data.used){
-      await setDoc(ref, {
+      await ref.set({
         used: true,
         deviceId: deviceId,
-        usedAt: serverTimestamp()
+        usedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
     }
 

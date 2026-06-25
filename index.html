@@ -1043,37 +1043,39 @@ function updateCountdown(){
   document.getElementById('countdown-days').textContent = diff > 0 ? diff + " يوم" : "اليوم!";
 }
 
-// ---------- عرض الوحدات ----------
-function renderUnits(){
+// ---------- عرض الوحدات من Firebase ----------
+let UNITS_LIVE = [];
+async function renderUnits(){
   const container = document.getElementById('units-container');
-  if(UNITS_DATA.length === 0){
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-      <b>لسه مفيش وحدات مضافة</b>
-      أضف الوحدات في متغيّر UNITS_DATA جوه الكود.
-    </div>`;
-    return;
-  }
-  container.innerHTML = UNITS_DATA.map((u,i) => `
-    <div class="unit-card" data-code="${u.code}">
-      <div class="unit-status ${u.done ? 'done' : ''}"></div>
-      <div class="unit-card-title">${u.titleAr}</div>
-      <div class="unit-card-en">${u.titleEn || ''}</div>
-      <div class="unit-card-meta">
-        <span>📝 ${u.examsCount || 0} امتحان</span>
+  container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>جاري تحميل الوحدات...</b></div>`;
+  try{
+    const snap = await window.__db.collection('units').orderBy('createdAt').get();
+    UNITS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    if(UNITS_LIVE.length === 0){
+      container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش وحدات</b>المستر سامي لسه مضفش محتوى.</div>`;
+      return;
+    }
+    container.innerHTML = UNITS_LIVE.map((u,i) => `
+      <div class="unit-card" data-code="${u.id}">
+        <div class="unit-status ${u.done ? 'done' : ''}"></div>
+        <div class="unit-card-title">${u.titleAr}</div>
+        <div class="unit-card-en">${u.titleEn || ''}</div>
+        ${u.audioUrl ? `
+          <div class="unit-audio">
+            <div class="unit-audio-label">🎧 تسجيل صوتي للوحدة</div>
+            <button class="unit-audio-btn" onclick="event.stopPropagation(); toggleAudio(${i})" id="audio-btn-${i}">
+              <span class="unit-audio-icon" id="audio-icon-${i}">▶</span>
+              <span class="unit-audio-progress"><span class="unit-audio-progress-fill" id="audio-fill-${i}"></span></span>
+              <span class="unit-audio-time" id="audio-time-${i}">٠٠:٠٠</span>
+            </button>
+            <audio id="audio-el-${i}" src="${u.audioUrl}" preload="none"></audio>
+          </div>
+        ` : `<div class="unit-no-audio">🎧 لسه مفيش تسجيل صوتي للوحدة دي</div>`}
       </div>
-      ${u.audioUrl ? `
-        <div class="unit-audio">
-          <div class="unit-audio-label">🎧 تسجيل صوتي للوحدة</div>
-          <button class="unit-audio-btn" onclick="event.stopPropagation(); toggleAudio(${i})" id="audio-btn-${i}">
-            <span class="unit-audio-icon" id="audio-icon-${i}">▶</span>
-            <span class="unit-audio-progress"><span class="unit-audio-progress-fill" id="audio-fill-${i}"></span></span>
-            <span class="unit-audio-time" id="audio-time-${i}">٠٠:٠٠</span>
-          </button>
-          <audio id="audio-el-${i}" src="${u.audioUrl}" preload="none"></audio>
-        </div>
-      ` : `<div class="unit-no-audio">🎧 لسه مفيش تسجيل صوتي لِلوحدة دي</div>`}
-    </div>
-  `).join('');
+    `).join('');
+  }catch(e){
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b>${e.message}</div>`;
+  }
 }
 
 // ---------- تشغيل/إيقاف الصوت داخل بطاقة الوحدة ----------
@@ -1084,7 +1086,6 @@ function toggleAudio(index){
   const fill = document.getElementById('audio-fill-'+index);
   const timeLabel = document.getElementById('audio-time-'+index);
 
-  // لو فيه صوت تاني شغال، أوقفيه الأول
   if(currentPlayingAudio && currentPlayingAudio !== audio){
     currentPlayingAudio.pause();
     document.querySelectorAll('.unit-audio-icon').forEach(el => el.textContent = '▶');
@@ -1115,30 +1116,35 @@ function toggleAudio(index){
   };
 }
 
-// ---------- عرض الفيديوهات ----------
-function renderVideos(){
+// ---------- عرض الفيديوهات من Firebase ----------
+let VIDEOS_LIVE = [];
+async function renderVideos(){
   const container = document.getElementById('videos-container');
-  if(VIDEOS_DATA.length === 0){
-    container.innerHTML = `<div class="empty-state">
-      <b>لسه مفيش فيديوهات مضافة</b>
-      أضف الفيديوهات في متغيّر VIDEOS_DATA جوه الكود (لازم تكون روابط يوتيوب Unlisted).
-    </div>`;
-    return;
-  }
-  container.innerHTML = VIDEOS_DATA.map((v,i) => `
-    <div class="video-row">
-      <div class="video-thumb">▶</div>
-      <div class="video-info">
-        <div class="video-title">${v.title}</div>
-        <div class="video-unit-tag">${v.category || 'مراجعة عامة'}</div>
+  container.innerHTML = `<div class="empty-state"><b>جاري تحميل الفيديوهات...</b></div>`;
+  try{
+    const snap = await window.__db.collection('videos').orderBy('createdAt').get();
+    VIDEOS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    if(VIDEOS_LIVE.length === 0){
+      container.innerHTML = `<div class="empty-state"><b>لسه مفيش فيديوهات</b>المستر سامي لسه مضفش فيديوهات.</div>`;
+      return;
+    }
+    container.innerHTML = VIDEOS_LIVE.map((v,i) => `
+      <div class="video-row">
+        <div class="video-thumb">▶</div>
+        <div class="video-info">
+          <div class="video-title">${v.title}</div>
+          <div class="video-unit-tag">${v.category || 'مراجعة عامة'}</div>
+        </div>
+        <button class="video-play" onclick="openVideo(${i})">مشاهدة</button>
       </div>
-      <button class="video-play" onclick="openVideo(${i})">مشاهدة</button>
-    </div>
-  `).join('');
+    `).join('');
+  }catch(e){
+    container.innerHTML = `<div class="empty-state"><b>خطأ في التحميل</b>${e.message}</div>`;
+  }
 }
 
 function openVideo(index){
-  const v = VIDEOS_DATA[index];
+  const v = VIDEOS_LIVE[index];
   document.getElementById('video-modal-title').textContent = v.title;
   document.getElementById('video-iframe').src = `https://www.youtube.com/embed/${v.youtubeId}?autoplay=1&rel=0`;
   document.getElementById('video-modal').classList.add('show');
@@ -1152,41 +1158,46 @@ function closeVideo(){
   document.getElementById('video-modal').classList.remove('show');
 }
 
-// ---------- عرض الامتحانات ----------
-function renderExams(){
+// ---------- عرض الامتحانات من Firebase ----------
+let EXAMS_LIVE = [];
+async function renderExams(){
   const container = document.getElementById('exams-container');
-  if(EXAMS_DATA.length === 0){
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-      <b>لسه مفيش امتحانات مضافة</b>
-      أضيفي الامتحانات في متغيّر EXAMS_DATA جوه الكود.
-    </div>`;
-    return;
+  container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>جاري تحميل الامتحانات...</b></div>`;
+  try{
+    const snap = await window.__db.collection('exams').orderBy('createdAt').get();
+    EXAMS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    if(EXAMS_LIVE.length === 0){
+      container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش امتحانات</b>المستر سامي لسه مضفش امتحانات.</div>`;
+      return;
+    }
+    container.innerHTML = EXAMS_LIVE.map((ex,i) => `
+      <div class="exam-card">
+        <div class="exam-card-title">${ex.title}</div>
+        <div class="exam-card-meta">⏱ ${ex.timeMin} دقيقة | ${(ex.mcq||[]).length + (ex.essay||[]).length} سؤال</div>
+        <button class="btn-start" onclick="startExam(${i})">ابدأ الامتحان</button>
+      </div>
+    `).join('');
+  }catch(e){
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b>${e.message}</div>`;
   }
-  container.innerHTML = EXAMS_DATA.map((ex,i) => `
-    <div class="exam-card">
-      <div class="exam-card-title">${ex.title}</div>
-      <div class="exam-card-meta">⏱ ${ex.timeMin} دقيقة | ${ex.mcq.length + ex.essay.length} سؤال</div>
-      <button class="btn-start" onclick="startExam(${i})">ابدأ الامتحان</button>
-    </div>
-  `).join('');
 }
 
 // ---------- أداء الامتحان ----------
 function startExam(index){
-  currentExam = EXAMS_DATA[index];
+  currentExam = EXAMS_LIVE[index];
   examAnswers = {};
   document.getElementById('exam-run-title').textContent = currentExam.title;
   document.getElementById('exam-run-sub').textContent =
-    `عدد الأسئلة: ${currentExam.mcq.length + currentExam.essay.length} | الوقت المقترح: ${currentExam.timeMin} دقيقة`;
+    `عدد الأسئلة: ${(currentExam.mcq||[]).length + (currentExam.essay||[]).length} | الوقت المقترح: ${currentExam.timeMin} دقيقة`;
 
   let html = '';
-  currentExam.mcq.forEach((q, qi) => {
+  (currentExam.mcq||[]).forEach((q, qi) => {
     html += `
       <div class="q-block">
         <div class="q-number">سؤال ${qi+1} — اختيار من متعدد</div>
         <div class="q-text">${q.q}</div>
         <div class="q-options">
-          ${q.options.map((opt, oi) => `
+          ${(q.options||[]).map((opt, oi) => `
             <label class="q-option" onclick="selectOption(this, ${qi}, ${oi})">
               <input type="radio" name="mcq-${qi}" style="display:none;">
               <span class="q-option-label">${String.fromCharCode(65+oi)}</span>
@@ -1196,10 +1207,10 @@ function startExam(index){
         </div>
       </div>`;
   });
-  currentExam.essay.forEach((q, qi) => {
+  (currentExam.essay||[]).forEach((q, qi) => {
     html += `
       <div class="q-block">
-        <div class="q-number">سؤال ${currentExam.mcq.length + qi + 1} — إجابة مقالية قصيرة</div>
+        <div class="q-number">سؤال ${(currentExam.mcq||[]).length + qi + 1} — إجابة مقالية قصيرة</div>
         <div class="q-text">${q.q}</div>
         <textarea class="q-essay-input" placeholder="اكتب إجابتك هنا..." onchange="saveEssay(${qi}, this.value)"></textarea>
       </div>`;
@@ -1225,17 +1236,15 @@ document.getElementById('btn-exit-exam').addEventListener('click', ()=>{
 
 document.getElementById('btn-submit-exam').addEventListener('click', ()=>{
   let correct = 0;
-  currentExam.mcq.forEach((q, qi) => {
+  (currentExam.mcq||[]).forEach((q, qi) => {
     if(examAnswers['mcq-'+qi] === q.correct) correct++;
   });
-  const total = currentExam.mcq.length;
+  const total = (currentExam.mcq||[]).length;
   document.getElementById('result-score-text').textContent = `${correct} / ${total}`;
   document.getElementById('exam-result-box').style.display = 'block';
   document.getElementById('exam-result-box').scrollIntoView({behavior:'smooth'});
-
-  // 🔧 هنا ممكن تضيفي حفظ النتيجة في Firebase (اختياري)
-  // saveResultToFirebase(currentStudent.code, currentExam.id, correct, total);
 });
+
 
 </script>
 </body>

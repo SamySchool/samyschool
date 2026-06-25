@@ -4,14 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SamySchool | منصة المراجعة النهائية</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
-
-<!-- ============================================================
-     Firebase SDK (مجاني — حدوده سخية جدًا لحجم 30-100 طالب)
-     ============================================================ -->
-<!-- Firebase SDK - Compat version (أكثر استقراراً مع GitHub Pages) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
@@ -23,1011 +16,476 @@
     messagingSenderId: "950744024303",
     appId: "1:950744024303:web:b01d36410b80749b43471a"
   };
-
   try {
     firebase.initializeApp(firebaseConfig);
     window.__db = firebase.firestore();
     window.__firebaseReady = true;
-    console.log("✅ Firebase جاهز");
-  } catch(e) {
-    console.error("❌ Firebase فشل:", e);
-    window.__firebaseReady = false;
-  }
+  } catch(e) { window.__firebaseReady = false; }
 </script>
-
 <style>
-/* ============================================================
-   TOKENS — نظام الألوان والخطوط
-   ============================================================ */
 :root{
-  --ink:#0B1220;
-  --ink-2:#101A2E;
-  --ink-3:#16223B;
-  --paper:#F6F4EC;
-  --highlight:#D4E157;
-  --highlight-dim:#A8B83E;
-  --coral:#E0654F;
-  --line:rgba(246,244,236,0.12);
-  --line-strong:rgba(246,244,236,0.22);
-  --text-1:#F6F4EC;
-  --text-2:#9FAAC4;
-  --text-3:#5E6A85;
-  --radius:14px;
-  --font-ar:'Cairo',sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
-  --font-en:'Lora',serif;
+  --ink:#0B1220; --ink-2:#101A2E; --ink-3:#16223B;
+  --highlight:#D4E157; --highlight-dim:#A8B83E;
+  --coral:#E0654F; --green:#4CAF50;
+  --line:rgba(246,244,236,0.12); --line-strong:rgba(246,244,236,0.22);
+  --text-1:#F6F4EC; --text-2:#9FAAC4; --text-3:#5E6A85;
+  --radius:14px; --font-ar:'Cairo',sans-serif;
+  --font-mono:'JetBrains Mono',monospace; --font-en:'Lora',serif;
 }
-
-*{box-sizing:border-box; margin:0; padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{
-  background:var(--ink);
-  color:var(--text-1);
-  font-family:var(--font-ar);
-  min-height:100vh;
-  position:relative;
-  overflow-x:hidden;
-}
+body{background:var(--ink);color:var(--text-1);font-family:var(--font-ar);min-height:100vh;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.3;pointer-events:none;z-index:0;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
 
-/* خلفية: نسيج خفيف يشبه "ورق مذاكرة" بالليل */
-body::before{
-  content:"";
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  opacity:.35;
-  pointer-events:none;
-  z-index:0;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
-}
-
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
-}
-
-a{color:inherit; text-decoration:none;}
-button{font-family:inherit; cursor:pointer;}
-:focus-visible{outline:2px solid var(--highlight); outline-offset:3px; border-radius:4px;}
-
-.wrap{max-width:1080px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
-
-/* ============================================================
-   SCREEN MANAGEMENT — شاشات الموقع (تسجيل دخول / لوحة الطالب)
-   ============================================================ */
+/* ======= شاشات ======= */
 .screen{display:none;}
 .screen.active{display:block;}
+#screen-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 0;}
+#screen-login.active{display:flex;}
 
-/* ============================================================
-   شاشة تسجيل الدخول
-   ============================================================ */
-#screen-login{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:32px 0;
-}
-
-.login-card{
-  width:100%;
-  max-width:440px;
-  background:linear-gradient(180deg, var(--ink-3), var(--ink-2));
-  border:1px solid var(--line-strong);
-  border-radius:20px;
-  padding:40px 36px 36px;
-  position:relative;
-  box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
-}
-
-.login-card::before{
-  content:"";
-  position:absolute;
-  top:0; right:32px; left:32px;
-  height:1px;
-  background:linear-gradient(90deg, transparent, var(--highlight), transparent);
-  opacity:.6;
-}
-
-.brand-eyebrow{
-  font-family:var(--font-mono);
-  font-size:11px;
-  letter-spacing:.18em;
-  color:var(--highlight);
-  text-transform:uppercase;
-  margin-bottom:14px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.brand-eyebrow::before{
-  content:"";
-  width:6px; height:6px;
-  background:var(--highlight);
-  border-radius:50%;
-  display:inline-block;
-  box-shadow:0 0 0 3px rgba(212,225,87,.18);
-}
-
-.brand-name{
-  font-family:var(--font-ar);
-  font-weight:900;
-  font-size:34px;
-  line-height:1.15;
-  margin-bottom:6px;
-  letter-spacing:-.01em;
-}
+/* ======= بطاقة الدخول ======= */
+.login-card{width:100%;max-width:440px;background:linear-gradient(180deg,var(--ink-3),var(--ink-2));border:1px solid var(--line-strong);border-radius:20px;padding:40px 36px 36px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);}
+.login-card::before{content:"";position:absolute;top:0;right:32px;left:32px;height:1px;background:linear-gradient(90deg,transparent,var(--highlight),transparent);opacity:.6;}
+.brand-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--highlight);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.brand-eyebrow::before{content:"";width:6px;height:6px;background:var(--highlight);border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(212,225,87,.18);}
+.brand-name{font-weight:900;font-size:34px;line-height:1.15;margin-bottom:6px;}
 .brand-name span{color:var(--highlight);}
-
-.brand-sub{
-  color:var(--text-2);
-  font-size:14.5px;
-  line-height:1.7;
-  margin-bottom:28px;
-  font-weight:600;
-}
-
-.field-label{
-  font-size:12.5px;
-  font-weight:700;
-  color:var(--text-2);
-  margin-bottom:8px;
-  display:block;
-}
-
-.code-input-row{
-  display:flex;
-  gap:10px;
-  margin-bottom:6px;
-}
-
-#student-code{
-  flex:1;
-  background:rgba(0,0,0,.25);
-  border:1.5px solid var(--line-strong);
-  border-radius:10px;
-  padding:15px 16px;
-  color:var(--text-1);
-  font-family:var(--font-mono);
-  font-size:18px;
-  letter-spacing:.12em;
-  font-weight:500;
-  transition:border-color .2s, background .2s;
-  text-align:center;
-}
-#student-code::placeholder{color:var(--text-3); letter-spacing:.06em;}
-#student-code:focus{
-  border-color:var(--highlight);
-  background:rgba(212,225,87,.04);
-}
-
-.btn-primary{
-  width:100%;
-  background:var(--highlight);
-  color:var(--ink);
-  border:none;
-  border-radius:10px;
-  padding:15px 20px;
-  font-family:var(--font-ar);
-  font-weight:800;
-  font-size:15.5px;
-  margin-top:16px;
-  transition:transform .15s, box-shadow .15s, background .15s;
-  box-shadow:0 8px 24px -8px rgba(212,225,87,.4);
-}
-.btn-primary:hover{background:#E1EB78; transform:translateY(-1px);}
-.btn-primary:active{transform:translateY(0);}
-
-.login-error{
-  display:none;
-  margin-top:14px;
-  padding:11px 14px;
-  background:rgba(224,101,79,.1);
-  border:1px solid rgba(224,101,79,.35);
-  border-radius:8px;
-  color:#F0998A;
-  font-size:13px;
-  font-weight:600;
-  text-align:center;
-}
+.brand-sub{color:var(--text-2);font-size:14px;line-height:1.7;margin-bottom:28px;font-weight:600;}
+.field-label{font-size:12.5px;font-weight:700;color:var(--text-2);margin-bottom:8px;display:block;}
+.code-input-row{margin-bottom:6px;}
+#student-code{width:100%;background:rgba(0,0,0,.25);border:1.5px solid var(--line-strong);border-radius:10px;padding:15px 16px;color:var(--text-1);font-family:var(--font-mono);font-size:18px;letter-spacing:.12em;font-weight:500;transition:border-color .2s;text-align:center;}
+#student-code:focus{border-color:var(--highlight);outline:none;}
+.btn-primary{width:100%;background:var(--highlight);color:var(--ink);border:none;border-radius:10px;padding:15px 20px;font-weight:800;font-size:15.5px;margin-top:16px;transition:transform .15s,background .15s;box-shadow:0 8px 24px -8px rgba(212,225,87,.4);}
+.btn-primary:hover{background:#E1EB78;transform:translateY(-1px);}
+.login-error{display:none;margin-top:14px;padding:11px 14px;background:rgba(224,101,79,.1);border:1px solid rgba(224,101,79,.35);border-radius:8px;color:#F0998A;font-size:13px;font-weight:600;text-align:center;}
 .login-error.show{display:block;}
+.login-foot{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);color:var(--text-3);font-size:12px;text-align:center;line-height:1.6;}
 
-.login-foot{
-  margin-top:24px;
-  padding-top:20px;
-  border-top:1px solid var(--line);
-  color:var(--text-3);
-  font-size:12px;
-  text-align:center;
-  line-height:1.6;
+/* ======= تايمر العد التنازلي ======= */
+.countdown-bar{
+  background:linear-gradient(135deg,rgba(212,225,87,.12),rgba(212,225,87,.05));
+  border-bottom:1px solid rgba(212,225,87,.25);
+  padding:10px 24px; text-align:center; position:relative; z-index:10;
 }
+.countdown-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.countdown-label{font-size:12px;color:var(--highlight-dim);font-weight:700;letter-spacing:.05em;}
+.countdown-blocks{display:flex;gap:10px;align-items:center;}
+.countdown-unit{text-align:center;}
+.countdown-num{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--highlight);line-height:1;}
+.countdown-unit-label{font-size:9px;color:var(--text-3);font-family:var(--font-mono);letter-spacing:.08em;margin-top:2px;}
+.countdown-sep{font-family:var(--font-mono);font-size:18px;color:var(--highlight-dim);font-weight:700;margin-bottom:10px;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+.countdown-sep{animation:pulse 1s infinite;}
 
-/* ============================================================
-   الهيدر (داخل لوحة الطالب)
-   ============================================================ */
-.topbar{
-  position:sticky; top:0; z-index:50;
-  background:rgba(11,18,32,.85);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
-}
-.topbar-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:18px 0;
-}
-.topbar-brand{
-  display:flex; align-items:center; gap:10px;
-}
-.topbar-mark{
-  width:34px; height:34px;
-  background:var(--highlight);
-  border-radius:9px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono);
-  font-weight:700;
-  color:var(--ink);
-  font-size:15px;
-}
-.topbar-name{font-weight:800; font-size:16px;}
-.topbar-name small{display:block; font-weight:600; font-size:11px; color:var(--text-3); font-family:var(--font-mono); letter-spacing:.05em;}
+/* ======= الهيدر ======= */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;max-width:1080px;margin:0 auto;padding-right:24px;padding-left:24px;}
+.topbar-brand{display:flex;align-items:center;gap:10px;}
+.topbar-mark{width:34px;height:34px;background:var(--highlight);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;color:var(--ink);font-size:15px;}
+.topbar-name{font-weight:800;font-size:16px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.student-code-badge{font-family:var(--font-mono);font-size:12px;color:var(--highlight);background:rgba(212,225,87,.1);border:1px solid rgba(212,225,87,.3);padding:6px 12px;border-radius:999px;letter-spacing:.06em;}
+.btn-logout{background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;}
+.btn-logout:hover{border-color:var(--coral);color:#F0998A;}
 
-.topbar-right{display:flex; align-items:center; gap:18px;}
+/* ======= المحتوى الرئيسي ======= */
+.main-layout{display:flex;gap:24px;max-width:1080px;margin:0 auto;padding:28px 24px 60px;position:relative;z-index:1;}
+.content-area{flex:1;min-width:0;}
 
-.exam-countdown{
-  font-family:var(--font-mono);
-  font-size:12.5px;
-  color:var(--text-2);
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 14px;
-  border:1px solid var(--line-strong);
-  border-radius:999px;
-}
-.exam-countdown b{color:var(--highlight); font-weight:700;}
+/* ======= لوحة الإنجاز (الشمال) ======= */
+.progress-panel{width:240px;min-width:240px;position:sticky;top:80px;height:fit-content;}
+.progress-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.progress-title{font-size:12px;font-weight:800;color:var(--text-2);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;}
+.progress-section{margin-bottom:14px;}
+.progress-section-label{font-size:11px;color:var(--text-3);margin-bottom:8px;font-weight:700;}
+.progress-items{display:flex;flex-direction:column;gap:4px;}
+.progress-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;cursor:pointer;transition:background .15s;}
+.progress-item:hover{background:rgba(255,255,255,.04);}
+.progress-item.done{background:rgba(212,225,87,.06);}
+.progress-check{width:18px;height:18px;min-width:18px;border:1.5px solid var(--line-strong);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s;}
+.progress-item.done .progress-check{background:var(--highlight);border-color:var(--highlight);color:var(--ink);}
+.progress-item-label{font-size:11.5px;font-weight:600;color:var(--text-2);line-height:1.3;}
+.progress-item.done .progress-item-label{color:var(--text-1);}
+.overall-bar{margin-top:12px;}
+.overall-bar-track{height:6px;background:var(--line-strong);border-radius:3px;overflow:hidden;}
+.overall-bar-fill{height:100%;background:var(--highlight);border-radius:3px;transition:width .5s ease;}
+.overall-text{font-family:var(--font-mono);font-size:11px;color:var(--text-2);margin-top:6px;text-align:center;}
 
-.btn-logout{
-  background:transparent;
-  border:1px solid var(--line-strong);
-  color:var(--text-2);
-  padding:9px 16px;
-  border-radius:8px;
-  font-size:13px;
-  font-weight:700;
-  transition:border-color .2s, color .2s;
-}
-.btn-logout:hover{border-color:var(--coral); color:#F0998A;}
-
-/* ============================================================
-   هيرو لوحة الطالب
-   ============================================================ */
-.dash-hero{padding:48px 0 36px;}
-.dash-eyebrow{
-  font-family:var(--font-mono);
-  font-size:11px;
-  color:var(--highlight);
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  margin-bottom:12px;
-}
-.dash-title{
-  font-size:clamp(26px, 4vw, 38px);
-  font-weight:900;
-  line-height:1.2;
-  margin-bottom:10px;
-}
-.dash-title span{color:var(--text-2); font-weight:700;}
-.dash-desc{color:var(--text-2); font-size:15px; max-width:620px; line-height:1.8; font-weight:600;}
-
-/* ============================================================
-   شريط التبويبات (الوحدات / الفيديوهات / الامتحانات)
-   ============================================================ */
-.tabs{
-  display:flex; gap:6px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:32px;
-  overflow-x:auto;
-}
-.tab-btn{
-  background:transparent;
-  border:none;
-  color:var(--text-2);
-  padding:13px 18px;
-  font-family:var(--font-ar);
-  font-weight:700;
-  font-size:14.5px;
-  position:relative;
-  white-space:nowrap;
-  transition:color .2s;
-}
+/* ======= التبويبات ======= */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:28px;overflow-x:auto;}
+.tab-btn{background:transparent;border:none;color:var(--text-2);padding:12px 16px;font-weight:700;font-size:14px;position:relative;white-space:nowrap;transition:color .2s;}
 .tab-btn:hover{color:var(--text-1);}
 .tab-btn.active{color:var(--highlight);}
-.tab-btn.active::after{
-  content:"";
-  position:absolute; bottom:-1px; right:0; left:0;
-  height:2px;
-  background:var(--highlight);
-}
-
+.tab-btn.active::after{content:"";position:absolute;bottom:-1px;right:0;left:0;height:2px;background:var(--highlight);}
 .tab-panel{display:none;}
-.tab-panel.active{display:block; animation:fadein .35s ease;}
-@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+.tab-panel.active{display:block;animation:fadein .3s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 
-/* ============================================================
-   بطاقات الوحدات — "كشف امتحان" Style
-   ============================================================ */
-.unit-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
-  gap:16px;
-  margin-bottom:8px;
-}
+/* ======= بطاقات الوحدات ======= */
+.unit-grid{display:flex;flex-direction:column;gap:16px;}
+.unit-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:border-color .2s;}
+.unit-card:hover{border-color:var(--line-strong);}
+.unit-card-header{padding:18px 20px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.unit-card-title{font-weight:800;font-size:16px;}
+.unit-card-en{font-style:italic;color:var(--text-2);font-size:12px;margin-top:3px;font-family:var(--font-en);}
+.unit-done-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(212,225,87,.1);color:var(--highlight);font-family:var(--font-mono);}
+.unit-resources{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 20px;}
+@media(max-width:600px){.unit-resources{grid-template-columns:1fr;}}
+.resource-btn{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--line-strong);border-radius:10px;background:rgba(0,0,0,.15);transition:border-color .2s,background .2s;text-align:right;}
+.resource-btn:hover{border-color:var(--text-2);background:rgba(255,255,255,.03);}
+.resource-btn.audio-btn:hover{border-color:rgba(212,225,87,.5);}
+.resource-btn.exam-btn{border-color:rgba(212,225,87,.3);background:rgba(212,225,87,.04);}
+.resource-btn.exam-btn:hover{border-color:var(--highlight);background:rgba(212,225,87,.08);}
+.resource-icon{font-size:20px;min-width:24px;}
+.resource-info{}
+.resource-name{font-size:12.5px;font-weight:700;color:var(--text-1);}
+.resource-sub{font-size:10.5px;color:var(--text-3);margin-top:2px;}
+.audio-player-row{padding:0 20px 16px;display:none;}
+.audio-player-row.show{display:block;}
+.audio-ctrl{display:flex;align-items:center;gap:10px;background:rgba(212,225,87,.06);border:1px solid rgba(212,225,87,.2);border-radius:8px;padding:10px 14px;}
+.audio-play-btn{width:28px;height:28px;background:var(--highlight);border:none;border-radius:50%;color:var(--ink);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.audio-progress{flex:1;height:4px;background:var(--line-strong);border-radius:2px;overflow:hidden;cursor:pointer;}
+.audio-fill{height:100%;background:var(--highlight);width:0%;transition:width .1s;}
+.audio-time{font-family:var(--font-mono);font-size:10px;color:var(--text-3);min-width:36px;}
 
-.unit-card{
-  background:var(--ink-3);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:22px;
-  position:relative;
-  overflow:hidden;
-  transition:border-color .25s, transform .25s;
-  cursor:pointer;
-}
-.unit-card:hover{
-  border-color:var(--line-strong);
-  transform:translateY(-3px);
-}
-.unit-card::before{
-  content:attr(data-code);
-  position:absolute;
-  top:14px; left:16px;
-  font-family:var(--font-mono);
-  font-size:10.5px;
-  color:var(--text-3);
-  letter-spacing:.1em;
-}
-.unit-status{
-  position:absolute; top:18px; right:18px;
-  width:9px; height:9px;
-  border-radius:50%;
-  background:var(--text-3);
-}
-.unit-status.done{background:var(--highlight); box-shadow:0 0 0 3px rgba(212,225,87,.18);}
-
-.unit-card-title{
-  font-weight:800;
-  font-size:17px;
-  margin:26px 0 6px;
-  line-height:1.4;
-}
-.unit-card-en{
-  font-family:var(--font-en);
-  font-style:italic;
-  color:var(--text-2);
-  font-size:13px;
-  margin-bottom:18px;
-}
-.unit-card-meta{
-  display:flex; gap:14px;
-  padding-top:14px;
-  border-top:1px solid var(--line);
-  font-family:var(--font-mono);
-  font-size:11px;
-  color:var(--text-3);
-}
-.unit-card-meta span{display:flex; align-items:center; gap:5px;}
-
-/* مشغّل الصوت داخل بطاقة الوحدة */
-.unit-audio{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid var(--line);
-}
-.unit-audio-label{
-  font-family:var(--font-mono);
-  font-size:10.5px;
-  color:var(--highlight-dim);
-  margin-bottom:8px;
-  display:flex; align-items:center; gap:6px;
-}
-.unit-audio-btn{
-  width:100%;
-  display:flex; align-items:center; gap:10px;
-  background:rgba(212,225,87,.06);
-  border:1px solid rgba(212,225,87,.25);
-  border-radius:8px;
-  padding:10px 12px;
-  color:var(--text-1);
-  font-family:var(--font-ar);
-  font-weight:700;
-  font-size:12.5px;
-  transition:background .2s, border-color .2s;
-}
-.unit-audio-btn:hover{background:rgba(212,225,87,.12); border-color:var(--highlight);}
-.unit-audio-icon{
-  width:26px; height:26px; min-width:26px;
-  background:var(--highlight);
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  color:var(--ink);
-  font-size:11px;
-}
-.unit-audio-progress{
-  flex:1;
-  height:3px;
-  background:rgba(246,244,236,.15);
-  border-radius:2px;
-  overflow:hidden;
-  position:relative;
-}
-.unit-audio-progress-fill{
-  height:100%;
-  background:var(--highlight);
-  width:0%;
-  transition:width .1s linear;
-}
-.unit-audio-time{
-  font-family:var(--font-mono);
-  font-size:10px;
-  color:var(--text-3);
-  min-width:34px;
-  text-align:left;
-}
-.unit-no-audio{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid var(--line);
-  font-size:11.5px;
-  color:var(--text-3);
-  font-weight:600;
-}
-
-/* ============================================================
-   الفيديوهات
-   ============================================================ */
-.video-list{display:flex; flex-direction:column; gap:14px;}
-.video-row{
-  display:flex; gap:16px; align-items:center;
-  background:var(--ink-3);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:14px 18px;
-  transition:border-color .2s;
-}
+/* ======= فيديوهات ======= */
+.video-list{display:flex;flex-direction:column;gap:12px;}
+.video-row{display:flex;gap:14px;align-items:center;background:var(--ink-3);border:1px solid var(--line);border-radius:12px;padding:14px 18px;transition:border-color .2s;}
 .video-row:hover{border-color:var(--line-strong);}
-.video-thumb{
-  width:120px; min-width:120px; aspect-ratio:16/9;
-  background:var(--ink);
-  border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  border:1px solid var(--line);
-  font-size:18px;
-  color:var(--highlight);
-}
-.video-info{flex:1; min-width:0;}
-.video-title{font-weight:700; font-size:14.5px; margin-bottom:4px;}
-.video-unit-tag{font-family:var(--font-mono); font-size:10.5px; color:var(--text-3);}
-.video-play{
-  background:transparent;
-  border:1.5px solid var(--line-strong);
-  color:var(--text-1);
-  padding:9px 18px;
-  border-radius:8px;
-  font-weight:700;
-  font-size:13px;
-  white-space:nowrap;
-  transition:background .2s, border-color .2s;
-}
-.video-play:hover{background:var(--highlight); color:var(--ink); border-color:var(--highlight);}
+.video-thumb{width:100px;min-width:100px;aspect-ratio:16/9;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--highlight);font-size:20px;}
+.video-info{flex:1;min-width:0;}
+.video-title{font-weight:700;font-size:14px;margin-bottom:3px;}
+.video-cat{font-size:11px;color:var(--text-3);font-family:var(--font-mono);}
+.video-play-btn{background:transparent;border:1.5px solid var(--line-strong);color:var(--text-1);padding:8px 16px;border-radius:8px;font-weight:700;font-size:12.5px;white-space:nowrap;transition:background .2s,border-color .2s;}
+.video-play-btn:hover{background:var(--highlight);color:var(--ink);border-color:var(--highlight);}
 
-.video-player-modal{
-  display:none;
-  position:fixed; inset:0; z-index:200;
-  background:rgba(0,0,0,.85);
-  align-items:center; justify-content:center;
-  padding:24px;
-}
-.video-player-modal.show{display:flex;}
-.video-player-box{
-  width:100%; max-width:880px;
-  background:var(--ink-2);
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid var(--line-strong);
-}
-.video-player-head{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:14px 18px;
-  border-bottom:1px solid var(--line);
-}
-.video-player-head h4{font-size:14px; font-weight:700;}
-.video-close{
-  background:transparent; border:none; color:var(--text-2);
-  font-size:20px; line-height:1; padding:4px 8px;
-}
-.video-frame-wrap{aspect-ratio:16/9; background:#000;}
-.video-frame-wrap iframe{width:100%; height:100%; border:none;}
+/* ======= الامتحانات الشاملة ======= */
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.exam-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.exam-card-title{font-weight:800;font-size:15px;margin-bottom:6px;}
+.exam-card-meta{color:var(--text-3);font-family:var(--font-mono);font-size:11px;margin-bottom:14px;}
+.btn-start-exam{width:100%;background:transparent;border:1.5px solid var(--highlight);color:var(--highlight);padding:10px;border-radius:8px;font-weight:800;font-size:13px;transition:background .2s,color .2s;}
+.btn-start-exam:hover{background:var(--highlight);color:var(--ink);}
 
-/* ============================================================
-   الامتحانات
-   ============================================================ */
-.exam-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px;}
-.exam-card{
-  background:var(--ink-3);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:22px;
-}
-.exam-card-title{font-weight:800; font-size:15.5px; margin-bottom:6px;}
-.exam-card-meta{color:var(--text-3); font-family:var(--font-mono); font-size:11px; margin-bottom:16px;}
-.exam-card .btn-start{
-  width:100%;
-  background:transparent;
-  border:1.5px solid var(--highlight);
-  color:var(--highlight);
-  padding:11px;
-  border-radius:8px;
-  font-weight:800;
-  font-size:13.5px;
-  transition:background .2s, color .2s;
-}
-.exam-card .btn-start:hover{background:var(--highlight); color:var(--ink);}
-.exam-card-score{
-  font-family:var(--font-mono);
-  font-size:11.5px;
-  color:var(--highlight-dim);
-  margin-bottom:14px;
-}
+/* ======= مودال الفيديو ======= */
+.video-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:24px;}
+.video-modal.show{display:flex;}
+.video-modal-box{width:100%;max-width:860px;background:var(--ink-2);border-radius:14px;overflow:hidden;border:1px solid var(--line-strong);}
+.video-modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);}
+.video-modal-head h4{font-size:14px;font-weight:700;}
+.video-close-btn{background:transparent;border:none;color:var(--text-2);font-size:20px;padding:4px 8px;}
+.video-frame{aspect-ratio:16/9;background:#000;}
+.video-frame iframe{width:100%;height:100%;border:none;}
 
-/* شاشة أداء الامتحان */
-#screen-exam{padding:40px 0 80px;}
-.exam-run-head{
-  display:flex; justify-content:space-between; align-items:flex-start;
-  margin-bottom:28px;
-  padding-bottom:20px;
-  border-bottom:1px solid var(--line);
-}
-.exam-run-title{font-weight:800; font-size:21px; margin-bottom:6px;}
-.exam-run-sub{color:var(--text-3); font-size:13px; font-family:var(--font-mono);}
-.btn-exit-exam{
-  background:transparent; border:1px solid var(--line-strong); color:var(--text-2);
-  padding:9px 16px; border-radius:8px; font-size:12.5px; font-weight:700;
-}
+/* ======= مودال الاحتفال ======= */
+.celebrate-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);align-items:center;justify-content:center;}
+.celebrate-modal.show{display:flex;}
+.celebrate-box{background:var(--ink-3);border:2px solid var(--highlight);border-radius:20px;padding:40px 48px;text-align:center;max-width:380px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celebrate-emoji{font-size:56px;margin-bottom:16px;display:block;}
+.celebrate-title{font-size:20px;font-weight:900;color:var(--highlight);margin-bottom:8px;}
+.celebrate-sub{color:var(--text-2);font-size:14px;margin-bottom:24px;line-height:1.6;}
+.celebrate-close{background:var(--highlight);color:var(--ink);border:none;padding:12px 32px;border-radius:9px;font-weight:800;font-size:14px;}
 
-.q-block{
-  background:var(--ink-3);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:24px;
-  margin-bottom:16px;
-}
-.q-number{
-  font-family:var(--font-mono);
-  font-size:11px;
-  color:var(--highlight);
-  margin-bottom:10px;
-  letter-spacing:.05em;
-}
-.q-text{font-family:var(--font-en); font-size:17px; line-height:1.7; margin-bottom:18px; font-weight:600;}
-.q-options{display:flex; flex-direction:column; gap:10px;}
-.q-option{
-  display:flex; align-items:center; gap:12px;
-  padding:13px 16px;
-  border:1.5px solid var(--line-strong);
-  border-radius:9px;
-  cursor:pointer;
-  transition:border-color .15s, background .15s;
-}
+/* ======= شاشة الامتحان ======= */
+#screen-exam{padding:32px 0 80px;position:relative;z-index:1;}
+.exam-topbar{background:rgba(11,18,32,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
+.exam-topbar-title{font-weight:800;font-size:16px;}
+.btn-exit-exam{background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;}
+.exam-body{max-width:800px;margin:0 auto;padding:28px 24px;}
+.q-block{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:14px;}
+.q-num{font-family:var(--font-mono);font-size:11px;color:var(--highlight);margin-bottom:8px;}
+.q-text{font-family:var(--font-en);font-size:16px;line-height:1.7;margin-bottom:16px;font-weight:600;}
+.q-options{display:flex;flex-direction:column;gap:8px;}
+.q-option{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--line-strong);border-radius:9px;cursor:pointer;transition:border-color .15s,background .15s;}
 .q-option:hover{border-color:var(--text-2);}
-.q-option.selected{border-color:var(--highlight); background:rgba(212,225,87,.06);}
-.q-option input{accent-color:var(--highlight);}
-.q-option-label{font-family:var(--font-mono); font-size:11px; color:var(--text-3); min-width:18px;}
-.q-essay-input{
-  width:100%;
-  background:rgba(0,0,0,.2);
-  border:1.5px solid var(--line-strong);
-  border-radius:9px;
-  padding:14px;
-  color:var(--text-1);
-  font-family:var(--font-en);
-  font-size:14.5px;
-  min-height:110px;
-  resize:vertical;
-}
-.q-essay-input:focus{border-color:var(--highlight);}
+.q-option.selected{border-color:var(--highlight);background:rgba(212,225,87,.06);}
+.q-option.correct{border-color:#4CAF50;background:rgba(76,175,80,.1);}
+.q-option.wrong{border-color:var(--coral);background:rgba(224,101,79,.1);}
+.q-opt-label{font-family:var(--font-mono);font-size:11px;color:var(--text-3);min-width:18px;}
+.q-explanation{margin-top:10px;padding:10px 12px;background:rgba(212,225,87,.06);border-right:3px solid var(--highlight);border-radius:6px;font-size:12.5px;color:var(--text-2);line-height:1.6;display:none;}
+.q-explanation.show{display:block;}
+.q-essay{width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:9px;padding:12px 14px;color:var(--text-1);font-family:var(--font-en);font-size:14px;min-height:100px;resize:vertical;}
+.q-essay:focus{border-color:var(--highlight);outline:none;}
+.exam-submit-bar{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);}
+.btn-submit-exam{background:var(--highlight);color:var(--ink);border:none;padding:13px 30px;border-radius:9px;font-weight:800;font-size:14px;}
+.result-box{margin-top:24px;text-align:center;padding:40px 28px;background:var(--ink-3);border:1px solid var(--line-strong);border-radius:var(--radius);}
+.result-score{font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--highlight);margin-bottom:8px;}
+.result-label{color:var(--text-2);font-weight:700;font-size:14px;}
 
-.exam-submit-bar{
-  display:flex; justify-content:space-between; align-items:center;
-  margin-top:24px;
-  padding-top:20px;
-  border-top:1px solid var(--line);
-}
-.btn-submit-exam{
-  background:var(--highlight); color:var(--ink); border:none;
-  padding:14px 32px; border-radius:9px; font-weight:800; font-size:14.5px;
-}
+/* ======= Empty State ======= */
+.empty-state{text-align:center;padding:48px 20px;color:var(--text-3);border:1.5px dashed var(--line-strong);border-radius:var(--radius);font-size:13.5px;line-height:1.8;}
+.empty-state b{color:var(--text-2);display:block;margin-bottom:6px;font-size:15px;}
 
-/* نتيجة الامتحان */
-.result-box{
-  text-align:center;
-  padding:48px 32px;
-  background:var(--ink-3);
-  border:1px solid var(--line-strong);
-  border-radius:var(--radius);
-}
-.result-score{font-family:var(--font-mono); font-size:52px; font-weight:700; color:var(--highlight); margin-bottom:8px;}
-.result-label{color:var(--text-2); font-weight:700; font-size:14px;}
+footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;border-top:1px solid var(--line);}
 
-/* ============================================================
-   عناصر مساعدة عامة
-   ============================================================ */
-.empty-state{
-  text-align:center;
-  padding:60px 20px;
-  color:var(--text-3);
-  border:1.5px dashed var(--line-strong);
-  border-radius:var(--radius);
-  font-size:14px;
-  font-weight:600;
-  line-height:1.8;
-}
-.empty-state b{color:var(--text-2); display:block; margin-bottom:6px; font-size:15px;}
-
-footer{
-  margin-top:60px;
-  padding:28px 0 40px;
-  border-top:1px solid var(--line);
-  color:var(--text-3);
-  font-size:12px;
-  text-align:center;
-}
-
-@media (max-width:640px){
-  .login-card{padding:30px 22px;}
-  .topbar-right{gap:10px;}
-  .exam-countdown{display:none;}
+@media(max-width:768px){
+  .main-layout{flex-direction:column-reverse;padding:16px;}
+  .progress-panel{width:100%;position:static;}
   .video-row{flex-wrap:wrap;}
-  .video-thumb{width:90px; min-width:90px;}
+  .video-thumb{width:80px;min-width:80px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ================================================================
-     شاشة 1: تسجيل الدخول بالكود
-     ================================================================ -->
+<!-- ===== شاشة الدخول ===== -->
 <section id="screen-login" class="screen active">
-  <div class="wrap">
+  <div style="position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:center;padding:32px 24px;">
     <div class="login-card">
       <div class="brand-eyebrow">منصة المراجعة الخاصة</div>
       <h1 class="brand-name">Samy<span>School</span></h1>
       <p class="brand-sub">المراجعة النهائية في اللغة الإنجليزية — الصف الثالث الثانوي. ادخل بالكود الخاص بيك بس.</p>
-
       <label class="field-label" for="student-code">اكتب كود الكارت بتاعك</label>
       <div class="code-input-row">
         <input type="text" id="student-code" placeholder="مثال: SAM-7K2P9X" autocomplete="off" maxlength="20">
       </div>
       <button class="btn-primary" id="btn-login">دخول المنصة</button>
       <div class="login-error" id="login-error">الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت.</div>
-
-      <div class="login-foot">الكود ده بيتفعّل على أول جهاز يدخل بيه بس — متشاركوش مع حد عشان مايتقفلش قبلك. لو فيه مشكلة كلم المستر سامي مباشرة.</div>
+      <div class="login-foot">الكود بيتفعّل على أول جهاز يدخل بيه بس — متشاركوش مع حد. لو فيه مشكلة كلم المستر سامي.</div>
     </div>
   </div>
 </section>
 
-<!-- ================================================================
-     شاشة 2: لوحة الطالب (بعد تسجيل الدخول)
-     ================================================================ -->
+<!-- ===== لوحة الطالب ===== -->
 <section id="screen-dashboard" class="screen">
+
+  <!-- تايمر العد التنازلي -->
+  <div class="countdown-bar">
+    <div class="countdown-inner">
+      <span class="countdown-label">⏳ EXAM COUNTDOWN</span>
+      <div class="countdown-blocks">
+        <div class="countdown-unit"><div class="countdown-num" id="cd-days">--</div><div class="countdown-unit-label">DAYS</div></div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-unit-label">HRS</div></div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-unit-label">MIN</div></div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-unit-label">SEC</div></div>
+      </div>
+      <span class="countdown-label">July 5 — 9:00 AM</span>
+    </div>
+  </div>
+
+  <!-- الهيدر -->
   <header class="topbar">
-    <div class="wrap topbar-inner">
+    <div class="topbar-inner">
       <div class="topbar-brand">
         <div class="topbar-mark">S</div>
-        <div class="topbar-name">SamySchool <small id="student-name-tag">--</small></div>
+        <div class="topbar-name">SamySchool</div>
       </div>
       <div class="topbar-right">
-        <div class="exam-countdown">📅 باقي على الامتحان: <b id="countdown-days">--</b></div>
-        <button class="btn-logout" id="btn-logout">تسجيل خروج</button>
+        <div class="student-code-badge" id="student-code-badge">--</div>
+        <button class="btn-logout" id="btn-logout">خروج</button>
       </div>
     </div>
   </header>
 
-  <div class="wrap">
-    <div class="dash-hero">
-      <div class="dash-eyebrow">لوحة المذاكرة</div>
-      <h2 class="dash-title">أهلًا بيك <span id="student-name-display">يا بطل</span></h2>
-      <p class="dash-desc">كل وحدة فيها تسجيل صوتي مخصص وامتحان خاص بيها. الفيديوهات الشاملة في تبويب منفصل للمراجعة العامة على المنهج كله.</p>
-    </div>
+  <!-- المحتوى الرئيسي -->
+  <div class="main-layout">
 
-    <nav class="tabs">
-      <button class="tab-btn active" data-tab="units">📚 الوحدات + تسجيلات صوتية</button>
-      <button class="tab-btn" data-tab="videos">🎥 فيديوهات شاملة</button>
-      <button class="tab-btn" data-tab="exams">📝 الامتحانات</button>
-    </nav>
+    <!-- المحتوى -->
+    <div class="content-area">
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="units">📚 الوحدات</button>
+        <button class="tab-btn" data-tab="videos">🎥 فيديوهات شاملة</button>
+        <button class="tab-btn" data-tab="exams">📝 امتحانات شاملة</button>
+      </nav>
 
-    <!-- ---------------- تبويب الوحدات ---------------- -->
-    <div class="tab-panel active" id="panel-units">
-      <div class="unit-grid" id="units-container">
-        <!-- 🔧 الوحدات هتتولّد هنا تلقائيًا من UNITS_DATA بالأسفل -->
+      <div class="tab-panel active" id="panel-units">
+        <div class="unit-grid" id="units-container">
+          <div class="empty-state"><b>جاري تحميل الوحدات...</b></div>
+        </div>
       </div>
-    </div>
 
-    <!-- ---------------- تبويب الفيديوهات ---------------- -->
-    <div class="tab-panel" id="panel-videos">
-      <p style="color:var(--text-2); font-size:13.5px; margin-bottom:20px; font-weight:600;">
-        فيديوهات شاملة تغطي المنهج كله — مش مقسّمة بالوحدة، للمراجعة العامة.
-      </p>
-      <div class="video-list" id="videos-container">
-        <!-- 🔧 الفيديوهات هتتولّد هنا تلقائيًا من VIDEOS_DATA بالأسفل -->
+      <div class="tab-panel" id="panel-videos">
+        <p style="color:var(--text-2);font-size:13px;margin-bottom:18px;font-weight:600;">فيديوهات شاملة للمراجعة العامة على المنهج كله</p>
+        <div class="video-list" id="videos-container">
+          <div class="empty-state"><b>جاري التحميل...</b></div>
+        </div>
       </div>
-    </div>
 
-    <!-- ---------------- تبويب الامتحانات ---------------- -->
-    <div class="tab-panel" id="panel-exams">
-      <div class="exam-grid" id="exams-container">
-        <!-- 🔧 الامتحانات هتتولّد هنا تلقائيًا من EXAMS_DATA بالأسفل -->
+      <div class="tab-panel" id="panel-exams">
+        <div class="exam-grid" id="exams-container">
+          <div class="empty-state" style="grid-column:1/-1;"><b>جاري التحميل...</b></div>
+        </div>
       </div>
+
+      <footer>SamySchool © 2026 — منصة خاصة لطلاب المستر سامي فقط</footer>
     </div>
 
-    <footer>SamySchool © 2026 — منصة خاصة لطلاب المستر سامي فقط. الدخول بكود شخصي.</footer>
+    <!-- لوحة الإنجاز -->
+    <aside class="progress-panel">
+      <div class="progress-card">
+        <div class="progress-title">🏆 لوحة الإنجاز</div>
+
+        <div class="overall-bar">
+          <div class="overall-bar-track"><div class="overall-bar-fill" id="overall-fill" style="width:0%"></div></div>
+          <div class="overall-text" id="overall-text">0 / 44</div>
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-section">
+          <div class="progress-section-label">📚 الوحدات (12)</div>
+          <div class="progress-items" id="progress-units"></div>
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-section">
+          <div class="progress-section-label">📝 امتحانات الوحدات (12)</div>
+          <div class="progress-items" id="progress-unit-exams"></div>
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-section">
+          <div class="progress-section-label">📋 الامتحانات الشاملة (20)</div>
+          <div class="progress-items" id="progress-general-exams"></div>
+        </div>
+      </div>
+    </aside>
+
   </div>
 </section>
 
-<!-- ================================================================
-     شاشة 3: أداء الامتحان
-     ================================================================ -->
+<!-- ===== شاشة الامتحان ===== -->
 <section id="screen-exam" class="screen">
-  <div class="wrap">
-    <div class="exam-run-head">
-      <div>
-        <div class="exam-run-title" id="exam-run-title">عنوان الامتحان</div>
-        <div class="exam-run-sub" id="exam-run-sub">عدد الأسئلة: -- | الوقت المقترح: --</div>
-      </div>
-      <button class="btn-exit-exam" id="btn-exit-exam">خروج بدون تسليم</button>
-    </div>
-
-    <div id="exam-questions-container"><!-- أسئلة الامتحان الحالي --></div>
-
+  <div class="exam-topbar">
+    <div class="exam-topbar-title" id="exam-run-title">الامتحان</div>
+    <button class="btn-exit-exam" id="btn-exit-exam">خروج بدون تسليم</button>
+  </div>
+  <div class="exam-body">
+    <div id="exam-questions-container"></div>
     <div class="exam-submit-bar">
-      <span style="color:var(--text-3); font-size:12.5px; font-family:var(--font-mono);">تأكد من إجابة كل الأسئلة قبل التسليم</span>
-      <button class="btn-submit-exam" id="btn-submit-exam">تسليم الامتحان</button>
+      <span style="color:var(--text-3);font-size:12px;font-family:var(--font-mono);">تأكد من الإجابة على كل الأسئلة</span>
+      <button class="btn-submit-exam" id="btn-submit-exam">تسليم الامتحان ✓</button>
     </div>
-
-    <div class="result-box" id="exam-result-box" style="display:none; margin-top:24px;">
+    <div class="result-box" id="exam-result-box" style="display:none;">
       <div class="result-score" id="result-score-text">--</div>
-      <div class="result-label">درجتك في الاختيار من متعدد (المقالي هيتراجع من المستر سامي)</div>
+      <div class="result-label">درجتك في الاختيار من متعدد</div>
+      <button onclick="switchScreen('screen-dashboard')" style="margin-top:18px;background:var(--highlight);color:var(--ink);border:none;padding:11px 28px;border-radius:8px;font-weight:800;font-size:13px;">رجوع للوحة المذاكرة</button>
     </div>
   </div>
 </section>
 
-<!-- مودال عرض الفيديو -->
-<div class="video-player-modal" id="video-modal">
-  <div class="video-player-box">
-    <div class="video-player-head">
-      <h4 id="video-modal-title">عنوان الفيديو</h4>
-      <button class="video-close" id="video-close">✕</button>
+<!-- مودال الفيديو -->
+<div class="video-modal" id="video-modal">
+  <div class="video-modal-box">
+    <div class="video-modal-head">
+      <h4 id="video-modal-title"></h4>
+      <button class="video-close-btn" id="video-close">✕</button>
     </div>
-    <div class="video-frame-wrap">
-      <iframe id="video-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="video-frame">
+      <iframe id="video-iframe" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
 </div>
 
+<!-- مودال الاحتفال -->
+<div class="celebrate-modal" id="celebrate-modal">
+  <div class="celebrate-box">
+    <span class="celebrate-emoji" id="celebrate-emoji">🎉</span>
+    <div class="celebrate-title" id="celebrate-title">أحسنت!</div>
+    <div class="celebrate-sub" id="celebrate-sub">استمر كده!</div>
+    <button class="celebrate-close" onclick="closeCelebrate()">متشكر! 💪</button>
+  </div>
+</div>
+
 <script>
-/* ====================================================================
-   🔧🔧🔧  منطقة التخصيص — هنا تضيفي المحتوى بنفسك  🔧🔧🔧
-   ====================================================================
-   مفيش حاجة تانية في الكود محتاجة تتلمس غير القسم ده.
-   كل عنصر جوه القوائم دي = حاجة واحدة (وحدة / فيديو / امتحان).
-   انسخي نفس شكل القالب وبدّلي القيم بس.
-   ==================================================================== */
-
-// 📅 تاريخ الامتحان (لعداد الأيام في الأعلى) — السنة-الشهر-اليوم
-const EXAM_DATE = "2027-06-01";
-
-// 📚 الوحدات — هيكل فاضي جاهز للتعبئة
-// 🎧 audioUrl: رابط ملف MP3 من Google Drive (لازم يكون "Anyone with the link")
-//    اللينك الأصلي بيبقى شكله: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-//    خدي الـ FILE_ID بس وحطيه في الدالة driveAudioUrl(FILE_ID) زي المثال
-const UNITS_DATA = [
-  // مثال (امسحيه لما تضيفي وحداتك الحقيقية):
-  // { code:"UNIT-01", titleAr:"الوحدة الأولى", titleEn:"Reading & Comprehension",
-  //   examsCount:1, done:false,
-  //   audioUrl: driveAudioUrl("1AbCdEfGhIjKlMnOpQrStUvWxYz") }
-];
-
-// 🔧 دالة تحويل لينك Google Drive العادي لرابط تشغيل مباشر
-function driveAudioUrl(fileId){
-  return `https://drive.google.com/uc?export=download&id=${fileId}`;
+/* ============================================================
+   إدارة الشاشات
+   ============================================================ */
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='screen-login'){
+    document.getElementById(id).style.minHeight='100vh';
+    document.getElementById(id).style.display='flex';
+  }
 }
 
-// 🎥 الفيديوهات الشاملة — فيديوهات عامة تغطي المنهج ككل (مش مقسّمة بالوحدة)
-// رابط يوتيوب لازم يكون "Unlisted" (غير مدرج)
-const VIDEOS_DATA = [
-  // مثال:
-  // { title:"مراجعة شاملة على كل قواعد النحو", category:"مراجعة نحو",
-  //   youtubeId:"dQw4w9WgXcQ" }
-];
-
-// 📝 الامتحانات — اختيار من متعدد + أسئلة مقالية قصيرة
-const EXAMS_DATA = [
-  // مثال:
-  // {
-  //   id:"exam-unit1",
-  //   title:"امتحان الوحدة الأولى",
-  //   timeMin:20,
-  //   mcq:[
-  //     { q:"Choose the correct answer: She ____ to school every day.",
-  //       options:["go","goes","going","gone"], correct:1 }
-  //   ],
-  //   essay:[
-  //     { q:"Write a paragraph (60-80 words) about the importance of reading." }
-  //   ]
-  // }
-];
-
-/* ====================================================================
-   🔧 إعدادات نظام الأكواد المجهولة (بدون أسماء) + قفل الجهاز
-   ====================================================================
-   الفكرة:
-   - كل كود في Firestore عنده 3 حقول: used (مستخدم؟) / deviceId (جهاز
-     مين قفله) / usedAt (امتى اتفعّل).
-   - أول دخول بالكود: بيتقفل على "بصمة" الجهاز ده تلقائيًا.
-   - أي محاولة دخول بنفس الكود من جهاز مختلف بعد كده = مرفوضة.
-   - الطالب لو دخل من نفس الجهاز تاني (نفس المتصفح) هيدخل عادي،
-     لأن الموقع بيتعرف على جهازه من خلال رقم مخزّن في المتصفح بتاعه.
-   ==================================================================== */
-
-// توليد/قراءة "بصمة الجهاز" — رقم ثابت يتولد مرة واحدة ويتخزن في المتصفح
+/* ============================================================
+   تسجيل الدخول
+   ============================================================ */
 function getDeviceId(){
   let id = localStorage.getItem('samyschool_device_id');
-  if(!id){
-    id = 'dev-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
-    localStorage.setItem('samyschool_device_id', id);
-  }
+  if(!id){ id='dev-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10); localStorage.setItem('samyschool_device_id',id); }
   return id;
 }
 
-// قائمة محلية احتياطية (للتجربة بدون Firebase) — مش لازم تستخدميها لو هتفعّلي Firestore
-const STUDENT_CODES = {
-  // "SAM-7K2P9X": true,   // true يعني الكود ده "صالح" بس مش مربوط باسم
-};
-const LOCAL_USED_CODES = JSON.parse(localStorage.getItem('samyschool_used_codes_demo') || '{}');
-
-
-/* ==================================================================== 
-   من هنا تحت: منطق الموقع — مش محتاجة تعدلي فيه عادةً
-   ==================================================================== */
-
-let currentStudent = null;
-let currentExam = null;
-let examAnswers = {};
-
-// ---------- تسجيل الدخول ----------
 document.getElementById('btn-login').addEventListener('click', handleLogin);
-document.getElementById('student-code').addEventListener('keydown', e=>{
-  if(e.key === 'Enter') handleLogin();
-});
+document.getElementById('student-code').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
 
 function handleLogin(){
-  const codeInput = document.getElementById('student-code');
-  const code = codeInput.value.trim().toUpperCase();
-
+  const code = document.getElementById('student-code').value.trim().toUpperCase();
   if(!code){ showLoginError("اكتب الكود الأول."); return; }
-
   const btn = document.getElementById('btn-login');
-  btn.disabled = true;
-  btn.textContent = "جاري التحقق...";
-
-  if(window.__firebaseReady){
-    validateCodeWithFirebase(code).finally(()=>{
-      btn.disabled = false;
-      btn.textContent = "دخول المنصة";
-    });
-    return;
-  }
-
-  // وضع تجريبي محلي بدون Firebase (للمعاينة فقط)
-  validateCodeLocally(code);
-  btn.disabled = false;
-  btn.textContent = "دخول المنصة";
-}
-
-// تحقق محلي بسيط (وضع تجربة بدون Firebase) — بيحاكي نفس منطق قفل الجهاز
-function validateCodeLocally(code){
-  if(!(code in STUDENT_CODES)){
-    showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت.");
-    return;
-  }
-  const deviceId = getDeviceId();
-  const usedBy = LOCAL_USED_CODES[code];
-
-  if(usedBy && usedBy !== deviceId){
-    showLoginError("الكود ده اتفعّل على جهاز تاني قبل كده. كلم المستر سامي لو فيه مشكلة.");
-    return;
-  }
-  if(!usedBy){
-    LOCAL_USED_CODES[code] = deviceId;
-    localStorage.setItem('samyschool_used_codes_demo', JSON.stringify(LOCAL_USED_CODES));
-  }
-  loginSuccess(code);
+  btn.disabled=true; btn.textContent='جاري التحقق...';
+  validateCode(code).finally(()=>{ btn.disabled=false; btn.textContent='دخول المنصة'; });
 }
 
 function showLoginError(msg){
-  const errBox = document.getElementById('login-error');
-  errBox.textContent = msg;
-  errBox.classList.add('show');
+  const e=document.getElementById('login-error'); e.textContent=msg; e.classList.add('show');
+}
+
+async function validateCode(code){
+  if(!window.__firebaseReady){ showLoginError("في مشكلة في الاتصال. حاول تاني."); return; }
+  try{
+    const ref=window.__db.collection('students').doc(code);
+    const snap=await ref.get();
+    if(!snap.exists){ showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت."); return; }
+    const data=snap.data(); const deviceId=getDeviceId();
+    if(data.used && data.deviceId && data.deviceId!==deviceId){ showLoginError("الكود ده اتفعّل على جهاز تاني. كلم المستر سامي لو فيه مشكلة."); return; }
+    if(!data.used){ await ref.set({used:true,deviceId,usedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }
+    loginSuccess(code);
+  }catch(e){ showLoginError("في مشكلة في الاتصال. حاول تاني."); }
 }
 
 function loginSuccess(code){
-  currentStudent = { code };
-  document.getElementById('student-name-tag').textContent = code;
-  document.getElementById('student-name-display').textContent = '';
+  document.getElementById('student-code-badge').textContent=code;
   switchScreen('screen-dashboard');
-  renderUnits();
-  renderVideos();
-  renderExams();
-  updateCountdown();
+  startCountdown();
+  loadProgress(code);
+  loadUnits();
+  loadVideos();
+  loadExams();
 }
 
-/* 🔧 التحقق الفعلي من Firestore — قفل الجهاز عند أول استخدام.
-   بنية المستند المطلوبة في كولكشن "students":
-   { used: false, deviceId: null, usedAt: null } */
-async function validateCodeWithFirebase(code){
-  try{
-    if(!window.__firebaseReady || !window.__db){
-      showLoginError("في مشكلة في الاتصال. حاول تاني.");
-      return;
-    }
-
-    const db = window.__db;
-    const ref = db.collection("students").doc(code);
-    const snap = await ref.get();
-
-    if(!snap.exists){
-      showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت.");
-      return;
-    }
-
-    const data = snap.data();
-    const deviceId = getDeviceId();
-
-    if(data.used && data.deviceId && data.deviceId !== deviceId){
-      showLoginError("الكود ده اتفعّل على جهاز تاني قبل كده. كلم المستر سامي لو فيه مشكلة.");
-      return;
-    }
-
-    if(!data.used){
-      await ref.set({
-        used: true,
-        deviceId: deviceId,
-        usedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
-
-    loginSuccess(code);
-  }catch(err){
-    console.error("Firebase error:", err);
-    showLoginError("في مشكلة في الاتصال. حاول تاني.");
-  }
-}
-
-document.getElementById('btn-logout').addEventListener('click', ()=>{
-  currentStudent = null;
-  document.getElementById('student-code').value = '';
+document.getElementById('btn-logout').addEventListener('click',()=>{
+  document.getElementById('student-code').value='';
   document.getElementById('login-error').classList.remove('show');
   switchScreen('screen-login');
 });
 
-function switchScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+/* ============================================================
+   تايمر العد التنازلي — 5 يوليو 2026 الساعة 9 صباحاً
+   ============================================================ */
+function startCountdown(){
+  const target=new Date('2026-07-05T09:00:00');
+  function update(){
+    const now=new Date(); const diff=target-now;
+    if(diff<=0){ document.getElementById('cd-days').textContent='0'; document.getElementById('cd-hours').textContent='00'; document.getElementById('cd-mins').textContent='00'; document.getElementById('cd-secs').textContent='00'; return; }
+    const days=Math.floor(diff/(1000*60*60*24));
+    const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const mins=Math.floor((diff%(1000*60*60))/(1000*60));
+    const secs=Math.floor((diff%(1000*60))/1000);
+    document.getElementById('cd-days').textContent=days;
+    document.getElementById('cd-hours').textContent=String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent=String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent=String(secs).padStart(2,'0');
+  }
+  update(); setInterval(update,1000);
 }
 
-// ---------- التبويبات ----------
+/* ============================================================
+   التبويبات
+   ============================================================ */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click',()=>{
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
@@ -1035,217 +493,242 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
   });
 });
 
-// ---------- عداد الأيام للامتحان ----------
-function updateCountdown(){
-  const target = new Date(EXAM_DATE);
-  const now = new Date();
-  const diff = Math.ceil((target - now) / (1000*60*60*24));
-  document.getElementById('countdown-days').textContent = diff > 0 ? diff + " يوم" : "اليوم!";
-}
+/* ============================================================
+   الوحدات من Firebase
+   ============================================================ */
+let UNITS_LIVE=[];
+let activeAudio=null;
 
-// ---------- عرض الوحدات من Firebase ----------
-let UNITS_LIVE = [];
-async function renderUnits(){
-  const container = document.getElementById('units-container');
-  container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>جاري تحميل الوحدات...</b></div>`;
+async function loadUnits(){
+  const c=document.getElementById('units-container');
   try{
-    const snap = await window.__db.collection('units').orderBy('createdAt').get();
-    UNITS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    if(UNITS_LIVE.length === 0){
-      container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش وحدات</b>المستر سامي لسه مضفش محتوى.</div>`;
-      return;
-    }
-    container.innerHTML = UNITS_LIVE.map((u,i) => `
-      <div class="unit-card" data-code="${u.id}">
-        <div class="unit-status ${u.done ? 'done' : ''}"></div>
-        <div class="unit-card-title">${u.titleAr}</div>
-        <div class="unit-card-en">${u.titleEn || ''}</div>
-        ${u.audioUrl ? `
-          <div class="unit-audio">
-            <div class="unit-audio-label">🎧 تسجيل صوتي للوحدة</div>
-            <button class="unit-audio-btn" onclick="event.stopPropagation(); toggleAudio(${i})" id="audio-btn-${i}">
-              <span class="unit-audio-icon" id="audio-icon-${i}">▶</span>
-              <span class="unit-audio-progress"><span class="unit-audio-progress-fill" id="audio-fill-${i}"></span></span>
-              <span class="unit-audio-time" id="audio-time-${i}">٠٠:٠٠</span>
-            </button>
+    const snap=await window.__db.collection('units').orderBy('createdAt').get();
+    UNITS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!UNITS_LIVE.length){ c.innerHTML='<div class="empty-state"><b>لسه مفيش وحدات</b>المستر سامي لسه مضفش محتوى.</div>'; return; }
+    c.innerHTML=UNITS_LIVE.map((u,i)=>`
+      <div class="unit-card" id="unit-card-${i}">
+        <div class="unit-card-header">
+          <div>
+            <div class="unit-card-title">${u.titleAr||''}</div>
+            <div class="unit-card-en">${u.titleEn||''}</div>
+          </div>
+          <span class="unit-done-badge" id="unit-done-badge-${i}">UNIT ${i+1}</span>
+        </div>
+        <div class="unit-resources">
+          ${u.pdfBoard?`<button class="resource-btn" onclick="openPdf('${u.pdfBoard}','سبورة الشرح - ${u.titleAr}')"><span class="resource-icon">📋</span><div class="resource-info"><div class="resource-name">سبورة الشرح</div><div class="resource-sub">اضغط للفتح</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📋</span><div class="resource-info"><div class="resource-name">سبورة الشرح</div><div class="resource-sub">لسه مش متاحة</div></div></button>`}
+          ${u.pdfWords?`<button class="resource-btn" onclick="openPdf('${u.pdfWords}','ملخص الكلمات - ${u.titleAr}')"><span class="resource-icon">📖</span><div class="resource-info"><div class="resource-name">ملخص الكلمات</div><div class="resource-sub">اضغط للفتح</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📖</span><div class="resource-info"><div class="resource-name">ملخص الكلمات</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
+          ${u.examUrl?`<button class="resource-btn exam-btn" onclick="openExamFile('${u.examUrl}')"><span class="resource-icon">📝</span><div class="resource-info"><div class="resource-name">امتحان الوحدة</div><div class="resource-sub">افتح وابدأ الامتحان</div></div></button>`:`<button class="resource-btn exam-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📝</span><div class="resource-info"><div class="resource-name">امتحان الوحدة</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
+          ${u.audioUrl?`<button class="resource-btn audio-btn" onclick="toggleUnitAudio(${i})"><span class="resource-icon">🎧</span><div class="resource-info"><div class="resource-name">فويس الجرامر</div><div class="resource-sub" id="audio-sub-${i}">اضغط للتشغيل</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">🎧</span><div class="resource-info"><div class="resource-name">فويس الجرامر</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
+        </div>
+        ${u.audioUrl?`
+        <div class="audio-player-row" id="audio-row-${i}">
+          <div class="audio-ctrl">
+            <button class="audio-play-btn" id="audio-play-btn-${i}" onclick="playPauseAudio(${i})">▶</button>
+            <div class="audio-progress" onclick="seekAudio(event,${i})"><div class="audio-fill" id="audio-fill-${i}"></div></div>
+            <span class="audio-time" id="audio-time-${i}">0:00</span>
             <audio id="audio-el-${i}" src="${u.audioUrl}" preload="none"></audio>
           </div>
-        ` : `<div class="unit-no-audio">🎧 لسه مفيش تسجيل صوتي للوحدة دي</div>`}
+        </div>`:``}
       </div>
     `).join('');
-  }catch(e){
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b>${e.message}</div>`;
-  }
+    buildProgressUnits();
+  }catch(e){ c.innerHTML=`<div class="empty-state"><b>خطأ في التحميل</b>${e.message}</div>`; }
 }
 
-// ---------- تشغيل/إيقاف الصوت داخل بطاقة الوحدة ----------
-let currentPlayingAudio = null;
-function toggleAudio(index){
-  const audio = document.getElementById('audio-el-'+index);
-  const icon = document.getElementById('audio-icon-'+index);
-  const fill = document.getElementById('audio-fill-'+index);
-  const timeLabel = document.getElementById('audio-time-'+index);
+function openPdf(url,title){ window.open(url,'_blank'); }
+function openExamFile(url){ window.open(url,'_blank'); }
 
-  if(currentPlayingAudio && currentPlayingAudio !== audio){
-    currentPlayingAudio.pause();
-    document.querySelectorAll('.unit-audio-icon').forEach(el => el.textContent = '▶');
-  }
-
-  if(audio.paused){
-    audio.play();
-    icon.textContent = '❚❚';
-    currentPlayingAudio = audio;
-  } else {
-    audio.pause();
-    icon.textContent = '▶';
-  }
-
-  audio.ontimeupdate = () => {
-    if(audio.duration){
-      const pct = (audio.currentTime / audio.duration) * 100;
-      fill.style.width = pct + '%';
-      const mins = Math.floor(audio.currentTime / 60);
-      const secs = Math.floor(audio.currentTime % 60);
-      timeLabel.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-    }
-  };
-  audio.onended = () => {
-    icon.textContent = '▶';
-    fill.style.width = '0%';
-    timeLabel.textContent = '٠٠:٠٠';
-  };
+function toggleUnitAudio(i){
+  const row=document.getElementById('audio-row-'+i);
+  if(!row) return;
+  const isOpen=row.classList.contains('show');
+  document.querySelectorAll('.audio-player-row').forEach(r=>r.classList.remove('show'));
+  if(activeAudio){ activeAudio.pause(); activeAudio=null; document.querySelectorAll('.audio-play-btn').forEach(b=>b.textContent='▶'); }
+  if(!isOpen) row.classList.add('show');
 }
 
-// ---------- عرض الفيديوهات من Firebase ----------
-let VIDEOS_LIVE = [];
-async function renderVideos(){
-  const container = document.getElementById('videos-container');
-  container.innerHTML = `<div class="empty-state"><b>جاري تحميل الفيديوهات...</b></div>`;
+function playPauseAudio(i){
+  const audio=document.getElementById('audio-el-'+i);
+  const btn=document.getElementById('audio-play-btn-'+i);
+  const fill=document.getElementById('audio-fill-'+i);
+  const time=document.getElementById('audio-time-'+i);
+  if(activeAudio && activeAudio!==audio){ activeAudio.pause(); document.querySelectorAll('.audio-play-btn').forEach(b=>b.textContent='▶'); }
+  if(audio.paused){ audio.play(); btn.textContent='❚❚'; activeAudio=audio; }
+  else { audio.pause(); btn.textContent='▶'; }
+  audio.ontimeupdate=()=>{
+    if(audio.duration){ fill.style.width=(audio.currentTime/audio.duration*100)+'%'; const m=Math.floor(audio.currentTime/60); const s=Math.floor(audio.currentTime%60); time.textContent=m+':'+String(s).padStart(2,'0'); }
+  };
+  audio.onended=()=>{ btn.textContent='▶'; fill.style.width='0%'; };
+}
+
+function seekAudio(e,i){
+  const audio=document.getElementById('audio-el-'+i);
+  if(!audio.duration) return;
+  const rect=e.currentTarget.getBoundingClientRect();
+  audio.currentTime=((e.clientX-rect.left)/rect.width)*audio.duration;
+}
+
+/* ============================================================
+   الفيديوهات من Firebase
+   ============================================================ */
+let VIDEOS_LIVE=[];
+async function loadVideos(){
+  const c=document.getElementById('videos-container');
   try{
-    const snap = await window.__db.collection('videos').orderBy('createdAt').get();
-    VIDEOS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    if(VIDEOS_LIVE.length === 0){
-      container.innerHTML = `<div class="empty-state"><b>لسه مفيش فيديوهات</b>المستر سامي لسه مضفش فيديوهات.</div>`;
-      return;
-    }
-    container.innerHTML = VIDEOS_LIVE.map((v,i) => `
+    const snap=await window.__db.collection('videos').orderBy('createdAt').get();
+    VIDEOS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!VIDEOS_LIVE.length){ c.innerHTML='<div class="empty-state"><b>لسه مفيش فيديوهات</b></div>'; return; }
+    c.innerHTML=VIDEOS_LIVE.map((v,i)=>`
       <div class="video-row">
         <div class="video-thumb">▶</div>
-        <div class="video-info">
-          <div class="video-title">${v.title}</div>
-          <div class="video-unit-tag">${v.category || 'مراجعة عامة'}</div>
-        </div>
-        <button class="video-play" onclick="openVideo(${i})">مشاهدة</button>
-      </div>
-    `).join('');
-  }catch(e){
-    container.innerHTML = `<div class="empty-state"><b>خطأ في التحميل</b>${e.message}</div>`;
-  }
+        <div class="video-info"><div class="video-title">${v.title}</div><div class="video-cat">${v.category||'مراجعة عامة'}</div></div>
+        <button class="video-play-btn" onclick="openVideo(${i})">مشاهدة</button>
+      </div>`).join('');
+  }catch(e){ c.innerHTML=`<div class="empty-state"><b>خطأ في التحميل</b></div>`; }
 }
 
-function openVideo(index){
-  const v = VIDEOS_LIVE[index];
-  document.getElementById('video-modal-title').textContent = v.title;
-  document.getElementById('video-iframe').src = `https://www.youtube.com/embed/${v.youtubeId}?autoplay=1&rel=0`;
-  document.getElementById('video-modal').classList.add('show');
-}
-document.getElementById('video-close').addEventListener('click', closeVideo);
-document.getElementById('video-modal').addEventListener('click', e=>{
-  if(e.target.id === 'video-modal') closeVideo();
-});
-function closeVideo(){
-  document.getElementById('video-iframe').src = '';
-  document.getElementById('video-modal').classList.remove('show');
-}
+function openVideo(i){ const v=VIDEOS_LIVE[i]; document.getElementById('video-modal-title').textContent=v.title; document.getElementById('video-iframe').src=`https://www.youtube.com/embed/${v.youtubeId}?autoplay=1&rel=0`; document.getElementById('video-modal').classList.add('show'); }
+document.getElementById('video-close').addEventListener('click',()=>{ document.getElementById('video-iframe').src=''; document.getElementById('video-modal').classList.remove('show'); });
+document.getElementById('video-modal').addEventListener('click',e=>{ if(e.target.id==='video-modal'){ document.getElementById('video-iframe').src=''; document.getElementById('video-modal').classList.remove('show'); } });
 
-// ---------- عرض الامتحانات من Firebase ----------
-let EXAMS_LIVE = [];
-async function renderExams(){
-  const container = document.getElementById('exams-container');
-  container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>جاري تحميل الامتحانات...</b></div>`;
+/* ============================================================
+   الامتحانات الشاملة من Firebase
+   ============================================================ */
+let EXAMS_LIVE=[]; let currentExam=null; let examAnswers={};
+async function loadExams(){
+  const c=document.getElementById('exams-container');
   try{
-    const snap = await window.__db.collection('exams').orderBy('createdAt').get();
-    EXAMS_LIVE = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    if(EXAMS_LIVE.length === 0){
-      container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش امتحانات</b>المستر سامي لسه مضفش امتحانات.</div>`;
-      return;
-    }
-    container.innerHTML = EXAMS_LIVE.map((ex,i) => `
+    const snap=await window.__db.collection('exams').orderBy('createdAt').get();
+    EXAMS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!EXAMS_LIVE.length){ c.innerHTML='<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش امتحانات شاملة</b></div>'; return; }
+    c.innerHTML=EXAMS_LIVE.map((ex,i)=>`
       <div class="exam-card">
         <div class="exam-card-title">${ex.title}</div>
-        <div class="exam-card-meta">⏱ ${ex.timeMin} دقيقة | ${(ex.mcq||[]).length + (ex.essay||[]).length} سؤال</div>
-        <button class="btn-start" onclick="startExam(${i})">ابدأ الامتحان</button>
-      </div>
-    `).join('');
-  }catch(e){
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b>${e.message}</div>`;
-  }
+        <div class="exam-card-meta">⏱ ${ex.timeMin} دقيقة | ${(ex.mcq||[]).length+(ex.essay||[]).length} سؤال</div>
+        <button class="btn-start-exam" onclick="startExam(${i})">ابدأ الامتحان</button>
+      </div>`).join('');
+    buildProgressGeneralExams();
+  }catch(e){ c.innerHTML=`<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b></div>`; }
 }
 
-// ---------- أداء الامتحان ----------
-function startExam(index){
-  currentExam = EXAMS_LIVE[index];
-  examAnswers = {};
-  document.getElementById('exam-run-title').textContent = currentExam.title;
-  document.getElementById('exam-run-sub').textContent =
-    `عدد الأسئلة: ${(currentExam.mcq||[]).length + (currentExam.essay||[]).length} | الوقت المقترح: ${currentExam.timeMin} دقيقة`;
-
-  let html = '';
-  (currentExam.mcq||[]).forEach((q, qi) => {
-    html += `
-      <div class="q-block">
-        <div class="q-number">سؤال ${qi+1} — اختيار من متعدد</div>
-        <div class="q-text">${q.q}</div>
-        <div class="q-options">
-          ${(q.options||[]).map((opt, oi) => `
-            <label class="q-option" onclick="selectOption(this, ${qi}, ${oi})">
-              <input type="radio" name="mcq-${qi}" style="display:none;">
-              <span class="q-option-label">${String.fromCharCode(65+oi)}</span>
-              <span>${opt}</span>
-            </label>
-          `).join('')}
-        </div>
-      </div>`;
+function startExam(i){
+  currentExam=EXAMS_LIVE[i]; examAnswers={};
+  document.getElementById('exam-run-title').textContent=currentExam.title;
+  let html='';
+  (currentExam.mcq||[]).forEach((q,qi)=>{
+    html+=`<div class="q-block"><div class="q-num">Question ${qi+1} — Multiple Choice</div><div class="q-text">${q.q}</div><div class="q-options">${(q.options||[]).map((opt,oi)=>`<label class="q-option" onclick="selectOpt(this,${qi},${oi})"><span class="q-opt-label">${String.fromCharCode(65+oi)}</span><span>${opt}</span></label>`).join('')}</div><div class="q-explanation" id="exp-${qi}">${q.explanation||''}</div></div>`;
   });
-  (currentExam.essay||[]).forEach((q, qi) => {
-    html += `
-      <div class="q-block">
-        <div class="q-number">سؤال ${(currentExam.mcq||[]).length + qi + 1} — إجابة مقالية قصيرة</div>
-        <div class="q-text">${q.q}</div>
-        <textarea class="q-essay-input" placeholder="اكتب إجابتك هنا..." onchange="saveEssay(${qi}, this.value)"></textarea>
-      </div>`;
+  (currentExam.essay||[]).forEach((q,qi)=>{
+    html+=`<div class="q-block"><div class="q-num">Question ${(currentExam.mcq||[]).length+qi+1} — Short Answer</div><div class="q-text">${q.q}</div><textarea class="q-essay" placeholder="Write your answer here..." onchange="examAnswers['essay-${qi}']=this.value"></textarea></div>`;
   });
-
-  document.getElementById('exam-questions-container').innerHTML = html;
-  document.getElementById('exam-result-box').style.display = 'none';
+  document.getElementById('exam-questions-container').innerHTML=html;
+  document.getElementById('exam-result-box').style.display='none';
   switchScreen('screen-exam');
 }
 
-function selectOption(el, qIndex, oIndex){
+function selectOpt(el,qi,oi){
   el.closest('.q-options').querySelectorAll('.q-option').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  examAnswers['mcq-'+qIndex] = oIndex;
-}
-function saveEssay(qIndex, value){
-  examAnswers['essay-'+qIndex] = value;
+  el.classList.add('selected'); examAnswers['mcq-'+qi]=oi;
 }
 
-document.getElementById('btn-exit-exam').addEventListener('click', ()=>{
-  switchScreen('screen-dashboard');
-});
+document.getElementById('btn-exit-exam').addEventListener('click',()=>switchScreen('screen-dashboard'));
 
-document.getElementById('btn-submit-exam').addEventListener('click', ()=>{
-  let correct = 0;
-  (currentExam.mcq||[]).forEach((q, qi) => {
-    if(examAnswers['mcq-'+qi] === q.correct) correct++;
+document.getElementById('btn-submit-exam').addEventListener('click',()=>{
+  let correct=0;
+  (currentExam.mcq||[]).forEach((q,qi)=>{
+    const opts=document.querySelectorAll(`#exam-questions-container .q-block:nth-child(${qi+1}) .q-option`);
+    opts.forEach((o,oi)=>{ if(oi===q.correct) o.classList.add('correct'); else if(o.classList.contains('selected')) o.classList.add('wrong'); });
+    const expEl=document.getElementById('exp-'+qi);
+    if(expEl && expEl.textContent.trim()) expEl.classList.add('show');
+    if(examAnswers['mcq-'+qi]===q.correct) correct++;
   });
-  const total = (currentExam.mcq||[]).length;
-  document.getElementById('result-score-text').textContent = `${correct} / ${total}`;
-  document.getElementById('exam-result-box').style.display = 'block';
+  const total=(currentExam.mcq||[]).length;
+  document.getElementById('result-score-text').textContent=`${correct} / ${total}`;
+  document.getElementById('exam-result-box').style.display='block';
   document.getElementById('exam-result-box').scrollIntoView({behavior:'smooth'});
+  markGeneralExamDone(currentExam.id);
 });
 
+/* ============================================================
+   لوحة الإنجاز
+   ============================================================ */
+let progressData={};
 
+async function loadProgress(code){
+  try{
+    const snap=await window.__db.collection('progress').doc(code).get();
+    progressData=snap.exists ? (snap.data()||{}) : {};
+  }catch(e){ progressData={}; }
+  buildProgressUnits();
+  buildProgressGeneralExams();
+  updateOverall();
+}
+
+async function saveProgress(code){ try{ await window.__db.collection('progress').doc(code).set(progressData,{merge:true}); }catch(e){} }
+
+function buildProgressUnits(){
+  const c1=document.getElementById('progress-units');
+  const c2=document.getElementById('progress-unit-exams');
+  const units=UNITS_LIVE.length?UNITS_LIVE:Array.from({length:12},(_,i)=>({id:'unit-'+i,titleAr:`الوحدة ${i+1}`}));
+  c1.innerHTML=units.map((u,i)=>{
+    const key='unit-'+u.id; const done=progressData[key];
+    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','الوحدة ${i+1}','📚')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">الوحدة ${i+1}</div></div>`;
+  }).join('');
+  c2.innerHTML=units.map((u,i)=>{
+    const key='exam-unit-'+u.id; const done=progressData[key];
+    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','امتحان وحدة ${i+1}','📝')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">امتحان وحدة ${i+1}</div></div>`;
+  }).join('');
+  updateOverall();
+}
+
+function buildProgressGeneralExams(){
+  const c=document.getElementById('progress-general-exams');
+  const count=20;
+  c.innerHTML=Array.from({length:count},(_,i)=>{
+    const key='general-exam-'+(i+1); const done=progressData[key];
+    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','امتحان شامل ${i+1}','🏆')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">امتحان شامل ${i+1}</div></div>`;
+  }).join('');
+  updateOverall();
+}
+
+function toggleProgress(key,label,emoji){
+  const code=document.getElementById('student-code-badge').textContent;
+  if(!code||code==='--') return;
+  const wasDone=progressData[key];
+  progressData[key]=!wasDone;
+  const el=document.getElementById('pi-'+key);
+  if(el){ el.classList.toggle('done',progressData[key]); el.querySelector('.progress-check').textContent=progressData[key]?'✓':''; }
+  if(!wasDone) showCelebrate(label,emoji);
+  saveProgress(code);
+  updateOverall();
+}
+
+function markGeneralExamDone(examId){
+  const keys=Object.keys(progressData).filter(k=>k.startsWith('general-exam-'));
+  const nextNum=keys.length+1;
+  if(nextNum<=20){ const key='general-exam-'+nextNum; if(!progressData[key]){ progressData[key]=true; buildProgressGeneralExams(); const code=document.getElementById('student-code-badge').textContent; saveProgress(code); updateOverall(); } }
+}
+
+function updateOverall(){
+  const total=44; let done=Object.values(progressData).filter(v=>v===true).length;
+  done=Math.min(done,total);
+  document.getElementById('overall-fill').style.width=(done/total*100)+'%';
+  document.getElementById('overall-text').textContent=done+' / '+total;
+}
+
+/* ============================================================
+   مودال الاحتفال
+   ============================================================ */
+const celebrates=[{e:'🎉',t:'أحسنت!',s:'استمر كده، بتتقدم!'},{e:'🔥',t:'ممتاز!',s:'عليك نور يا بطل!'},{e:'⭐',t:'برافو!',s:'أنت في الطريق الصح!'},{e:'🏆',t:'رائع!',s:'المذاكرة بتأثر!'},{e:'💪',t:'هتنجح!',s:'الجهد ده هيكون بالنتيجة!'}];
+function showCelebrate(label,emoji){
+  const r=celebrates[Math.floor(Math.random()*celebrates.length)];
+  document.getElementById('celebrate-emoji').textContent=emoji||r.e;
+  document.getElementById('celebrate-title').textContent=r.t+' — '+label;
+  document.getElementById('celebrate-sub').textContent=r.s;
+  document.getElementById('celebrate-modal').classList.add('show');
+  setTimeout(closeCelebrate,4000);
+}
+function closeCelebrate(){ document.getElementById('celebrate-modal').classList.remove('show'); }
 </script>
 </body>
 </html>

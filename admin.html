@@ -306,15 +306,9 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
     <div class="admin-panel active" id="panel-units">
       <div class="section-title">📚 إضافة وحدة جديدة <span>هتظهر للطلاب فوراً</span></div>
       <div class="form-card">
-        <div class="form-grid">
-          <div class="form-field">
-            <label>اسم الوحدة بالعربي *</label>
-            <input type="text" id="unit-ar" placeholder="مثال: الوحدة الأولى">
-          </div>
-          <div class="form-field">
-            <label>اسم الوحدة بالإنجليزي</label>
-            <input type="text" id="unit-en" placeholder="مثال: Reading & Comprehension">
-          </div>
+        <div class="form-field">
+          <label>اسم الوحدة بالإنجليزي *</label>
+          <input type="text" id="unit-en" placeholder="مثال: Unit 1 — Reading & Comprehension">
         </div>
 
         <div style="border-top:1px solid var(--line);margin:16px 0;padding-top:16px;">
@@ -516,7 +510,8 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
         <table class="students-table">
           <thead>
             <tr>
-              <th>كود الطالب</th>
+              <th>اسم الطالب</th>
+              <th>كود الكارت</th>
               <th>الامتحان</th>
               <th>الدرجة</th>
               <th>النسبة</th>
@@ -525,7 +520,7 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
             </tr>
           </thead>
           <tbody id="results-tbody">
-            <tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">جاري التحميل...</td></tr>
+            <tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px;">جاري التحميل...</td></tr>
           </tbody>
         </table>
       </div>
@@ -679,18 +674,16 @@ function loadAll(){
    الوحدات
    ============================================================ */
 document.getElementById('btn-add-unit').addEventListener('click', async () => {
-  const ar = document.getElementById('unit-ar').value.trim();
   const en = document.getElementById('unit-en').value.trim();
   const audio = document.getElementById('unit-audio').value.trim();
   const pdfBoard = document.getElementById('unit-pdf-board').value.trim();
   const pdfWords = document.getElementById('unit-pdf-words').value.trim();
   const examUrl = document.getElementById('unit-exam-url').value.trim();
-  if(!ar){ showToast('اكتب اسم الوحدة بالعربي على الأقل', 'error'); return; }
+  if(!en){ showToast('اكتب اسم الوحدة بالإنجليزي', 'error'); return; }
 
   const btn = document.getElementById('btn-add-unit');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
 
-  // تحويل روابط Drive لروابط تشغيل/عرض مباشر
   function driveDirectUrl(url){
     if(!url) return '';
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -705,7 +698,6 @@ document.getElementById('btn-add-unit').addEventListener('click', async () => {
 
   try{
     await db.collection('units').add({
-      titleAr: ar,
       titleEn: en,
       audioUrl: driveDirectUrl(audio),
       pdfBoard: drivePdfUrl(pdfBoard),
@@ -714,8 +706,7 @@ document.getElementById('btn-add-unit').addEventListener('click', async () => {
       done: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    // مسح الحقول
-    ['unit-ar','unit-en','unit-audio','unit-pdf-board','unit-pdf-words','unit-exam-url'].forEach(id => {
+    ['unit-en','unit-audio','unit-pdf-board','unit-pdf-words','unit-exam-url'].forEach(id => {
       document.getElementById(id).value = '';
     });
     showToast('✅ الوحدة اتضافت بنجاح — هتظهر للطلاب فوراً');
@@ -1012,11 +1003,20 @@ async function loadStudents(){
 async function loadResults(){
   const tbody = document.getElementById('results-tbody');
   const filter = document.getElementById('results-filter').value;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">جاري التحميل...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px;">جاري التحميل...</td></tr>';
   try{
-    let query = db.collection('results').orderBy('submittedAt','desc');
-    const snap = await query.get();
+    const snap = await db.collection('results').orderBy('submittedAt','desc').get();
     const results = snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    // جلب أسماء الطلاب من كولكشن students
+    const codes = [...new Set(results.map(r=>r.studentCode).filter(Boolean))];
+    const namesMap = {};
+    await Promise.all(codes.map(async code=>{
+      try{
+        const s = await db.collection('students').doc(code).get();
+        if(s.exists) namesMap[code] = s.data().studentName || '—';
+      }catch(e){}
+    }));
 
     // تحديث فلتر الامتحانات
     const exams = [...new Set(results.map(r=>r.examTitle))];
@@ -1035,15 +1035,17 @@ async function loadResults(){
     document.getElementById('stat-pass').textContent = pass;
     document.getElementById('stat-fail').textContent = total-pass;
 
-    if(!filtered.length){ tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">لسه مفيش نتائج</td></tr>'; return; }
+    if(!filtered.length){ tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px;">لسه مفيش نتائج</td></tr>'; return; }
 
     tbody.innerHTML = filtered.map(r=>{
       const date = r.submittedAt?.toDate ? r.submittedAt.toDate().toLocaleDateString('ar-EG') : '—';
       const pct = r.pct||0;
       const grade = pct>=85?'ممتاز 🌟':pct>=70?'جيد جداً ✅':pct>=50?'مقبول 👍':'يحتاج مراجعة ⚠️';
       const color = pct>=70?'#81C784':pct>=50?'var(--highlight)':'#F0998A';
+      const name = namesMap[r.studentCode] || '—';
       return `<tr>
-        <td>${r.studentCode||'—'}</td>
+        <td style="font-weight:700;">${name}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${r.studentCode||'—'}</td>
         <td style="font-size:12px;">${r.examTitle||'—'}</td>
         <td style="font-family:'JetBrains Mono',monospace;">${r.correct||0} / ${r.total||0}</td>
         <td style="font-family:'JetBrains Mono',monospace;color:${color};font-weight:700;">${pct}%</td>
@@ -1051,7 +1053,7 @@ async function loadResults(){
         <td style="font-size:12px;">${date}</td>
       </tr>`;
     }).join('');
-  }catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="color:#F0998A;padding:16px;">خطأ في التحميل: ${e.message}</td></tr>`; }
+  }catch(e){ tbody.innerHTML=`<tr><td colspan="7" style="color:#F0998A;padding:16px;">خطأ في التحميل: ${e.message}</td></tr>`; }
 }
 
 function exportResults(){

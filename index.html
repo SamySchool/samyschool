@@ -13,12 +13,8 @@
      ============================================================ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  /* ============================================================
-     🔧 إعدادات Firebase — حطي هنا بيانات مشروعك
-     (هتاخديها من Firebase Console بعد ما تعملي مشروع مجاني)
-     ============================================================ */
   const firebaseConfig = {
     apiKey: "AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",
     authDomain: "samyschool-2014.firebaseapp.com",
@@ -28,10 +24,17 @@
     appId: "1:950744024303:web:b01d36410b80749b43471a"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.__db = db;
-  window.__firebaseReady = true;
+  try {
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.__db = db;
+    window.__firestoreFunctions = { doc, getDoc, setDoc, serverTimestamp };
+    window.__firebaseReady = true;
+    console.log("✅ Firebase جاهز");
+  } catch(e) {
+    console.error("❌ Firebase فشل في التهيئة:", e);
+    window.__firebaseReady = false;
+  }
 </script>
 
 <style>
@@ -975,9 +978,19 @@ function loginSuccess(code){
    { used: false, deviceId: null, usedAt: null } */
 async function validateCodeWithFirebase(code){
   try{
-    const { doc, getDoc, setDoc, serverTimestamp } =
-      await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    // انتظر Firebase لو لسه بيتحمل
+    let attempts = 0;
+    while(!window.__firebaseReady && attempts < 20){
+      await new Promise(r => setTimeout(r, 200));
+      attempts++;
+    }
 
+    if(!window.__firebaseReady || !window.__db){
+      showLoginError("في مشكلة في الاتصال. حاول تاني.");
+      return;
+    }
+
+    const { doc, getDoc, setDoc, serverTimestamp } = window.__firestoreFunctions;
     const ref = doc(window.__db, "students", code);
     const snap = await getDoc(ref);
 
@@ -1004,8 +1017,8 @@ async function validateCodeWithFirebase(code){
 
     loginSuccess(code);
   }catch(err){
+    console.error("Firebase error:", err);
     showLoginError("في مشكلة في الاتصال. حاول تاني.");
-    console.error(err);
   }
 }
 

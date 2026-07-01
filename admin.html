@@ -293,13 +293,16 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
   <div class="wrap">
     <nav class="admin-tabs">
       <button class="admin-tab active" data-tab="units">📚 الوحدات</button>
-      <button class="admin-tab" data-tab="videos">🎥 الفيديوهات</button>
-      <button class="admin-tab" data-tab="exams">📝 الامتحانات</button>
+      <button class="admin-tab" data-tab="story">📖 Story</button>
+      <button class="admin-tab" data-tab="skills">✏️ Skills</button>
+      <button class="admin-tab" data-tab="ministry">🏛 استرشادية</button>
+      <button class="admin-tab" data-tab="videos">🎥 فيديوهات</button>
+      <button class="admin-tab" data-tab="exams">📝 امتحانات شاملة</button>
       <button class="admin-tab" data-tab="codes">🔑 الأكواد</button>
       <button class="admin-tab" data-tab="students">👥 الطلاب</button>
       <button class="admin-tab" data-tab="results">📊 النتائج</button>
       <button class="admin-tab" data-tab="questions">💬 أسئلة البث</button>
-      <button class="admin-tab" data-tab="live" style="color:#ff4444;">🔴 البث المباشر</button>
+      <button class="admin-tab" data-tab="live" style="color:#ff4444;">🔴 البث</button>
     </nav>
 
     <!-- ===== تبويب الوحدات ===== -->
@@ -312,29 +315,41 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
         </div>
 
         <div style="border-top:1px solid var(--line);margin:16px 0;padding-top:16px;">
-          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:12px;">📎 روابط المحتوى</div>
+          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:14px;">📎 محتوى الوحدة — 6 عناصر</div>
           <div class="form-grid">
             <div class="form-field">
-              <label>📋 سبورة الشرح (PDF — Google Drive)</label>
-              <input type="text" id="unit-pdf-board" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">ارفع PDF على Drive → Share → Anyone with link → انسخ الرابط</div>
+              <label>📄 A — ملف شرح الجرامر (PDF)</label>
+              <input type="text" id="unit-pdf-grammar" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">PDF شرح قواعد الوحدة — من Google Drive</div>
             </div>
             <div class="form-field">
-              <label>📖 ملخص الكلمات (PDF — Google Drive)</label>
-              <input type="text" id="unit-pdf-words" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">نفس الطريقة — ملف PDF منفصل لملخص الكلمات</div>
+              <label>🎬 B — فيديو شرح الجرامر (YouTube)</label>
+              <input type="text" id="unit-video-grammar" placeholder="https://youtu.be/VIDEO_ID أو رابط كامل">
+              <div class="form-hint">رابط YouTube Unlisted لشرح الجرامر بالفيديو</div>
             </div>
           </div>
           <div class="form-grid">
             <div class="form-field">
-              <label>📝 امتحان الوحدة (رابط ملف HTML)</label>
-              <input type="text" id="unit-exam-url" placeholder="https://samyschool.github.io/samyschool/exam-unit1.html">
-              <div class="form-hint">ارفع ملف الامتحان HTML على GitHub وحط رابطه هنا</div>
+              <label>❓ C — بنك أسئلة الجرامر (HTML/رابط)</label>
+              <input type="text" id="unit-bank-grammar" placeholder="رابط ملف HTML أو صفحة تفاعلية">
+              <div class="form-hint">بنك أسئلة تفاعلي على الجرامر</div>
             </div>
             <div class="form-field">
-              <label>🎧 فويس الجرامر (MP3 — Google Drive)</label>
-              <input type="text" id="unit-audio" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">ارفع ملف MP3 على Drive → Share → Anyone with link → انسخ الرابط</div>
+              <label>📖 D — الدليل الشامل للكلمات (PDF)</label>
+              <input type="text" id="unit-pdf-vocab" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">دليل الكلمات والمصطلحات — من Google Drive</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>🔤 E — بنك أسئلة الكلمات (HTML/رابط)</label>
+              <input type="text" id="unit-bank-vocab" placeholder="رابط بنك أسئلة تفاعلي للكلمات">
+              <div class="form-hint">بنك أسئلة تفاعلي على الكلمات والمصطلحات</div>
+            </div>
+            <div class="form-field">
+              <label>🎧 F — فويس الجرامر (MP3 — Google Drive)</label>
+              <input type="text" id="unit-audio-grammar" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">ملف MP3 صوتي لشرح جرامر الوحدة</div>
             </div>
           </div>
         </div>
@@ -348,7 +363,80 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       </div>
     </div>
 
-    <!-- ===== تبويب الفيديوهات ===== -->
+
+    <!-- ===== تبويب Story ===== -->
+    <div class="admin-panel" id="panel-story">
+      <div class="section-title">📖 القصة — The Count of Monte Cristo</div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>📚 A — ملف شامل للمذاكرة (PDF)</label>
+            <input type="text" id="story-pdf" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+            <div class="form-hint">الملف الشامل لمذاكرة القصة كاملة</div>
+          </div>
+          <div class="form-field">
+            <label>🎧 B — فويس سماعي للقصة (MP3/رابط)</label>
+            <input type="text" id="story-audio" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+            <div class="form-hint">ملف صوتي أو رابط لسماع القصة</div>
+          </div>
+        </div>
+        <button class="btn-add" id="btn-save-story">💾 حفظ محتوى القصة</button>
+      </div>
+    </div>
+
+    <!-- ===== تبويب Skills ===== -->
+    <div class="admin-panel" id="panel-skills">
+      <div class="section-title">✏️ Skills</div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>💡 A — ملخص أفكار المهارات (PDF)</label>
+            <input type="text" id="skills-pdf" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+            <div class="form-hint">ملخص شامل لاستراتيجيات المهارات</div>
+          </div>
+          <div class="form-field">
+            <label>❓ B — بنك تفاعلي لأسئلة المهارات (رابط)</label>
+            <input type="text" id="skills-bank" placeholder="رابط بنك الأسئلة التفاعلي">
+            <div class="form-hint">رابط ملف HTML أو صفحة بنك أسئلة تفاعلي</div>
+          </div>
+        </div>
+        <button class="btn-add" id="btn-save-skills">💾 حفظ محتوى المهارات</button>
+      </div>
+    </div>
+
+    <!-- ===== تبويب الاسترشادية ===== -->
+    <div class="admin-panel" id="panel-ministry">
+      <div class="section-title">🏛 الامتحانات الاسترشادية <span>النماذج الرسمية من الوزارة</span></div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>اسم الامتحان *</label>
+            <input type="text" id="ministry-title" placeholder="مثال: النموذج الاسترشادي الأول 2026">
+          </div>
+          <div class="form-field">
+            <label>الوقت (دقائق)</label>
+            <input type="number" id="ministry-time" value="120" min="60" max="180">
+          </div>
+        </div>
+        <div style="margin-top:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:10px;">أسئلة الاختيار من متعدد</div>
+          <div class="mcq-builder" id="ministry-mcq-builder"></div>
+          <button class="btn-add-q" id="btn-add-ministry-mcq">+ إضافة سؤال MCQ</button>
+        </div>
+        <div style="margin-top:18px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:10px;">أسئلة مقالية</div>
+          <div id="ministry-essay-builder"></div>
+          <button class="btn-add-q" id="btn-add-ministry-essay">+ إضافة سؤال مقالي</button>
+        </div>
+        <button class="btn-add" id="btn-save-ministry" style="margin-top:18px;">💾 حفظ الامتحان الاسترشادي</button>
+      </div>
+      <div class="items-list">
+        <div class="items-list-title">الامتحانات الاسترشادية الموجودة</div>
+        <div id="ministry-list"><div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div></div>
+      </div>
+    </div>
+
+
     <div class="admin-panel" id="panel-videos">
       <div class="section-title">🎥 إضافة فيديو شامل <span>فيديوهات عامة تغطي المنهج كله</span></div>
       <div class="form-card">
@@ -662,11 +750,13 @@ function loadAll(){
   loadUnits();
   loadVideos();
   loadExams();
+  loadMinistryExams();
   loadCodes();
   loadStudents();
   loadResults();
   loadQuestions();
   initExamBuilder();
+  initMinistryBuilder();
   loadLiveStatus();
 }
 
@@ -675,43 +765,47 @@ function loadAll(){
    ============================================================ */
 document.getElementById('btn-add-unit').addEventListener('click', async () => {
   const en = document.getElementById('unit-en').value.trim();
-  const audio = document.getElementById('unit-audio').value.trim();
-  const pdfBoard = document.getElementById('unit-pdf-board').value.trim();
-  const pdfWords = document.getElementById('unit-pdf-words').value.trim();
-  const examUrl = document.getElementById('unit-exam-url').value.trim();
+  const pdfGrammar = document.getElementById('unit-pdf-grammar').value.trim();
+  const videoGrammar = document.getElementById('unit-video-grammar').value.trim();
+  const bankGrammar = document.getElementById('unit-bank-grammar').value.trim();
+  const pdfVocab = document.getElementById('unit-pdf-vocab').value.trim();
+  const bankVocab = document.getElementById('unit-bank-vocab').value.trim();
+  const audioGrammar = document.getElementById('unit-audio-grammar').value.trim();
+
   if(!en){ showToast('اكتب اسم الوحدة بالإنجليزي', 'error'); return; }
 
   const btn = document.getElementById('btn-add-unit');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
 
-  function driveDirectUrl(url){
+  function drivePreview(url){
     if(!url) return '';
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return match ? `https://drive.google.com/uc?export=download&id=${match[1]}` : url;
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return m ? `https://drive.google.com/file/d/${m[1]}/preview` : url;
   }
-
-  function drivePdfUrl(url){
+  function driveAudio(url){
     if(!url) return '';
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return m ? `https://drive.google.com/uc?export=download&id=${m[1]}` : url;
   }
 
   try{
     await db.collection('units').add({
       titleEn: en,
-      audioUrl: driveDirectUrl(audio),
-      pdfBoard: drivePdfUrl(pdfBoard),
-      pdfWords: drivePdfUrl(pdfWords),
-      examUrl: examUrl,
+      pdfGrammar: drivePreview(pdfGrammar),
+      videoGrammar: videoGrammar,
+      bankGrammar: bankGrammar,
+      pdfVocab: drivePreview(pdfVocab),
+      bankVocab: bankVocab,
+      audioGrammar: driveAudio(audioGrammar),
       done: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    ['unit-en','unit-audio','unit-pdf-board','unit-pdf-words','unit-exam-url'].forEach(id => {
-      document.getElementById(id).value = '';
+    ['unit-en','unit-pdf-grammar','unit-video-grammar','unit-bank-grammar','unit-pdf-vocab','unit-bank-vocab','unit-audio-grammar'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
     });
-    showToast('✅ الوحدة اتضافت بنجاح — هتظهر للطلاب فوراً');
+    showToast('✅ الوحدة اتضافت — هتظهر للطلاب فوراً');
     loadUnits();
-  }catch(e){ showToast('حصل خطأ: ' + e.message, 'error'); }
+  }catch(e){ showToast('خطأ: ' + e.message, 'error'); }
   finally{ btn.disabled = false; btn.textContent = '➕ إضافة الوحدة'; }
 });
 
@@ -899,8 +993,107 @@ async function loadExams(){
 }
 
 /* ============================================================
-   الأكواد
+   Story
    ============================================================ */
+document.getElementById('btn-save-story').addEventListener('click', async()=>{
+  const pdf = document.getElementById('story-pdf').value.trim();
+  const audio = document.getElementById('story-audio').value.trim();
+  const btn = document.getElementById('btn-save-story');
+  btn.disabled=true; btn.textContent='جاري الحفظ...';
+  function driveP(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/file/d/${m[1]}/preview`:url;}
+  function driveA(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/uc?export=download&id=${m[1]}`:url;}
+  try{
+    await db.collection('story').doc('main').set({pdfStudy:driveP(pdf),audioStory:driveA(audio),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    showToast('✅ محتوى القصة اتحفظ');
+  }catch(e){showToast('خطأ: '+e.message,'error');}
+  finally{btn.disabled=false;btn.textContent='💾 حفظ محتوى القصة';}
+});
+
+/* ============================================================
+   Skills
+   ============================================================ */
+document.getElementById('btn-save-skills').addEventListener('click', async()=>{
+  const pdf = document.getElementById('skills-pdf').value.trim();
+  const bank = document.getElementById('skills-bank').value.trim();
+  const btn = document.getElementById('btn-save-skills');
+  btn.disabled=true; btn.textContent='جاري الحفظ...';
+  function driveP(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/file/d/${m[1]}/preview`:url;}
+  try{
+    await db.collection('skills').doc('main').set({pdfSkills:driveP(pdf),bankSkills:bank,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    showToast('✅ محتوى المهارات اتحفظ');
+  }catch(e){showToast('خطأ: '+e.message,'error');}
+  finally{btn.disabled=false;btn.textContent='💾 حفظ محتوى المهارات';}
+});
+
+/* ============================================================
+   الامتحانات الاسترشادية
+   ============================================================ */
+let minMcqCount=0,minEssayCount=0;
+
+function initMinistryBuilder(){
+  minMcqCount=0;minEssayCount=0;
+  document.getElementById('ministry-mcq-builder').innerHTML='';
+  document.getElementById('ministry-essay-builder').innerHTML='';
+  addMinMcq();addMinEssay();
+}
+
+document.getElementById('btn-add-ministry-mcq').addEventListener('click',addMinMcq);
+document.getElementById('btn-add-ministry-essay').addEventListener('click',addMinEssay);
+
+function addMinMcq(){
+  minMcqCount++;
+  const div=document.createElement('div');div.className='mcq-q';
+  div.innerHTML=`<div class="mcq-q-head"><span class="mcq-q-num">MCQ #${minMcqCount}</span><button class="btn-remove-q" onclick="this.closest('.mcq-q').remove()">✕</button></div>
+    <input type="text" placeholder="اكتب السؤال بالإنجليزي..." data-role="q-text" style="width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:8px;padding:10px 14px;color:var(--text-1);font-family:'Cairo',sans-serif;font-size:13.5px;margin-bottom:10px;">
+    <div class="form-field"><label style="font-size:11px;color:var(--text-3);margin-bottom:6px;display:block;">شرح/تفسير الإجابة (اختياري)</label><input type="text" placeholder="لماذا هذه الإجابة صحيحة؟" data-role="explanation" style="width:100%;background:rgba(0,0,0,.2);border:1px solid var(--line-strong);border-radius:7px;padding:8px 12px;color:var(--text-1);font-family:'Cairo',sans-serif;font-size:12.5px;"></div>
+    <div class="mcq-options">${['A','B','C','D'].map((l,i)=>`<div class="mcq-option-row"><input type="radio" name="min-c-${minMcqCount}" value="${i}"><input type="text" placeholder="اختيار ${l}" data-role="opt-${i}"></div>`).join('')}</div>`;
+  document.getElementById('ministry-mcq-builder').appendChild(div);
+}
+
+function addMinEssay(){
+  minEssayCount++;
+  const div=document.createElement('div');div.className='mcq-q';
+  div.innerHTML=`<div class="mcq-q-head"><span class="mcq-q-num">Essay #${minEssayCount}</span><button class="btn-remove-q" onclick="this.closest('.mcq-q').remove()">✕</button></div>
+    <input type="text" placeholder="اكتب السؤال المقالي هنا..." data-role="essay-text" style="width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:8px;padding:10px 14px;color:var(--text-1);font-family:'Cairo',sans-serif;font-size:13.5px;">`;
+  document.getElementById('ministry-essay-builder').appendChild(div);
+}
+
+document.getElementById('btn-save-ministry').addEventListener('click', async()=>{
+  const title=document.getElementById('ministry-title').value.trim();
+  const timeMin=parseInt(document.getElementById('ministry-time').value)||120;
+  if(!title){showToast('اكتب اسم الامتحان','error');return;}
+  const mcq=[];
+  document.querySelectorAll('#ministry-mcq-builder .mcq-q').forEach(q=>{
+    const qText=q.querySelector('[data-role="q-text"]')?.value.trim();if(!qText)return;
+    const opts=[];for(let i=0;i<4;i++)opts.push(q.querySelector(`[data-role="opt-${i}"]`)?.value.trim()||'');
+    const correctEl=q.querySelector('input[type=radio]:checked');
+    const explanation=q.querySelector('[data-role="explanation"]')?.value.trim()||'';
+    mcq.push({q:qText,options:opts,correct:correctEl?parseInt(correctEl.value):0,explanation});
+  });
+  const essay=[];
+  document.querySelectorAll('#ministry-essay-builder .mcq-q').forEach(q=>{
+    const qText=q.querySelector('[data-role="essay-text"]')?.value.trim();if(qText)essay.push({q:qText});
+  });
+  const btn=document.getElementById('btn-save-ministry');btn.disabled=true;btn.textContent='جاري الحفظ...';
+  try{
+    await db.collection('ministry_exams').add({title,timeMin,mcq,essay,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    showToast('✅ الامتحان الاسترشادي اتحفظ');
+    document.getElementById('ministry-title').value='';
+    initMinistryBuilder();loadMinistryExams();
+  }catch(e){showToast('خطأ: '+e.message,'error');}
+  finally{btn.disabled=false;btn.textContent='💾 حفظ الامتحان الاسترشادي';}
+});
+
+async function loadMinistryExams(){
+  const list=document.getElementById('ministry-list');
+  try{
+    const snap=await db.collection('ministry_exams').orderBy('createdAt').get();
+    if(snap.empty){list.innerHTML='<div style="color:var(--text-3);font-size:13px;padding:16px;">لسه مفيش امتحانات استرشادية</div>';return;}
+    list.innerHTML=snap.docs.map(d=>{const e=d.data();return`<div class="item-row"><div class="item-row-info"><div class="item-row-title">${e.title}</div><div class="item-row-sub">⏱ ${e.timeMin} دقيقة | ${(e.mcq||[]).length} MCQ + ${(e.essay||[]).length} مقالي</div></div><button class="btn-delete" onclick="deleteDoc('ministry_exams','${d.id}','ministry-list',loadMinistryExams)">حذف</button></div>`;}).join('');
+  }catch(e){list.innerHTML='<div style="color:#F0998A;font-size:13px;">خطأ في التحميل</div>';}
+}
+
+
 document.getElementById('btn-generate-codes').addEventListener('click', async () => {
   const count = parseInt(document.getElementById('codes-count').value) || 10;
   const prefix = document.getElementById('codes-prefix').value.trim().toUpperCase() || 'SAM';

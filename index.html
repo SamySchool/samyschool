@@ -3,1029 +3,800 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SamySchool | منصة المراجعة النهائية</title>
+<title>SamySchool | English Night Exam</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",
-    authDomain: "samyschool-2014.firebaseapp.com",
-    projectId: "samyschool-2014",
-    storageBucket: "samyschool-2014.firebasestorage.app",
-    messagingSenderId: "950744024303",
-    appId: "1:950744024303:web:b01d36410b80749b43471a"
-  };
-  try {
-    firebase.initializeApp(firebaseConfig);
-    window.__db = firebase.firestore();
-    window.__firebaseReady = true;
-  } catch(e) { window.__firebaseReady = false; }
+const firebaseConfig={apiKey:"AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",authDomain:"samyschool-2014.firebaseapp.com",projectId:"samyschool-2014",storageBucket:"samyschool-2014.firebasestorage.app",messagingSenderId:"950744024303",appId:"1:950744024303:web:b01d36410b80749b43471a"};
+try{firebase.initializeApp(firebaseConfig);window.__db=firebase.firestore();window.__firebaseReady=true;}catch(e){window.__firebaseReady=false;}
+/* ===== LOGO URL — استبدل برابط اللوجو الحقيقي بعد رفعه على GitHub ===== */
+const LOGO_URL="logo.png";
 </script>
 <style>
 :root{
-  --ink:#0B1220; --ink-2:#101A2E; --ink-3:#16223B;
-  --highlight:#D4E157; --highlight-dim:#A8B83E;
-  --coral:#E0654F; --green:#4CAF50;
-  --line:rgba(246,244,236,0.12); --line-strong:rgba(246,244,236,0.22);
-  --text-1:#F6F4EC; --text-2:#9FAAC4; --text-3:#5E6A85;
-  --radius:14px; --font-ar:'Cairo',sans-serif;
-  --font-mono:'JetBrains Mono',monospace; --font-en:'Lora',serif;
+  --ink:#0B1220;--ink2:#101A2E;--ink3:#16223B;
+  --blue:#1E90FF;--blueDim:#1670CC;--blueL:rgba(30,144,255,.12);
+  --hl:#D4E157;--hlD:#A8B83E;
+  --coral:#E0654F;--green:#4CAF50;
+  --line:rgba(246,244,236,.1);--lineS:rgba(246,244,236,.2);
+  --t1:#F6F4EC;--t2:#9FAAC4;--t3:#5E6A85;
+  --r:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--ink);color:var(--text-1);font-family:var(--font-ar);min-height:100vh;overflow-x:hidden;}
-body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.3;pointer-events:none;z-index:0;}
-a{color:inherit;text-decoration:none;}
-button{font-family:inherit;cursor:pointer;}
-
-/* ======= شاشات ======= */
-.screen{display:none;}
-.screen.active{display:block;}
-#screen-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 0;}
+body{background:var(--ink);color:var(--t1);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.4;pointer-events:none;z-index:0;}
+a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;}
+.screen{display:none;}.screen.active{display:block;}
+#screen-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 24px;}
 #screen-login.active{display:flex;}
 
-/* ======= بطاقة الدخول ======= */
-.login-card{width:100%;max-width:440px;background:linear-gradient(180deg,var(--ink-3),var(--ink-2));border:1px solid var(--line-strong);border-radius:20px;padding:40px 36px 36px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);}
-.login-card::before{content:"";position:absolute;top:0;right:32px;left:32px;height:1px;background:linear-gradient(90deg,transparent,var(--highlight),transparent);opacity:.6;}
-.brand-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--highlight);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.brand-eyebrow::before{content:"";width:6px;height:6px;background:var(--highlight);border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(212,225,87,.18);}
-.brand-name{font-weight:900;font-size:34px;line-height:1.15;margin-bottom:6px;}
-.brand-name span{color:var(--highlight);}
-.brand-sub{color:var(--text-2);font-size:14px;line-height:1.7;margin-bottom:28px;font-weight:600;}
-.field-label{font-size:12.5px;font-weight:700;color:var(--text-2);margin-bottom:8px;display:block;}
-.code-input-row{margin-bottom:6px;}
-#student-code{width:100%;background:rgba(0,0,0,.25);border:1.5px solid var(--line-strong);border-radius:10px;padding:15px 16px;color:var(--text-1);font-family:var(--font-mono);font-size:18px;letter-spacing:.12em;font-weight:500;transition:border-color .2s;text-align:center;}
-#student-code:focus{border-color:var(--highlight);outline:none;}
-.btn-primary{width:100%;background:var(--highlight);color:var(--ink);border:none;border-radius:10px;padding:15px 20px;font-weight:800;font-size:15.5px;margin-top:16px;transition:transform .15s,background .15s;box-shadow:0 8px 24px -8px rgba(212,225,87,.4);}
-.btn-primary:hover{background:#E1EB78;transform:translateY(-1px);}
-.login-error{display:none;margin-top:14px;padding:11px 14px;background:rgba(224,101,79,.1);border:1px solid rgba(224,101,79,.35);border-radius:8px;color:#F0998A;font-size:13px;font-weight:600;text-align:center;}
-.login-error.show{display:block;}
-.login-foot{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);color:var(--text-3);font-size:12px;text-align:center;line-height:1.6;}
+/* LOGIN */
+.lcard{width:100%;max-width:460px;background:linear-gradient(160deg,var(--ink3),var(--ink2));border:1px solid var(--lineS);border-radius:20px;padding:36px;position:relative;box-shadow:0 32px 80px -20px rgba(0,0,0,.7);z-index:1;}
+.lcard::before{content:"";position:absolute;top:0;right:40px;left:40px;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.7;}
+.llogo-row{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.llogo{width:58px;height:58px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px rgba(30,144,255,.4);}
+.lbrand{font-size:28px;font-weight:900;}
+.lbrand span{color:var(--blue);}
+.lsub{color:var(--t2);font-size:13px;font-weight:600;margin-bottom:24px;line-height:1.7;}
+.fl{font-size:12px;font-weight:700;color:var(--t2);display:block;margin-bottom:7px;}
+.inp{width:100%;background:rgba(0,0,0,.25);border:1.5px solid var(--lineS);border-radius:9px;padding:13px 16px;color:var(--t1);font-size:14px;transition:border-color .2s;margin-bottom:14px;}
+.inp:focus{border-color:var(--blue);outline:none;}
+.cinp{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-align:center;}
+.btnl{width:100%;background:var(--blue);color:#fff;border:none;border-radius:9px;padding:14px;font-weight:800;font-size:15px;margin-top:4px;transition:background .15s,transform .15s;box-shadow:0 8px 24px -8px rgba(30,144,255,.5);}
+.btnl:hover{background:var(--blueDim);transform:translateY(-1px);}
+.lerr{display:none;margin-top:12px;padding:10px 14px;background:rgba(224,101,79,.1);border:1px solid rgba(224,101,79,.35);border-radius:8px;color:#F0998A;font-size:13px;font-weight:600;text-align:center;}
+.lerr.show{display:block;}
+.lfoot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);color:var(--t3);font-size:11.5px;text-align:center;line-height:1.6;}
 
-/* ======= تايمر العد التنازلي ======= */
-.countdown-bar{
-  background:linear-gradient(135deg,rgba(212,225,87,.15),rgba(212,225,87,.06));
-  border-bottom:2px solid rgba(212,225,87,.35);
-  padding:28px 24px; text-align:center; position:relative; z-index:10;
-}
-.countdown-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;}
-.countdown-label{font-size:16px;color:var(--highlight-dim);font-weight:800;letter-spacing:.08em;}
-.countdown-blocks{display:flex;gap:20px;align-items:center;}
-.countdown-unit{text-align:center;}
-.countdown-num{font-family:var(--font-mono);font-size:64px;font-weight:700;color:var(--highlight);line-height:1;}
-.countdown-unit-label{font-size:13px;color:var(--text-3);font-family:var(--font-mono);letter-spacing:.1em;margin-top:6px;}
-.countdown-sep{font-family:var(--font-mono);font-size:52px;color:var(--highlight-dim);font-weight:700;margin-bottom:18px;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.countdown-sep{animation:pulse 1s infinite;}
+/* BANNER */
+.main-banner{background:linear-gradient(135deg,#060E1C,#0D1B35);border-bottom:2px solid rgba(30,144,255,.35);padding:22px 24px;position:relative;z-index:5;overflow:hidden;}
+.main-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 100%,rgba(30,144,255,.1),transparent);}
+.banner-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:20px;position:relative;z-index:1;flex-wrap:wrap;}
+.blogo{width:76px;height:76px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px rgba(30,144,255,.45),0 8px 32px rgba(0,0,0,.5);}
+.btxt .btitle{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,42px);font-weight:700;color:#F6F4EC;letter-spacing:.04em;}
+.btxt .bsub{font-family:'Lora',serif;font-style:italic;font-size:clamp(13px,2vw,18px);color:rgba(30,144,255,.9);margin-top:4px;}
 
-/* ======= الهيدر ======= */
-.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
-.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;max-width:1080px;margin:0 auto;padding-right:24px;padding-left:24px;}
-.topbar-brand{display:flex;align-items:center;gap:10px;}
-.topbar-mark{width:34px;height:34px;background:var(--highlight);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;color:var(--ink);font-size:15px;}
-.topbar-name{font-weight:800;font-size:16px;}
-.topbar-right{display:flex;align-items:center;gap:14px;}
-.student-code-badge{font-family:var(--font-mono);font-size:12px;color:var(--highlight);background:rgba(212,225,87,.1);border:1px solid rgba(212,225,87,.3);padding:6px 12px;border-radius:999px;letter-spacing:.06em;}
-.btn-logout{background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;}
-.btn-logout:hover{border-color:var(--coral);color:#F0998A;}
+/* COUNTDOWN */
+.cbar{background:linear-gradient(135deg,rgba(30,144,255,.1),rgba(30,144,255,.04));border-bottom:1px solid rgba(30,144,255,.2);padding:18px 24px;text-align:center;z-index:4;position:relative;}
+.cinner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;}
+.clbl{font-size:13px;font-weight:800;color:rgba(30,144,255,.8);letter-spacing:.08em;font-family:'JetBrains Mono',monospace;}
+.cblocks{display:flex;gap:14px;align-items:center;}
+.cunit{text-align:center;}
+.cnum{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;line-height:1;}
+.cunlbl{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-top:4px;color:var(--t3);}
+.csep{font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;margin-bottom:14px;color:rgba(30,144,255,.6);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
-/* ======= المحتوى الرئيسي ======= */
-.main-layout{display:flex;gap:24px;max-width:1080px;margin:0 auto;padding:28px 24px 60px;position:relative;z-index:1;}
-.content-area{flex:1;min-width:0;}
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.tbi{max-width:1080px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;justify-content:space-between;}
+.tbbrand{display:flex;align-items:center;gap:10px;}
+.tblogo{width:30px;height:30px;border-radius:50%;object-fit:cover;}
+.tbname{font-weight:800;font-size:15px;}
+.tbr{display:flex;align-items:center;gap:12px;}
+.sbadge{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.sntag{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--t1);font-weight:600;}
+.sctag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);background:rgba(30,144,255,.12);border:1px solid rgba(30,144,255,.3);padding:3px 10px;border-radius:999px;}
+.btnout{background:transparent;border:1px solid var(--lineS);color:var(--t2);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;}
+.btnout:hover{border-color:var(--coral);color:#F0998A;}
 
-/* ======= لوحة الإنجاز (الشمال) ======= */
-.progress-panel{width:240px;min-width:240px;position:sticky;top:80px;height:fit-content;}
-.progress-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
-.progress-title{font-size:12px;font-weight:800;color:var(--text-2);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;}
-.progress-section{margin-bottom:14px;}
-.progress-section-label{font-size:11px;color:var(--text-3);margin-bottom:8px;font-weight:700;}
-.progress-items{display:flex;flex-direction:column;gap:4px;}
-.progress-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;cursor:pointer;transition:background .15s;}
-.progress-item:hover{background:rgba(255,255,255,.04);}
-.progress-item.done{background:rgba(212,225,87,.06);}
-.progress-check{width:18px;height:18px;min-width:18px;border:1.5px solid var(--line-strong);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s;}
-.progress-item.done .progress-check{background:var(--highlight);border-color:var(--highlight);color:var(--ink);}
-.progress-item-label{font-size:11.5px;font-weight:600;color:var(--text-2);line-height:1.3;}
-.progress-item.done .progress-item-label{color:var(--text-1);}
-.overall-bar{margin-top:12px;}
-.overall-bar-track{height:6px;background:var(--line-strong);border-radius:3px;overflow:hidden;}
-.overall-bar-fill{height:100%;background:var(--highlight);border-radius:3px;transition:width .5s ease;}
-.overall-text{font-family:var(--font-mono);font-size:11px;color:var(--text-2);margin-top:6px;text-align:center;}
+/* LAYOUT */
+.mlayout{display:flex;gap:20px;max-width:1080px;margin:0 auto;padding:22px 24px 60px;position:relative;z-index:1;}
+.content{flex:1;min-width:0;}
 
-/* ======= التبويبات ======= */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:28px;overflow-x:auto;}
-.tab-btn{background:transparent;border:none;color:var(--text-2);padding:12px 16px;font-weight:700;font-size:14px;position:relative;white-space:nowrap;transition:color .2s;}
-.tab-btn:hover{color:var(--text-1);}
-.tab-btn.active{color:var(--highlight);}
-.tab-btn.active::after{content:"";position:absolute;bottom:-1px;right:0;left:0;height:2px;background:var(--highlight);}
-.tab-panel{display:none;}
-.tab-panel.active{display:block;animation:fadein .3s ease;}
-@keyframes fadein{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+/* TABS */
+.tabs{display:flex;gap:3px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{background:transparent;border:none;color:var(--t2);padding:12px 15px;font-weight:700;font-size:13px;position:relative;white-space:nowrap;transition:color .2s;}
+.tab:hover{color:var(--t1);}
+.tab.active{color:var(--blue);}
+.tab.active::after{content:"";position:absolute;bottom:-1px;right:0;left:0;height:2.5px;background:var(--blue);}
+.panel{display:none;}
+.panel.active{display:block;animation:fi .3s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+.ltab{display:none;color:#ff4444 !important;}
+.ltab.show{display:inline-flex;align-items:center;gap:6px;}
+.ldot{width:7px;height:7px;background:#ff4444;border-radius:50%;animation:blink 1s infinite;}
 
-/* ======= بطاقات الوحدات ======= */
-.unit-grid{display:flex;flex-direction:column;gap:16px;}
-.unit-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:border-color .2s;}
-.unit-card:hover{border-color:var(--line-strong);}
-.unit-card-header{padding:18px 20px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
-.unit-card-title{font-weight:800;font-size:16px;}
-.unit-card-en{font-style:italic;color:var(--text-2);font-size:12px;margin-top:3px;font-family:var(--font-en);}
-.unit-done-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(212,225,87,.1);color:var(--highlight);font-family:var(--font-mono);}
-.unit-resources{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 20px;}
-@media(max-width:600px){.unit-resources{grid-template-columns:1fr;}}
-.resource-btn{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--line-strong);border-radius:10px;background:rgba(0,0,0,.15);transition:border-color .2s,background .2s;text-align:right;}
-.resource-btn:hover{border-color:var(--text-2);background:rgba(255,255,255,.03);}
-.resource-btn.audio-btn:hover{border-color:rgba(212,225,87,.5);}
-.resource-btn.exam-btn{border-color:rgba(212,225,87,.3);background:rgba(212,225,87,.04);}
-.resource-btn.exam-btn:hover{border-color:var(--highlight);background:rgba(212,225,87,.08);}
-.resource-icon{font-size:20px;min-width:24px;}
-.resource-info{}
-.resource-name{font-size:12.5px;font-weight:700;color:var(--text-1);}
-.resource-sub{font-size:10.5px;color:var(--text-3);margin-top:2px;}
-.audio-player-row{padding:0 20px 16px;display:none;}
-.audio-player-row.show{display:block;}
-.audio-ctrl{display:flex;align-items:center;gap:10px;background:rgba(212,225,87,.06);border:1px solid rgba(212,225,87,.2);border-radius:8px;padding:10px 14px;}
-.audio-play-btn{width:28px;height:28px;background:var(--highlight);border:none;border-radius:50%;color:var(--ink);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.audio-progress{flex:1;height:4px;background:var(--line-strong);border-radius:2px;overflow:hidden;cursor:pointer;}
-.audio-fill{height:100%;background:var(--highlight);width:0%;transition:width .1s;}
-.audio-time{font-family:var(--font-mono);font-size:10px;color:var(--text-3);min-width:36px;}
+/* SECTION HEAD */
+.sh{margin-bottom:16px;}
+.sh-title{font-size:17px;font-weight:800;margin-bottom:3px;}
+.sh-sub{font-size:12px;color:var(--t3);}
 
-/* ======= فيديوهات ======= */
-.video-list{display:flex;flex-direction:column;gap:12px;}
-.video-row{display:flex;gap:14px;align-items:center;background:var(--ink-3);border:1px solid var(--line);border-radius:12px;padding:14px 18px;transition:border-color .2s;}
-.video-row:hover{border-color:var(--line-strong);}
-.video-thumb{width:100px;min-width:100px;aspect-ratio:16/9;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--highlight);font-size:20px;}
-.video-info{flex:1;min-width:0;}
-.video-title{font-weight:700;font-size:14px;margin-bottom:3px;}
-.video-cat{font-size:11px;color:var(--text-3);font-family:var(--font-mono);}
-.video-play-btn{background:transparent;border:1.5px solid var(--line-strong);color:var(--text-1);padding:8px 16px;border-radius:8px;font-weight:700;font-size:12.5px;white-space:nowrap;transition:background .2s,border-color .2s;}
-.video-play-btn:hover{background:var(--highlight);color:var(--ink);border-color:var(--highlight);}
+/* UNIT CARDS */
+.ulist{display:flex;flex-direction:column;gap:13px;}
+.ucard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .2s;}
+.ucard:hover{border-color:var(--lineS);}
+.uhead{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.utitle{font-weight:800;font-size:15px;font-family:'Lora',serif;}
+.unum{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);background:rgba(30,144,255,.1);border:1px solid rgba(30,144,255,.25);padding:3px 10px;border-radius:999px;}
+.ures{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:13px 16px;}
+.rbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 7px;border:1.5px solid var(--lineS);border-radius:10px;background:rgba(0,0,0,.1);transition:border-color .2s,background .2s;text-align:center;}
+.rbtn:hover:not(.dis){border-color:var(--blue);background:var(--blueL);}
+.rbtn.dis{opacity:.35;cursor:not-allowed;}
+.rico{font-size:20px;}
+.rname{font-size:11px;font-weight:700;color:var(--t1);line-height:1.3;}
+.rsub{font-size:9.5px;color:var(--t3);}
+.abar{padding:0 16px 13px;display:none;}
+.abar.show{display:block;}
+.actrl{display:flex;align-items:center;gap:9px;background:rgba(30,144,255,.06);border:1px solid rgba(30,144,255,.2);border-radius:8px;padding:9px 12px;}
+.apbtn{width:26px;height:26px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.aprog{flex:1;height:3px;background:var(--lineS);border-radius:2px;overflow:hidden;}
+.afill{height:100%;background:var(--blue);width:0%;transition:width .1s;}
+.atime{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);min-width:32px;}
 
-/* ======= الامتحانات الشاملة ======= */
-.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
-.exam-card{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
-.exam-card-title{font-weight:800;font-size:15px;margin-bottom:6px;}
-.exam-card-meta{color:var(--text-3);font-family:var(--font-mono);font-size:11px;margin-bottom:14px;}
-.btn-start-exam{width:100%;background:transparent;border:1.5px solid var(--highlight);color:var(--highlight);padding:10px;border-radius:8px;font-weight:800;font-size:13px;transition:background .2s,color .2s;}
-.btn-start-exam:hover{background:var(--highlight);color:var(--ink);}
+/* STORY & SKILLS */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sc{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color .2s;}
+.sc:hover:not(.dis){border-color:var(--blue);background:var(--blueL);}
+.sc.dis{opacity:.4;cursor:not-allowed;}
+.sico{font-size:38px;}
+.sname{font-weight:800;font-size:14px;}
+.ssub{font-size:11.5px;color:var(--t3);}
 
-/* ======= مودال الفيديو ======= */
-.video-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:24px;}
-.video-modal.show{display:flex;}
-.video-modal-box{width:100%;max-width:860px;background:var(--ink-2);border-radius:14px;overflow:hidden;border:1px solid var(--line-strong);}
-.video-modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);}
-.video-modal-head h4{font-size:14px;font-weight:700;}
-.video-close-btn{background:transparent;border:none;color:var(--text-2);font-size:20px;padding:4px 8px;}
-.video-frame{aspect-ratio:16/9;background:#000;}
-.video-frame iframe{width:100%;height:100%;border:none;}
+/* EXAMS */
+.esec{margin-bottom:26px;}
+.eslbl{font-size:13px;font-weight:800;color:var(--t2);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+.egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px;}
+.ecard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:17px;transition:border-color .2s;}
+.ecard:hover{border-color:var(--lineS);}
+.etitle{font-weight:800;font-size:14px;margin-bottom:4px;}
+.emeta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);margin-bottom:13px;}
+.btnst{width:100%;background:transparent;border:1.5px solid var(--blue);color:var(--blue);padding:9px;border-radius:8px;font-weight:800;font-size:13px;transition:background .2s,color .2s;}
+.btnst:hover{background:var(--blue);color:#fff;}
 
-/* ======= مودال الاحتفال ======= */
-.celebrate-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);align-items:center;justify-content:center;}
-.celebrate-modal.show{display:flex;}
-.celebrate-box{background:var(--ink-3);border:2px solid var(--highlight);border-radius:20px;padding:40px 48px;text-align:center;max-width:380px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes popIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-.celebrate-emoji{font-size:56px;margin-bottom:16px;display:block;}
-.celebrate-title{font-size:20px;font-weight:900;color:var(--highlight);margin-bottom:8px;}
-.celebrate-sub{color:var(--text-2);font-size:14px;margin-bottom:24px;line-height:1.6;}
-.celebrate-close{background:var(--highlight);color:var(--ink);border:none;padding:12px 32px;border-radius:9px;font-weight:800;font-size:14px;}
+/* VIDEO MODAL */
+.vmodal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:24px;}
+.vmodal.show{display:flex;}
+.vbox{width:100%;max-width:880px;background:var(--ink2);border-radius:14px;overflow:hidden;border:1px solid var(--lineS);}
+.vhead{display:flex;justify-content:space-between;align-items:center;padding:13px 17px;border-bottom:1px solid var(--line);}
+.vhead h4{font-size:14px;font-weight:700;}
+.vcls{background:transparent;border:none;color:var(--t2);font-size:20px;}
+.vframe{aspect-ratio:16/9;background:#000;}
+.vframe iframe{width:100%;height:100%;border:none;}
 
-/* ======= شاشة الامتحان ======= */
-#screen-exam{padding:32px 0 80px;position:relative;z-index:1;}
-.exam-topbar{background:rgba(11,18,32,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
-.exam-topbar-title{font-weight:800;font-size:16px;}
-.btn-exit-exam{background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;}
-.exam-body{max-width:800px;margin:0 auto;padding:28px 24px;}
-.q-block{background:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:14px;}
-.q-num{font-family:var(--font-mono);font-size:11px;color:var(--highlight);margin-bottom:8px;}
-.q-text{font-family:var(--font-en);font-size:16px;line-height:1.7;margin-bottom:16px;font-weight:600;}
-.q-options{display:flex;flex-direction:column;gap:8px;}
-.q-option{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--line-strong);border-radius:9px;cursor:pointer;transition:border-color .15s,background .15s;}
-.q-option:hover{border-color:var(--text-2);}
-.q-option.selected{border-color:var(--highlight);background:rgba(212,225,87,.06);}
-.q-option.correct{border-color:#4CAF50;background:rgba(76,175,80,.1);}
-.q-option.wrong{border-color:var(--coral);background:rgba(224,101,79,.1);}
-.q-opt-label{font-family:var(--font-mono);font-size:11px;color:var(--text-3);min-width:18px;}
-.q-explanation{margin-top:10px;padding:10px 12px;background:rgba(212,225,87,.06);border-right:3px solid var(--highlight);border-radius:6px;font-size:12.5px;color:var(--text-2);line-height:1.6;display:none;}
-.q-explanation.show{display:block;}
-.q-essay{width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:9px;padding:12px 14px;color:var(--text-1);font-family:var(--font-en);font-size:14px;min-height:100px;resize:vertical;}
-.q-essay:focus{border-color:var(--highlight);outline:none;}
-.exam-submit-bar{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);}
-.btn-submit-exam{background:var(--highlight);color:var(--ink);border:none;padding:13px 30px;border-radius:9px;font-weight:800;font-size:14px;}
-.result-box{margin-top:24px;text-align:center;padding:40px 28px;background:var(--ink-3);border:1px solid var(--line-strong);border-radius:var(--radius);}
-.result-score{font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--highlight);margin-bottom:8px;}
-.result-label{color:var(--text-2);font-weight:700;font-size:14px;}
+/* LIVE */
+.loffline{text-align:center;padding:56px 20px;background:var(--ink3);border:1.5px dashed var(--lineS);border-radius:var(--r);}
+.loffline .loi{font-size:44px;margin-bottom:13px;opacity:.4;}
+.loffline h3{font-size:15px;font-weight:700;color:var(--t2);margin-bottom:5px;}
+.loffline p{font-size:12.5px;color:var(--t3);}
+.lcon{border-radius:12px;overflow:hidden;border:2px solid rgba(255,68,68,.4);}
+.lfr{aspect-ratio:16/9;background:#000;position:relative;}
+.lfr iframe{width:100%;height:100%;border:none;}
 
-/* ======= البث المباشر ======= */
-.live-tab-btn{display:none;}
-.live-tab-btn.show{display:inline-flex;align-items:center;gap:6px;}
-.live-dot{width:8px;height:8px;background:#ff4444;border-radius:50%;animation:livepulse 1.2s infinite;}
-@keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
-.live-container{position:relative;background:#000;border-radius:12px;overflow:hidden;border:2px solid rgba(255,68,68,.4);box-shadow:0 0 30px rgba(255,68,68,.15);}
-.live-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(0,0,0,.6);position:absolute;top:0;right:0;left:0;z-index:10;}
-.live-badge{display:flex;align-items:center;gap:6px;background:rgba(255,68,68,.9);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#fff;}
-.live-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);}
-.live-frame-wrap{aspect-ratio:16/9;position:relative;}
-.live-frame-wrap iframe{width:100%;height:100%;border:none;display:block;}
-/* طبقة شفافة فوق الـ iframe تمنع الضغط على روابط YouTube */
-.live-overlay{position:absolute;inset:0;z-index:5;cursor:default;}
-.live-offline{text-align:center;padding:80px 24px;background:var(--ink-3);border:1px solid var(--line);border-radius:12px;}
-.live-offline-icon{font-size:48px;margin-bottom:16px;opacity:.5;}
-.live-offline-text{font-size:15px;font-weight:700;color:var(--text-2);margin-bottom:8px;}
-.live-offline-sub{font-size:13px;color:var(--text-3);}
+/* EXAM SCREEN */
+#screen-exam{padding:0 0 80px;position:relative;z-index:1;}
+.etbar{background:rgba(11,18,32,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:10px;}
+.etitle{font-weight:800;font-size:15px;}
+.etimbox{display:flex;align-items:center;gap:8px;background:rgba(224,101,79,.1);border:1.5px solid rgba(224,101,79,.4);padding:7px 13px;border-radius:8px;}
+.etimlbl{font-size:12px;color:#F0998A;font-weight:700;}
+.etim{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:#F0998A;}
+.btnex{background:transparent;border:1px solid var(--lineS);color:var(--t2);padding:7px 13px;border-radius:7px;font-size:12px;font-weight:700;}
+.ebody{max-width:800px;margin:0 auto;padding:22px;}
+.qblock{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:12px;}
+.qnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:7px;}
+.qtext{font-family:'Lora',serif;font-size:16px;line-height:1.7;margin-bottom:14px;font-weight:600;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:9px;padding:11px 13px;border:1.5px solid var(--lineS);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s;}
+.qopt:hover{border-color:var(--t2);}
+.qopt.sel{border-color:var(--blue);background:var(--blueL);}
+.qopt.ok{border-color:var(--green);background:rgba(76,175,80,.1);}
+.qopt.no{border-color:var(--coral);background:rgba(224,101,79,.1);}
+.qlbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);min-width:16px;}
+.qexp{display:none;margin-top:8px;padding:9px 12px;background:rgba(30,144,255,.06);border-right:3px solid var(--blue);border-radius:6px;font-size:12.5px;color:var(--t2);line-height:1.6;}
+.qexp.show{display:block;}
+.qessay{width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--lineS);border-radius:8px;padding:12px 14px;color:var(--t1);font-family:'Lora',serif;font-size:14px;min-height:90px;resize:vertical;}
+.qessay:focus{border-color:var(--blue);outline:none;}
+.sbar{display:flex;justify-content:space-between;align-items:center;margin-top:17px;padding-top:15px;border-top:1px solid var(--line);}
+.btnsub{background:var(--blue);color:#fff;border:none;padding:12px 27px;border-radius:8px;font-weight:800;font-size:14px;}
+.rbox{text-align:center;padding:38px 22px;background:var(--ink3);border:1px solid var(--lineS);border-radius:var(--r);margin-top:18px;display:none;}
+.rscore{font-family:'JetBrains Mono',monospace;font-size:46px;font-weight:700;color:var(--blue);margin-bottom:7px;}
+.rlbl{color:var(--t2);font-weight:700;font-size:13px;}
 
+/* PROGRESS */
+.ppanel{width:226px;min-width:226px;position:sticky;top:70px;height:fit-content;}
+.pcard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:11px;}
+.ptitle{font-size:11.5px;font-weight:800;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px;}
+.pbtrack{height:5px;background:var(--lineS);border-radius:3px;overflow:hidden;margin-bottom:5px;}
+.pbfill{height:100%;background:var(--blue);border-radius:3px;transition:width .5s;}
+.pbtext{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);text-align:center;}
+.pslbl{font-size:11px;color:var(--t3);font-weight:700;margin:9px 0 6px;}
+.pitems{display:flex;flex-direction:column;gap:3px;}
+.pitem{display:flex;align-items:center;gap:7px;padding:5px 6px;border-radius:6px;cursor:pointer;transition:background .15s;}
+.pitem:hover{background:rgba(255,255,255,.04);}
+.pitem.done{background:rgba(30,144,255,.06);}
+.pchk{width:15px;height:15px;min-width:15px;border:1.5px solid var(--lineS);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s;}
+.pitem.done .pchk{background:var(--blue);border-color:var(--blue);color:#fff;}
+.plbl{font-size:11px;font-weight:600;color:var(--t2);line-height:1.3;}
+.pitem.done .plbl{color:var(--t1);}
 
-.empty-state{text-align:center;padding:48px 20px;color:var(--text-3);border:1.5px dashed var(--line-strong);border-radius:var(--radius);font-size:13.5px;line-height:1.8;}
-.empty-state b{color:var(--text-2);display:block;margin-bottom:6px;font-size:15px;}
+/* CELEBRATE */
+.celmod{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.77);align-items:center;justify-content:center;}
+.celmod.show{display:flex;}
+.celbox{background:var(--ink3);border:2px solid var(--blue);border-radius:20px;padding:38px 42px;text-align:center;max-width:350px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes pop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.celemo{font-size:52px;margin-bottom:13px;display:block;}
+.celtit{font-size:19px;font-weight:900;color:var(--blue);margin-bottom:6px;}
+.celsub{color:var(--t2);font-size:13px;margin-bottom:20px;line-height:1.6;}
+.celbtn{background:var(--blue);color:#fff;border:none;padding:11px 28px;border-radius:8px;font-weight:800;font-size:13px;}
 
-footer{padding:24px;text-align:center;color:var(--text-3);font-size:11.5px;border-top:1px solid var(--line);}
+/* EMPTY / FOOTER */
+.empty{text-align:center;padding:44px 20px;color:var(--t3);border:1.5px dashed var(--lineS);border-radius:var(--r);font-size:13px;line-height:1.8;}
+.empty b{color:var(--t2);display:block;margin-bottom:6px;font-size:14.5px;}
+footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;border-top:1px solid var(--line);}
+.wabtn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:11px 22px;border-radius:999px;font-weight:800;font-size:13.5px;margin-bottom:11px;box-shadow:0 6px 20px rgba(37,211,102,.35);}
 
+/* RESPONSIVE */
 @media(max-width:768px){
-  .main-layout{flex-direction:column-reverse;padding:16px;}
-  .progress-panel{width:100%;position:static;}
-  .video-row{flex-wrap:wrap;}
-  .video-thumb{width:80px;min-width:80px;}
-  /* تايمر العد التنازلي على الموبايل */
-  .countdown-num{font-size:38px;}
-  .countdown-sep{font-size:30px;}
-  .countdown-label{font-size:12px;}
-  .countdown-bar{padding:16px 12px;}
-  /* الامتحان على الموبايل */
-  .exam-topbar{flex-wrap:wrap;gap:10px;padding:12px 16px;}
-  #exam-timer-box{width:100%;}
-  .exam-body{padding:16px;}
-  /* وحدات الموبايل */
-  .unit-resources{grid-template-columns:1fr 1fr;}
-  .resource-btn{padding:10px 10px;}
-  .resource-name{font-size:11.5px;}
-  /* الهيدر موبايل */
-  .topbar-inner{padding:12px 16px;}
-  .student-code-badge{font-size:10px;padding:5px 8px;}
-  /* التبويبات موبايل */
-  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  .tab-btn{padding:10px 12px;font-size:12.5px;white-space:nowrap;}
+  .mlayout{flex-direction:column-reverse;padding:13px 12px 40px;}
+  .ppanel{width:100%;position:static;}
+  .ures{grid-template-columns:repeat(2,1fr);}
+  .sg{grid-template-columns:1fr;}
+  .cnum{font-size:34px;}.csep{font-size:28px;}
+  .blogo{width:58px;height:58px;}
 }
 @media(max-width:480px){
-  .unit-resources{grid-template-columns:1fr;}
-  .countdown-num{font-size:28px;}
-  .countdown-sep{font-size:22px;}
-  .countdown-blocks{gap:6px;}
-  .countdown-bar{padding:12px 10px;}
-  .main-layout{padding:12px 10px;}
-  .exam-body{padding:12px 10px;}
-  .q-text{font-size:14px;}
-  .q-block{padding:16px 14px;}
-  .login-card{padding:28px 20px 24px;}
-  .brand-name{font-size:28px;}
-  .progress-card{padding:14px 12px;}
-  .progress-item-label{font-size:10.5px;}
+  .ures{grid-template-columns:1fr 1fr;}
+  .cnum{font-size:26px;}.csep{font-size:20px;}
+  .lcard{padding:26px 18px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== شاشة الدخول ===== -->
+<!-- LOGIN -->
 <section id="screen-login" class="screen active">
   <div style="position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:center;padding:32px 24px;">
-    <div class="login-card">
-      <div class="brand-eyebrow">منصة المراجعة الخاصة</div>
-      <h1 class="brand-name">Samy<span>School</span></h1>
-      <p class="brand-sub">المراجعة النهائية في اللغة الإنجليزية — الصف الثالث الثانوي</p>
-
-      <label class="field-label" for="student-name">
-        اسمك الثنائي بالإنجليزي
-        <span style="font-size:10.5px;color:var(--text-3);font-weight:600;margin-right:6px;">(مثال: Ahmed Mohamed)</span>
-      </label>
-      <div class="code-input-row" style="margin-bottom:14px;">
-        <input type="text" id="student-name" placeholder="First Last" autocomplete="name" maxlength="40"
-          style="width:100%;background:rgba(0,0,0,.25);border:1.5px solid var(--line-strong);border-radius:10px;padding:13px 16px;color:var(--text-1);font-family:'Lora',serif;font-size:16px;font-style:italic;transition:border-color .2s;">
+    <div class="lcard">
+      <div class="llogo-row">
+        <img src="logo.png" class="llogo" alt="SamySchool" onerror="this.style.display='none'">
+        <div>
+          <div class="lbrand">Samy<span>School</span></div>
+          <div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;">English Night Exam Platform</div>
+        </div>
       </div>
-
-      <label class="field-label" for="student-code">كود الكارت (كلمة المرور)</label>
-      <div class="code-input-row">
-        <input type="text" id="student-code" placeholder="مثال: SAM-7K2P9X" autocomplete="off" maxlength="20">
-      </div>
-      <button class="btn-primary" id="btn-login">دخول المنصة</button>
-      <div class="login-error" id="login-error">الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت.</div>
-      <div class="login-foot">الكود بيتفعّل على أول جهاز يدخل بيه بس — متشاركوش مع حد. لو فيه مشكلة كلم المستر سامي.</div>
+      <p class="lsub">المراجعة النهائية في اللغة الإنجليزية — الصف الثالث الثانوي</p>
+      <label class="fl" for="sname">اسمك الثنائي بالإنجليزي <span style="font-size:10px;color:var(--t3);">(First Last)</span></label>
+      <input type="text" id="sname" class="inp" placeholder="Ahmed Mohamed" maxlength="40" autocomplete="name">
+      <label class="fl" for="scode">كود الكارت</label>
+      <input type="text" id="scode" class="inp cinp" placeholder="SAM-XXXXXX" maxlength="20" autocomplete="off">
+      <button class="btnl" id="btn-login">دخول المنصة</button>
+      <div class="lerr" id="lerr">الكود غير صحيح أو الاسم غير مكتمل.</div>
+      <div class="lfoot">الكود يُفعَّل على أول جهاز فقط. لأي مشكلة تواصل مع المستر سامي.</div>
     </div>
   </div>
 </section>
 
-<!-- ===== لوحة الطالب ===== -->
+<!-- DASHBOARD -->
 <section id="screen-dashboard" class="screen">
 
-  <!-- بانر المنصة (يظهر بدل شاشة الدخول بعد الولوج) -->
-  <div style="background:linear-gradient(135deg,#0B1220,#16223B);border-bottom:2px solid rgba(212,225,87,.3);padding:22px 24px;text-align:center;position:relative;z-index:5;">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,42px);font-weight:700;color:#F6F4EC;letter-spacing:.04em;line-height:1.2;">
-      English Night Exam
-    </div>
-    <div style="font-family:'Lora',serif;font-style:italic;font-size:clamp(13px,2vw,18px);color:var(--highlight-dim);margin-top:6px;letter-spacing:.02em;">
-      Mr. Mohamed Samy
-    </div>
-  </div>
-
-  <!-- تايمر العد التنازلي -->
-  <div class="countdown-bar">
-    <div class="countdown-inner">
-      <span class="countdown-label">⏳ EXAM COUNTDOWN</span>
-      <div class="countdown-blocks">
-        <div class="countdown-unit"><div class="countdown-num" id="cd-days" style="color:#ff4444;">--</div><div class="countdown-unit-label">DAYS</div></div>
-        <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-hours" style="color:#F6F4EC;">--</div><div class="countdown-unit-label">HRS</div></div>
-        <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-mins" style="color:#ff4444;">--</div><div class="countdown-unit-label">MIN</div></div>
-        <span class="countdown-sep">:</span>
-        <div class="countdown-unit"><div class="countdown-num" id="cd-secs" style="color:#F6F4EC;">--</div><div class="countdown-unit-label">SEC</div></div>
+  <!-- BANNER -->
+  <div class="main-banner">
+    <div class="banner-inner">
+      <img src="logo.png" class="blogo" alt="SamySchool" onerror="this.style.display='none'">
+      <div class="btxt">
+        <div class="btitle">English Night Exam</div>
+        <div class="bsub">Mr. Mohamed Samy</div>
       </div>
-      <span class="countdown-label">July 5 — 9:00 AM</span>
     </div>
   </div>
 
-  <!-- الهيدر -->
+  <!-- COUNTDOWN -->
+  <div class="cbar">
+    <div class="cinner">
+      <span class="clbl">⏳ EXAM COUNTDOWN</span>
+      <div class="cblocks">
+        <div class="cunit"><div class="cnum" id="cd-d" style="color:#ff4444;">--</div><div class="cunlbl">DAYS</div></div>
+        <span class="csep">:</span>
+        <div class="cunit"><div class="cnum" id="cd-h" style="color:#F6F4EC;">--</div><div class="cunlbl">HRS</div></div>
+        <span class="csep">:</span>
+        <div class="cunit"><div class="cnum" id="cd-m" style="color:#ff4444;">--</div><div class="cunlbl">MIN</div></div>
+        <span class="csep">:</span>
+        <div class="cunit"><div class="cnum" id="cd-s" style="color:#F6F4EC;">--</div><div class="cunlbl">SEC</div></div>
+      </div>
+      <span class="clbl">July 5 — 9:00 AM</span>
+    </div>
+  </div>
+
+  <!-- TOPBAR -->
   <header class="topbar">
-    <div class="topbar-inner">
-      <div class="topbar-brand">
-        <div class="topbar-mark">S</div>
-        <div class="topbar-name">SamySchool</div>
+    <div class="tbi">
+      <div class="tbbrand">
+        <img src="logo.png" class="tblogo" alt="S" onerror="this.style.display='none'">
+        <div class="tbname">SamySchool</div>
       </div>
-      <div class="topbar-right">
-        <div style="text-align:left;">
-          <div style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--text-1);font-weight:600;" id="student-name-badge">--</div>
-          <div class="student-code-badge" id="student-code-badge" style="margin-top:2px;display:inline-block;">--</div>
+      <div class="tbr">
+        <div class="sbadge">
+          <div class="sntag" id="sn-tag">--</div>
+          <div class="sctag" id="sc-tag">--</div>
         </div>
-        <button class="btn-logout" id="btn-logout">خروج</button>
+        <button class="btnout" id="btn-logout">خروج</button>
       </div>
     </div>
   </header>
 
-  <!-- المحتوى الرئيسي -->
-  <div class="main-layout">
+  <!-- MAIN -->
+  <div class="mlayout">
+    <div class="content">
 
-    <!-- المحتوى -->
-    <div class="content-area">
       <nav class="tabs">
-        <button class="tab-btn active" data-tab="units">📚 الوحدات</button>
-        <button class="tab-btn" data-tab="videos">🎥 فيديوهات شاملة</button>
-        <button class="tab-btn" data-tab="exams">📝 امتحانات شاملة</button>
-        <button class="tab-btn live-tab-btn" data-tab="live" id="live-tab-btn">
-          <span class="live-dot"></span> بث مباشر
-        </button>
+        <button class="tab active" data-tab="units">📚 Units</button>
+        <button class="tab" data-tab="story">📖 Story</button>
+        <button class="tab" data-tab="skills">✏️ Skills</button>
+        <button class="tab" data-tab="exams">📝 General Exams</button>
+        <button class="tab ltab" data-tab="live" id="ltab"><span class="ldot"></span> Live</button>
       </nav>
 
-      <div class="tab-panel active" id="panel-units">
-        <div class="unit-grid" id="units-container">
-          <div class="empty-state"><b>جاري تحميل الوحدات...</b></div>
+      <!-- UNITS -->
+      <div class="panel active" id="panel-units">
+        <div class="sh"><div class="sh-title">📚 Units — Step by Step</div><div class="sh-sub">Grammar, Vocabulary, Audio & Practice for every unit</div></div>
+        <div class="ulist" id="units-c"><div class="empty"><b>Loading units...</b></div></div>
+      </div>
+
+      <!-- STORY -->
+      <div class="panel" id="panel-story">
+        <div class="sh"><div class="sh-title">📖 Story — The Count of Monte Cristo</div><div class="sh-sub">Complete story study materials</div></div>
+        <div class="sg" id="story-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="panel" id="panel-skills">
+        <div class="sh"><div class="sh-title">✏️ Skills</div><div class="sh-sub">All skills strategies and interactive question banks</div></div>
+        <div class="sg" id="skills-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
+      </div>
+
+      <!-- EXAMS -->
+      <div class="panel" id="panel-exams">
+        <div class="sh"><div class="sh-title">📝 General Exams</div><div class="sh-sub">Ministry model exams & comprehensive practice tests</div></div>
+        <div class="esec">
+          <div class="eslbl">🏛 الامتحانات الاسترشادية الرسمية</div>
+          <div class="egrid" id="ministry-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
+        </div>
+        <div class="esec">
+          <div class="eslbl">📋 امتحانات شاملة عامة</div>
+          <div class="egrid" id="general-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
         </div>
       </div>
 
-      <div class="tab-panel" id="panel-videos">
-        <p style="color:var(--text-2);font-size:13px;margin-bottom:18px;font-weight:600;">فيديوهات شاملة للمراجعة العامة على المنهج كله</p>
-        <div class="video-list" id="videos-container">
-          <div class="empty-state"><b>جاري التحميل...</b></div>
+      <!-- LIVE -->
+      <div class="panel" id="panel-live">
+        <div id="live-c">
+          <div class="loffline"><div class="loi">📡</div><h3>No Live Session Right Now</h3><p>When Mr. Samy starts a live session, it will appear here automatically.</p></div>
         </div>
-      </div>
-
-      <div class="tab-panel" id="panel-exams">
-        <div class="exam-grid" id="exams-container">
-          <div class="empty-state" style="grid-column:1/-1;"><b>جاري التحميل...</b></div>
-        </div>
-      </div>
-
-      <!-- تبويب البث المباشر -->
-      <div class="tab-panel" id="panel-live">
-        <div id="live-content">
-          <div class="live-offline">
-            <div class="live-offline-icon">📡</div>
-            <div class="live-offline-text">مفيش بث مباشر دلوقتي</div>
-            <div class="live-offline-sub">لما المستر سامي يبدأ بث، هيظهر هنا تلقائياً</div>
-          </div>
-        </div>
-        <!-- خانة الأسئلة — ظاهرة دايماً في تبويب البث -->
         <div style="margin-top:20px;">
-          <div style="font-size:13px;font-weight:800;color:var(--text-2);margin-bottom:10px;">💬 ابعت سؤالك للمستر سامي</div>
+          <div style="font-size:13px;font-weight:800;color:var(--t2);margin-bottom:10px;">💬 Send a Question to Mr. Samy</div>
           <div style="display:flex;gap:10px;">
-            <input type="text" id="student-question-input" placeholder="اكتب سؤالك هنا..." maxlength="300"
-              style="flex:1;background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:9px;padding:12px 14px;color:var(--text-1);font-family:'Cairo',sans-serif;font-size:13.5px;">
-            <button onclick="sendQuestion()" style="background:var(--highlight);color:var(--ink);border:none;padding:12px 20px;border-radius:9px;font-weight:800;font-size:13px;white-space:nowrap;">إرسال ✈</button>
+            <input type="text" id="q-inp" placeholder="Type your question here..." maxlength="300"
+              style="flex:1;background:rgba(0,0,0,.2);border:1.5px solid var(--lineS);border-radius:9px;padding:12px 14px;color:var(--t1);font-family:'Cairo',sans-serif;font-size:13.5px;">
+            <button onclick="sendQ()" style="background:var(--blue);color:#fff;border:none;padding:12px 18px;border-radius:9px;font-weight:800;font-size:13px;">Send ✈</button>
           </div>
-          <div id="question-sent-msg" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(212,225,87,.1);border:1px solid rgba(212,225,87,.3);border-radius:8px;font-size:13px;color:var(--highlight);font-weight:700;">
-            ✅ سؤالك اتبعت! المستر سامي هيشوفه.
-          </div>
+          <div id="q-sent" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(30,144,255,.08);border:1px solid rgba(30,144,255,.3);border-radius:8px;font-size:13px;color:var(--blue);font-weight:700;">✅ Your question was sent! Mr. Samy will answer it.</div>
         </div>
       </div>
 
       <footer>
-        <div style="margin-bottom:16px;">
-          <div style="font-size:13px;color:var(--text-2);font-weight:700;margin-bottom:10px;">للتواصل مع المستر مباشرة</div>
-          <a href="https://wa.me/201500044047" target="_blank"
-            style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:12px 24px;border-radius:999px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 6px 20px rgba(37,211,102,.35);transition:transform .15s;"
-            onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:12.5px;color:var(--t2);font-weight:700;margin-bottom:10px;">للتواصل مع المستر مباشرة</div>
+          <a href="https://wa.me/201500044047" target="_blank" class="wabtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
             واتساب — 01500044047
           </a>
         </div>
-        <div style="color:var(--text-3);font-size:11.5px;">SamySchool © 2026 — منصة خاصة لطلاب المستر سامي فقط</div>
+        <div>SamySchool © 2026 — English Night Exam · Mr. Mohamed Samy</div>
       </footer>
     </div>
 
-    <!-- لوحة الإنجاز -->
-    <aside class="progress-panel">
-      <div class="progress-card">
-        <div class="progress-title">🏆 لوحة الإنجاز</div>
-
-        <div class="overall-bar">
-          <div class="overall-bar-track"><div class="overall-bar-fill" id="overall-fill" style="width:0%"></div></div>
-          <div class="overall-text" id="overall-text">0 / 44</div>
-        </div>
+    <!-- PROGRESS PANEL -->
+    <aside class="ppanel">
+      <div class="pcard">
+        <div class="ptitle">🏆 Achievement Board</div>
+        <div class="pbtrack"><div class="pbfill" id="pb-fill" style="width:0%"></div></div>
+        <div class="pbtext" id="pb-text">0 / 44</div>
       </div>
-
-      <div class="progress-card">
-        <div class="progress-section">
-          <div class="progress-section-label">📚 مذاكرة الوحدات (12)</div>
-          <div class="progress-items" id="progress-units"></div>
-        </div>
+      <div class="pcard">
+        <div class="pslbl">📚 مذاكرة الوحدات (12)</div>
+        <div class="pitems" id="p-units"></div>
       </div>
-
-      <div class="progress-card">
-        <div class="progress-section">
-          <div class="progress-section-label">📝 امتحانات الوحدات (12)</div>
-          <div class="progress-items" id="progress-unit-exams"></div>
-        </div>
+      <div class="pcard">
+        <div class="pslbl">📝 امتحانات الوحدات (12)</div>
+        <div class="pitems" id="p-uexams"></div>
       </div>
-
-      <div class="progress-card">
-        <div class="progress-section">
-          <div class="progress-section-label">📋 امتحانات شاملة ث.ع (20)</div>
-          <div class="progress-items" id="progress-general-exams"></div>
-        </div>
+      <div class="pcard">
+        <div class="pslbl">📋 امتحانات شاملة ث.ع (20)</div>
+        <div class="pitems" id="p-general"></div>
       </div>
     </aside>
-
   </div>
 </section>
 
-<!-- ===== شاشة الامتحان ===== -->
+<!-- EXAM SCREEN -->
 <section id="screen-exam" class="screen">
-  <div class="exam-topbar">
-    <div class="exam-topbar-title" id="exam-run-title">الامتحان</div>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <!-- تايمر الامتحان الإجباري -->
-      <div id="exam-timer-box" style="display:flex;align-items:center;gap:8px;background:rgba(224,101,79,.1);border:1.5px solid rgba(224,101,79,.4);padding:8px 16px;border-radius:8px;">
-        <span style="font-size:13px;color:#F0998A;font-weight:700;">⏱ الوقت الباقي:</span>
-        <span id="exam-timer" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#F0998A;">02:00:00</span>
-      </div>
-      <button class="btn-exit-exam" id="btn-exit-exam">خروج بدون تسليم</button>
+  <div class="etbar">
+    <div class="etitle" id="exam-ttl">Exam</div>
+    <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;">
+      <div class="etimbox"><span class="etimlbl">⏱ Time:</span><span class="etim" id="etimer">02:00:00</span></div>
+      <button class="btnex" id="btn-ex">Exit without submitting</button>
     </div>
   </div>
-  <div class="exam-body">
-    <div id="exam-questions-container"></div>
-    <div class="exam-submit-bar">
-      <span style="color:var(--text-3);font-size:12px;font-family:var(--font-mono);">تأكد من الإجابة على كل الأسئلة</span>
-      <button class="btn-submit-exam" id="btn-submit-exam">تسليم الامتحان ✓</button>
+  <div class="ebody">
+    <div id="exam-qs"></div>
+    <div class="sbar">
+      <span style="color:var(--t3);font-size:12px;font-family:'JetBrains Mono',monospace;">Review all answers before submitting</span>
+      <button class="btnsub" id="btn-sub">Submit Exam ✓</button>
     </div>
-    <div class="result-box" id="exam-result-box" style="display:none;">
-      <div class="result-score" id="result-score-text">--</div>
-      <div class="result-label">درجتك في الاختيار من متعدد</div>
-      <button onclick="switchScreen('screen-dashboard')" style="margin-top:18px;background:var(--highlight);color:var(--ink);border:none;padding:11px 28px;border-radius:8px;font-weight:800;font-size:13px;">رجوع للوحة المذاكرة</button>
+    <div class="rbox" id="rbox">
+      <div class="rscore" id="rscore">--</div>
+      <div class="rlbl">Your score (MCQ auto-graded · Essay reviewed by Mr. Samy)</div>
+      <button onclick="switchScreen('screen-dashboard')" style="margin-top:16px;background:var(--blue);color:#fff;border:none;padding:10px 26px;border-radius:8px;font-weight:800;font-size:13px;">Back to Dashboard</button>
     </div>
   </div>
 </section>
 
-<!-- مودال الفيديو -->
-<div class="video-modal" id="video-modal">
-  <div class="video-modal-box">
-    <div class="video-modal-head">
-      <h4 id="video-modal-title"></h4>
-      <button class="video-close-btn" id="video-close">✕</button>
-    </div>
-    <div class="video-frame">
-      <iframe id="video-iframe" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
-    </div>
+<!-- Video Modal -->
+<div class="vmodal" id="vmodal">
+  <div class="vbox">
+    <div class="vhead"><h4 id="vm-ttl"></h4><button class="vcls" id="vm-cls">✕</button></div>
+    <div class="vframe"><iframe id="vm-fr" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>
   </div>
 </div>
 
-<!-- مودال الاحتفال -->
-<div class="celebrate-modal" id="celebrate-modal">
-  <div class="celebrate-box">
-    <span class="celebrate-emoji" id="celebrate-emoji">🎉</span>
-    <div class="celebrate-title" id="celebrate-title">أحسنت!</div>
-    <div class="celebrate-sub" id="celebrate-sub">استمر كده!</div>
-    <button class="celebrate-close" onclick="closeCelebrate()">متشكر! 💪</button>
+<!-- Celebrate -->
+<div class="celmod" id="celmod">
+  <div class="celbox">
+    <span class="celemo" id="cel-e">🎉</span>
+    <div class="celtit" id="cel-t">Excellent!</div>
+    <div class="celsub" id="cel-s">Keep going!</div>
+    <button class="celbtn" onclick="closeCel()">Thanks! 💪</button>
   </div>
 </div>
 
 <script>
 /* ============================================================
-   إدارة الشاشات
+   SCREENS
    ============================================================ */
 function switchScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(id==='screen-login'){
-    document.getElementById(id).style.minHeight='100vh';
-    document.getElementById(id).style.display='flex';
-  }
+  const el=document.getElementById(id);el.classList.add('active');
+  if(id==='screen-login')el.style.display='flex';
 }
 
 /* ============================================================
-   تسجيل الدخول
+   LOGIN
    ============================================================ */
-function getDeviceId(){
-  let id = localStorage.getItem('samyschool_device_id');
-  if(!id){ id='dev-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10); localStorage.setItem('samyschool_device_id',id); }
-  return id;
+function devId(){let i=localStorage.getItem('ss_d');if(!i){i='d-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('ss_d',i);}return i;}
+
+document.getElementById('btn-login').addEventListener('click',doLogin);
+document.getElementById('scode').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function doLogin(){
+  const name=document.getElementById('sname').value.trim();
+  const code=document.getElementById('scode').value.trim().toUpperCase();
+  const err=document.getElementById('lerr');err.classList.remove('show');
+  if(!name){err.textContent='اكتب اسمك الثنائي بالإنجليزي.';err.classList.add('show');return;}
+  if(name.split(/\s+/).length<2){err.textContent='الاسم لازم يكون ثنائي (اسم أول + تاني).';err.classList.add('show');return;}
+  if(/[\u0600-\u06FF]/.test(name)){err.textContent='الاسم لازم يكون بالإنجليزي بس.';err.classList.add('show');return;}
+  if(!code){err.textContent='اكتب كود الكارت.';err.classList.add('show');return;}
+  const btn=document.getElementById('btn-login');btn.disabled=true;btn.textContent='Verifying...';
+  doValidate(code,name).finally(()=>{btn.disabled=false;btn.textContent='دخول المنصة';});
 }
 
-document.getElementById('btn-login').addEventListener('click', handleLogin);
-document.getElementById('student-code').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
-
-function handleLogin(){
-  const nameInput = document.getElementById('student-name').value.trim();
-  const code = document.getElementById('student-code').value.trim().toUpperCase();
-
-  // التحقق من الاسم — لازم يكون ثنائي بالإنجليزي
-  if(!nameInput){ showLoginError("اكتب اسمك الثنائي بالإنجليزي الأول."); return; }
-  const nameParts = nameInput.trim().split(/\s+/);
-  if(nameParts.length < 2){ showLoginError("الاسم لازم يكون ثنائي (اسم أول + اسم تاني) بالإنجليزي."); return; }
-  const hasArabic = /[\u0600-\u06FF]/.test(nameInput);
-  if(hasArabic){ showLoginError("الاسم لازم يكون بالإنجليزي بس."); return; }
-
-  if(!code){ showLoginError("اكتب كود الكارت."); return; }
-
-  const btn = document.getElementById('btn-login');
-  btn.disabled=true; btn.textContent='جاري التحقق...';
-  validateCode(code, nameInput).finally(()=>{ btn.disabled=false; btn.textContent='دخول المنصة'; });
-}
-
-function showLoginError(msg){
-  const e=document.getElementById('login-error'); e.textContent=msg; e.classList.add('show');
-}
-
-async function validateCode(code, studentName){
-  if(!window.__firebaseReady){ showLoginError("في مشكلة في الاتصال. حاول تاني."); return; }
+async function doValidate(code,name){
+  if(!window.__firebaseReady){showErr('في مشكلة في الاتصال. حاول تاني.');return;}
   try{
     const ref=window.__db.collection('students').doc(code);
     const snap=await ref.get();
-    if(!snap.exists){ showLoginError("الكود غير صحيح. تأكد من كتابته زي ما هو مطبوع على الكارت."); return; }
-    const data=snap.data(); const deviceId=getDeviceId();
-    if(data.used && data.deviceId && data.deviceId!==deviceId){ showLoginError("الكود ده اتفعّل على جهاز تاني. كلم المستر سامي لو فيه مشكلة."); return; }
-    if(!data.used){
-      await ref.set({used:true,deviceId,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:studentName},{merge:true});
-    } else {
-      await ref.set({studentName:studentName},{merge:true});
-    }
-    loginSuccess(code, studentName);
-  }catch(e){ showLoginError("في مشكلة في الاتصال. حاول تاني."); }
+    if(!snap.exists){showErr('الكود غير صحيح. تأكد من كتابته زي ما هو على الكارت.');return;}
+    const d=snap.data();const dev=devId();
+    if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
+    if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
+    else await ref.set({studentName:name},{merge:true});
+    onLogin(code,name);
+  }catch(e){showErr('في مشكلة في الاتصال. حاول تاني.');}
 }
 
-function loginSuccess(code, studentName){
-  document.getElementById('student-name-badge').textContent = studentName || '';
-  document.getElementById('student-code-badge').textContent = code;
+function showErr(m){const e=document.getElementById('lerr');e.textContent=m;e.classList.add('show');}
+
+function onLogin(code,name){
+  document.getElementById('sn-tag').textContent=name;
+  document.getElementById('sc-tag').textContent=code;
   switchScreen('screen-dashboard');
-  startCountdown();
-  loadProgress(code);
-  loadUnits();
-  loadVideos();
-  loadExams();
-  loadLive();
-  setInterval(loadLive, 30000);
+  startCD();loadProgress(code);
+  loadUnits();loadStory();loadSkills();loadExams();
+  loadLive();setInterval(loadLive,30000);
 }
 
 document.getElementById('btn-logout').addEventListener('click',()=>{
-  document.getElementById('student-code').value='';
-  document.getElementById('student-name').value='';
-  document.getElementById('login-error').classList.remove('show');
-  switchScreen('screen-login');
+  document.getElementById('scode').value='';document.getElementById('sname').value='';
+  document.getElementById('lerr').classList.remove('show');switchScreen('screen-login');
 });
 
 /* ============================================================
-   تايمر العد التنازلي — 5 يوليو 2026 الساعة 9 صباحاً
+   COUNTDOWN — July 5 2026 9:00 AM
    ============================================================ */
-function startCountdown(){
-  const target=new Date('2026-07-05T09:00:00');
-  function update(){
-    const now=new Date(); const diff=target-now;
-    if(diff<=0){ document.getElementById('cd-days').textContent='0'; document.getElementById('cd-hours').textContent='00'; document.getElementById('cd-mins').textContent='00'; document.getElementById('cd-secs').textContent='00'; return; }
-    const days=Math.floor(diff/(1000*60*60*24));
-    const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const mins=Math.floor((diff%(1000*60*60))/(1000*60));
-    const secs=Math.floor((diff%(1000*60))/1000);
-    document.getElementById('cd-days').textContent=days;
-    document.getElementById('cd-hours').textContent=String(hours).padStart(2,'0');
-    document.getElementById('cd-mins').textContent=String(mins).padStart(2,'0');
-    document.getElementById('cd-secs').textContent=String(secs).padStart(2,'0');
+function startCD(){
+  const t=new Date('2026-07-05T09:00:00');
+  function upd(){
+    const diff=t-new Date();if(diff<=0)return;
+    document.getElementById('cd-d').textContent=Math.floor(diff/86400000);
+    document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
   }
-  update(); setInterval(update,1000);
+  upd();setInterval(upd,1000);
 }
 
 /* ============================================================
-   التبويبات
+   TABS
    ============================================================ */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+document.querySelectorAll('.tab').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById('panel-'+b.dataset.tab).classList.add('active');
   });
 });
 
 /* ============================================================
-   الوحدات من Firebase
+   UNITS
    ============================================================ */
-let UNITS_LIVE=[];
-let activeAudio=null;
+let UNITS=[];let activeAudio=null;
 
 async function loadUnits(){
-  const c=document.getElementById('units-container');
+  const c=document.getElementById('units-c');
   try{
     const snap=await window.__db.collection('units').orderBy('createdAt').get();
-    UNITS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!UNITS_LIVE.length){ c.innerHTML='<div class="empty-state"><b>لسه مفيش وحدات</b>المستر سامي لسه مضفش محتوى.</div>'; return; }
-    c.innerHTML=UNITS_LIVE.map((u,i)=>`
-      <div class="unit-card" id="unit-card-${i}">
-        <div class="unit-card-header">
-          <div>
-            <div class="unit-card-title">${u.titleEn||u.titleAr||''}</div>
-            <div class="unit-card-en"></div>
-          </div>
-          <span class="unit-done-badge" id="unit-done-badge-${i}">UNIT ${i+1}</span>
+    UNITS=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!UNITS.length){c.innerHTML='<div class="empty"><b>No units yet</b>Units will appear here once added.</div>';buildPUnits();return;}
+    c.innerHTML=UNITS.map((u,i)=>{
+      const n=i+1;const ttl=u.titleEn||u.title||'Unit '+n;
+      return `<div class="ucard">
+        <div class="uhead"><div class="utitle">${ttl}</div><div class="unum">UNIT ${n}</div></div>
+        <div class="ures">
+          ${rb(u.pdfGrammar,'📄','Grammar File','اضغط للفتح',`openUrl('${u.pdfGrammar}')`)}
+          ${rbVid(u.videoGrammar,'🎬','Grammar Video','شرح بالفيديو',i)}
+          ${rb(u.bankGrammar,'❓','Grammar Quiz','بنك أسئلة جرامر',`openUrl('${u.bankGrammar}')`)}
+          ${rb(u.pdfVocab,'📖','Vocabulary Guide','دليل الكلمات',`openUrl('${u.pdfVocab}')`)}
+          ${rb(u.bankVocab,'🔤','Vocab Quiz','بنك أسئلة كلمات',`openUrl('${u.bankVocab}')`)}
+          ${rbAud(u.audioGrammar,'🎧','Grammar Voice','فويس الجرامر',i)}
         </div>
-        <div class="unit-resources">
-          ${u.pdfBoard?`<button class="resource-btn" onclick="openPdf('${u.pdfBoard}','سبورة الشرح - ${u.titleAr}')"><span class="resource-icon">📋</span><div class="resource-info"><div class="resource-name">سبورة الشرح</div><div class="resource-sub">اضغط للفتح</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📋</span><div class="resource-info"><div class="resource-name">سبورة الشرح</div><div class="resource-sub">لسه مش متاحة</div></div></button>`}
-          ${u.pdfWords?`<button class="resource-btn" onclick="openPdf('${u.pdfWords}','ملخص الكلمات - ${u.titleAr}')"><span class="resource-icon">📖</span><div class="resource-info"><div class="resource-name">ملخص الكلمات</div><div class="resource-sub">اضغط للفتح</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📖</span><div class="resource-info"><div class="resource-name">ملخص الكلمات</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
-          ${u.examUrl?`<button class="resource-btn exam-btn" onclick="openExamFile('${u.examUrl}')"><span class="resource-icon">📝</span><div class="resource-info"><div class="resource-name">امتحان الوحدة</div><div class="resource-sub">افتح وابدأ الامتحان</div></div></button>`:`<button class="resource-btn exam-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">📝</span><div class="resource-info"><div class="resource-name">امتحان الوحدة</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
-          ${u.audioUrl?`<button class="resource-btn audio-btn" onclick="toggleUnitAudio(${i})"><span class="resource-icon">🎧</span><div class="resource-info"><div class="resource-name">فويس الجرامر</div><div class="resource-sub" id="audio-sub-${i}">اضغط للتشغيل</div></div></button>`:`<button class="resource-btn" style="opacity:.4;cursor:not-allowed"><span class="resource-icon">🎧</span><div class="resource-info"><div class="resource-name">فويس الجرامر</div><div class="resource-sub">لسه مش متاح</div></div></button>`}
-        </div>
-        ${u.audioUrl?`
-        <div class="audio-player-row" id="audio-row-${i}">
-          <div class="audio-ctrl">
-            <button class="audio-play-btn" id="audio-play-btn-${i}" onclick="playPauseAudio(${i})">▶</button>
-            <div class="audio-progress" onclick="seekAudio(event,${i})"><div class="audio-fill" id="audio-fill-${i}"></div></div>
-            <span class="audio-time" id="audio-time-${i}">0:00</span>
-            <audio id="audio-el-${i}" src="${u.audioUrl}" preload="none"></audio>
-          </div>
-        </div>`:``}
-      </div>
-    `).join('');
-    buildProgressUnits();
-  }catch(e){ c.innerHTML=`<div class="empty-state"><b>خطأ في التحميل</b>${e.message}</div>`; }
+        ${u.audioGrammar?`<div class="abar" id="ab-${i}"><div class="actrl"><button class="apbtn" id="ap-${i}" onclick="togAudio(${i})">▶</button><div class="aprog" onclick="seekA(event,${i})"><div class="afill" id="af-${i}"></div></div><span class="atime" id="at-${i}">0:00</span><audio id="ae-${i}" src="${u.audioGrammar}" preload="none"></audio></div></div>`:''}
+      </div>`;
+    }).join('');
+    buildPUnits();
+  }catch(e){c.innerHTML=`<div class="empty"><b>Error</b>${e.message}</div>`;}
 }
 
-function openPdf(url,title){ window.open(url,'_blank'); }
-function openExamFile(url){ window.open(url,'_blank'); }
-
-function toggleUnitAudio(i){
-  const row=document.getElementById('audio-row-'+i);
-  if(!row) return;
-  const isOpen=row.classList.contains('show');
-  document.querySelectorAll('.audio-player-row').forEach(r=>r.classList.remove('show'));
-  if(activeAudio){ activeAudio.pause(); activeAudio=null; document.querySelectorAll('.audio-play-btn').forEach(b=>b.textContent='▶'); }
-  if(!isOpen) row.classList.add('show');
+function rb(url,ico,name,sub,act){
+  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
+  return`<button class="rbtn" onclick="${act}"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
 }
-
-function playPauseAudio(i){
-  const audio=document.getElementById('audio-el-'+i);
-  const btn=document.getElementById('audio-play-btn-'+i);
-  const fill=document.getElementById('audio-fill-'+i);
-  const time=document.getElementById('audio-time-'+i);
-  if(activeAudio && activeAudio!==audio){ activeAudio.pause(); document.querySelectorAll('.audio-play-btn').forEach(b=>b.textContent='▶'); }
-  if(audio.paused){ audio.play(); btn.textContent='❚❚'; activeAudio=audio; }
-  else { audio.pause(); btn.textContent='▶'; }
-  audio.ontimeupdate=()=>{
-    if(audio.duration){ fill.style.width=(audio.currentTime/audio.duration*100)+'%'; const m=Math.floor(audio.currentTime/60); const s=Math.floor(audio.currentTime%60); time.textContent=m+':'+String(s).padStart(2,'0'); }
-  };
-  audio.onended=()=>{ btn.textContent='▶'; fill.style.width='0%'; };
+function rbVid(url,ico,name,sub,i){
+  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
+  const vid=ytId(url);
+  if(vid)return`<button class="rbtn" onclick="openVid('${vid}','${name}')"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
+  return`<button class="rbtn" onclick="openUrl('${url}')"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
 }
-
-function seekAudio(e,i){
-  const audio=document.getElementById('audio-el-'+i);
-  if(!audio.duration) return;
-  const rect=e.currentTarget.getBoundingClientRect();
-  audio.currentTime=((e.clientX-rect.left)/rect.width)*audio.duration;
+function rbAud(url,ico,name,sub,i){
+  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
+  return`<button class="rbtn" onclick="showABar(${i})"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
 }
+function openUrl(u){if(u)window.open(u,'_blank');}
+function ytId(u){if(!u)return null;const m=u.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null;}
+function showABar(i){
+  document.querySelectorAll('.abar').forEach(b=>{if(b.id!=='ab-'+i){b.classList.remove('show');const a=b.querySelector('audio');if(a){a.pause();const p=b.id.replace('ab-','');const pb=document.getElementById('ap-'+p);if(pb)pb.textContent='▶';}}});
+  const bar=document.getElementById('ab-'+i);if(bar)bar.classList.toggle('show');
+}
+function togAudio(i){
+  const a=document.getElementById('ae-'+i);const p=document.getElementById('ap-'+i);
+  const f=document.getElementById('af-'+i);const t=document.getElementById('at-'+i);
+  if(activeAudio&&activeAudio!==a){activeAudio.pause();document.querySelectorAll('.apbtn').forEach(b=>b.textContent='▶');}
+  if(a.paused){a.play();p.textContent='❚❚';activeAudio=a;}else{a.pause();p.textContent='▶';}
+  a.ontimeupdate=()=>{if(a.duration){f.style.width=(a.currentTime/a.duration*100)+'%';const m=Math.floor(a.currentTime/60);const s=Math.floor(a.currentTime%60);t.textContent=m+':'+String(s).padStart(2,'0');}};
+  a.onended=()=>{p.textContent='▶';f.style.width='0%';};
+}
+function seekA(e,i){const a=document.getElementById('ae-'+i);if(!a.duration)return;const r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*a.duration;}
 
 /* ============================================================
-   الفيديوهات من Firebase
+   STORY
    ============================================================ */
-let VIDEOS_LIVE=[];
-async function loadVideos(){
-  const c=document.getElementById('videos-container');
+async function loadStory(){
+  const c=document.getElementById('story-c');
   try{
-    const snap=await window.__db.collection('videos').orderBy('createdAt').get();
-    VIDEOS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!VIDEOS_LIVE.length){ c.innerHTML='<div class="empty-state"><b>لسه مفيش فيديوهات</b></div>'; return; }
-    c.innerHTML=VIDEOS_LIVE.map((v,i)=>`
-      <div class="video-row">
-        <div class="video-thumb">▶</div>
-        <div class="video-info"><div class="video-title">${v.title}</div><div class="video-cat">${v.category||'مراجعة عامة'}</div></div>
-        <button class="video-play-btn" onclick="openVideo(${i})">مشاهدة</button>
-      </div>`).join('');
-  }catch(e){ c.innerHTML=`<div class="empty-state"><b>خطأ في التحميل</b></div>`; }
+    const snap=await window.__db.collection('story').doc('main').get();
+    const d=snap.exists?snap.data():{};
+    c.innerHTML=`
+      ${stCard('📚','Story Study File','الملف الشامل للقصة',d.pdfStudy,`openUrl('${d.pdfStudy}')`)}
+      ${stCard('🎧','Story Audio','فويس سماعي للقصة',d.audioStory,`openUrl('${d.audioStory}')`)}
+    `;
+  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
+}
+function stCard(ico,name,sub,url,act){
+  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
+  return`<button class="sc" onclick="${act}"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></button>`;
 }
 
-function openVideo(i){ const v=VIDEOS_LIVE[i]; document.getElementById('video-modal-title').textContent=v.title; document.getElementById('video-iframe').src=`https://www.youtube.com/embed/${v.youtubeId}?autoplay=1&rel=0`; document.getElementById('video-modal').classList.add('show'); }
-document.getElementById('video-close').addEventListener('click',()=>{ document.getElementById('video-iframe').src=''; document.getElementById('video-modal').classList.remove('show'); });
-document.getElementById('video-modal').addEventListener('click',e=>{ if(e.target.id==='video-modal'){ document.getElementById('video-iframe').src=''; document.getElementById('video-modal').classList.remove('show'); } });
+/* ============================================================
+   SKILLS
+   ============================================================ */
+async function loadSkills(){
+  const c=document.getElementById('skills-c');
+  try{
+    const snap=await window.__db.collection('skills').doc('main').get();
+    const d=snap.exists?snap.data():{};
+    c.innerHTML=`
+      ${stCard('💡','Skills Summary','ملخص أفكار المهارات',d.pdfSkills,`openUrl('${d.pdfSkills}')`)}
+      ${stCard('❓','Skills Question Bank','بنك تفاعلي لأسئلة المهارات',d.bankSkills,`openUrl('${d.bankSkills}')`)}
+    `;
+  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
+}
 
 /* ============================================================
-   الامتحانات — تايمر إجباري ساعتين + حفظ النتائج
+   GENERAL EXAMS
    ============================================================ */
-let EXAMS_LIVE=[]; let currentExam=null; let examAnswers={};
-let examTimerInterval=null;
-const EXAM_DURATION_SECS = 2 * 60 * 60; // ساعتين بالثواني
+let MIN_EX=[],GEN_EX=[],curEx=null,exAns={},exTmr=null;
+const EX_SECS=7200;
 
 async function loadExams(){
-  const c=document.getElementById('exams-container');
   try{
-    const snap=await window.__db.collection('exams').orderBy('createdAt').get();
-    EXAMS_LIVE=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!EXAMS_LIVE.length){ c.innerHTML='<div class="empty-state" style="grid-column:1/-1;"><b>لسه مفيش امتحانات شاملة</b></div>'; return; }
-    c.innerHTML=EXAMS_LIVE.map((ex,i)=>`
-      <div class="exam-card">
-        <div class="exam-card-title">${ex.title}</div>
-        <div class="exam-card-meta">⏱ ساعتين | ${(ex.mcq||[]).length+(ex.essay||[]).length} سؤال</div>
-        <button class="btn-start-exam" onclick="startExam(${i})">ابدأ الامتحان</button>
-      </div>`).join('');
-    buildProgressGeneralExams();
-  }catch(e){ c.innerHTML=`<div class="empty-state" style="grid-column:1/-1;"><b>خطأ في التحميل</b></div>`; }
+    const s1=await window.__db.collection('ministry_exams').orderBy('createdAt').get();
+    MIN_EX=s1.docs.map(d=>({id:d.id,...d.data()}));
+    const s2=await window.__db.collection('exams').orderBy('createdAt').get();
+    GEN_EX=s2.docs.map(d=>({id:d.id,...d.data()}));
+    renderEGrid('ministry-c',MIN_EX,'m');
+    renderEGrid('general-c',GEN_EX,'g');
+    buildPGeneral();
+  }catch(e){console.error(e);}
+}
+function renderEGrid(cId,exs,type){
+  const c=document.getElementById(cId);
+  if(!exs.length){c.innerHTML='<div class="empty" style="grid-column:1/-1;"><b>No exams yet</b></div>';return;}
+  c.innerHTML=exs.map((ex,i)=>`<div class="ecard"><div class="etitle">${ex.title}</div><div class="emeta">⏱ 2 hrs | ${(ex.mcq||[]).length+(ex.essay||[]).length} Q</div><button class="btnst" onclick="startExam('${type}',${i})">Start Exam</button></div>`).join('');
 }
 
-function startExam(i){
-  currentExam=EXAMS_LIVE[i]; examAnswers={};
-  document.getElementById('exam-run-title').textContent=currentExam.title;
+function startExam(type,i){
+  curEx=type==='m'?MIN_EX[i]:GEN_EX[i];exAns={};
+  document.getElementById('exam-ttl').textContent=curEx.title;
   let html='';
-  (currentExam.mcq||[]).forEach((q,qi)=>{
-    html+=`<div class="q-block"><div class="q-num">Question ${qi+1} — Multiple Choice</div><div class="q-text">${q.q}</div><div class="q-options">${(q.options||[]).map((opt,oi)=>`<label class="q-option" onclick="selectOpt(this,${qi},${oi})"><span class="q-opt-label">${String.fromCharCode(65+oi)}</span><span>${opt}</span></label>`).join('')}</div><div class="q-explanation" id="exp-${qi}">${q.explanation||''}</div></div>`;
+  (curEx.mcq||[]).forEach((q,qi)=>{
+    html+=`<div class="qblock"><div class="qnum">Q${qi+1} — Multiple Choice</div><div class="qtext">${q.q}</div><div class="qopts">${(q.options||[]).map((o,oi)=>`<label class="qopt" onclick="selOpt(this,${qi},${oi})"><span class="qlbl">${String.fromCharCode(65+oi)}</span><span>${o}</span></label>`).join('')}</div><div class="qexp" id="exp-${qi}">${q.explanation||''}</div></div>`;
   });
-  (currentExam.essay||[]).forEach((q,qi)=>{
-    html+=`<div class="q-block"><div class="q-num">Question ${(currentExam.mcq||[]).length+qi+1} — Short Answer</div><div class="q-text">${q.q}</div><textarea class="q-essay" placeholder="Write your answer here..." onchange="examAnswers['essay-${qi}']=this.value"></textarea></div>`;
+  (curEx.essay||[]).forEach((q,qi)=>{
+    html+=`<div class="qblock"><div class="qnum">Q${(curEx.mcq||[]).length+qi+1} — Short Answer</div><div class="qtext">${q.q}</div><textarea class="qessay" placeholder="Write your answer here..." onchange="exAns['e${qi}']=this.value"></textarea></div>`;
   });
-  document.getElementById('exam-questions-container').innerHTML=html;
-  document.getElementById('exam-result-box').style.display='none';
-  switchScreen('screen-exam');
-  startExamTimer();
+  document.getElementById('exam-qs').innerHTML=html;
+  document.getElementById('rbox').style.display='none';
+  switchScreen('screen-exam');startExTmr();
 }
-
-function startExamTimer(){
-  // إيقاف أي تايمر سابق
-  if(examTimerInterval) clearInterval(examTimerInterval);
-  let remaining = EXAM_DURATION_SECS;
-  const timerEl = document.getElementById('exam-timer');
-  const timerBox = document.getElementById('exam-timer-box');
-
-  function updateTimer(){
-    const h = Math.floor(remaining/3600);
-    const m = Math.floor((remaining%3600)/60);
-    const s = remaining%60;
-    timerEl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-
-    // تحذير لما يفضل أقل من 10 دقائق
-    if(remaining <= 600){
-      timerBox.style.borderColor='rgba(224,101,79,.8)';
-      timerBox.style.background='rgba(224,101,79,.2)';
-      timerEl.style.color='#ff6b6b';
-    }
-    // تحذير لما يفضل أقل من 5 دقائق
-    if(remaining <= 300){
-      timerEl.style.animation='pulse 0.5s infinite';
-    }
-
-    if(remaining <= 0){
-      clearInterval(examTimerInterval);
-      // تسليم تلقائي
-      alert('⏰ انتهى وقت الامتحان! سيتم التسليم تلقائياً.');
-      submitExam();
-      return;
-    }
-    remaining--;
+function selOpt(el,qi,oi){el.closest('.qopts').querySelectorAll('.qopt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');exAns['m'+qi]=oi;}
+function startExTmr(){
+  if(exTmr)clearInterval(exTmr);let rem=EX_SECS;
+  const el=document.getElementById('etimer');const box=el.closest('.etimbox');
+  function upd(){
+    const h=Math.floor(rem/3600),m=Math.floor((rem%3600)/60),s=rem%60;
+    el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(rem<=600){box.style.borderColor='rgba(224,101,79,.8)';box.style.background='rgba(224,101,79,.18)';}
+    if(rem<=300)el.style.animation='blink .5s infinite';
+    if(rem<=0){clearInterval(exTmr);alert('⏰ Time is up! Submitting now.');doSubmit();return;}
+    rem--;
   }
-
-  updateTimer();
-  examTimerInterval = setInterval(updateTimer, 1000);
+  upd();exTmr=setInterval(upd,1000);
 }
+function stopTmr(){if(exTmr){clearInterval(exTmr);exTmr=null;}}
+document.getElementById('btn-ex').addEventListener('click',()=>{if(confirm('Exit without submitting?')){stopTmr();switchScreen('screen-dashboard');}});
+document.getElementById('btn-sub').addEventListener('click',doSubmit);
 
-function stopExamTimer(){
-  if(examTimerInterval){ clearInterval(examTimerInterval); examTimerInterval=null; }
-}
-
-function selectOpt(el,qi,oi){
-  el.closest('.q-options').querySelectorAll('.q-option').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected'); examAnswers['mcq-'+qi]=oi;
-}
-
-document.getElementById('btn-exit-exam').addEventListener('click',()=>{
-  if(confirm('هتخرج من الامتحان بدون تسليم؟ إجاباتك هتتمسح.')){ stopExamTimer(); switchScreen('screen-dashboard'); }
-});
-
-document.getElementById('btn-submit-exam').addEventListener('click', submitExam);
-
-function submitExam(){
-  stopExamTimer();
-  let correct=0;
-  (currentExam.mcq||[]).forEach((q,qi)=>{
-    const opts=document.querySelectorAll(`#exam-questions-container .q-block:nth-child(${qi+1}) .q-option`);
-    opts.forEach((o,oi)=>{ if(oi===q.correct) o.classList.add('correct'); else if(o.classList.contains('selected')) o.classList.add('wrong'); });
-    const expEl=document.getElementById('exp-'+qi);
-    if(expEl && expEl.textContent.trim()) expEl.classList.add('show');
-    if(examAnswers['mcq-'+qi]===q.correct) correct++;
+function doSubmit(){
+  stopTmr();let correct=0;
+  (curEx.mcq||[]).forEach((q,qi)=>{
+    document.querySelectorAll(`#exam-qs .qblock:nth-child(${qi+1}) .qopt`).forEach((o,oi)=>{if(oi===q.correct)o.classList.add('ok');else if(o.classList.contains('sel'))o.classList.add('no');});
+    const ex=document.getElementById('exp-'+qi);if(ex&&ex.textContent.trim())ex.classList.add('show');
+    if(exAns['m'+qi]===q.correct)correct++;
   });
-  const total=(currentExam.mcq||[]).length;
-  const pct=total>0?Math.round(correct/total*100):0;
-  document.getElementById('result-score-text').textContent=`${correct} / ${total}`;
-
-  // إضافة نسبة مئوية ورسالة تقييم
-  const resultBox=document.getElementById('exam-result-box');
-  resultBox.style.display='block';
-  resultBox.scrollIntoView({behavior:'smooth'});
-
-  // حفظ النتيجة في Firebase
-  const code=document.getElementById('student-code-badge').textContent;
-  saveExamResult(code, currentExam.id, currentExam.title, correct, total, pct);
-  markGeneralExamDone(currentExam.id);
+  const total=(curEx.mcq||[]).length,pct=total?Math.round(correct/total*100):0;
+  document.getElementById('rscore').textContent=`${correct} / ${total}`;
+  document.getElementById('rbox').style.display='block';
+  document.getElementById('rbox').scrollIntoView({behavior:'smooth'});
+  const code=document.getElementById('sc-tag').textContent;
+  const name=document.getElementById('sn-tag').textContent;
+  saveRes(code,name,curEx.id,curEx.title,correct,total,pct);
+  markGenDone(curEx.id);
+}
+async function saveRes(code,name,id,title,c,t,p){
+  if(!code||code==='--')return;
+  try{await window.__db.collection('results').add({studentCode:code,studentName:name,examId:id,examTitle:title,correct:c,total:t,pct:p,submittedAt:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
 }
 
-// حفظ نتيجة الامتحان في Firebase
-async function saveExamResult(code, examId, examTitle, correct, total, pct){
-  if(!code || code==='--') return;
-  try{
-    await window.__db.collection('results').add({
-      studentCode: code,
-      examId, examTitle,
-      correct, total, pct,
-      submittedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  }catch(e){ console.error('Save result error:', e); }
+/* VIDEO MODAL */
+function openVid(id,title){
+  document.getElementById('vm-ttl').textContent=title||'';
+  document.getElementById('vm-fr').src=`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&showinfo=0`;
+  document.getElementById('vmodal').classList.add('show');
 }
+document.getElementById('vm-cls').addEventListener('click',()=>{document.getElementById('vm-fr').src='';document.getElementById('vmodal').classList.remove('show');});
+document.getElementById('vmodal').addEventListener('click',e=>{if(e.target.id==='vmodal'){document.getElementById('vm-fr').src='';document.getElementById('vmodal').classList.remove('show');}});
 
-/* ============================================================
-   خانة الأسئلة أثناء البث
-   ============================================================ */
-async function sendQuestion(){
-  const input=document.getElementById('student-question-input');
-  const q=input.value.trim();
-  if(!q) return;
-  const code=document.getElementById('student-code-badge').textContent;
-  const btn=document.querySelector('[onclick="sendQuestion()"]');
-  btn.disabled=true; btn.textContent='جاري الإرسال...';
-  try{
-    await window.__db.collection('questions').add({
-      studentCode: code,
-      question: q,
-      answered: false,
-      sentAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    input.value='';
-    const msg=document.getElementById('question-sent-msg');
-    msg.style.display='block';
-    setTimeout(()=>msg.style.display='none', 4000);
-  }catch(e){ alert('في مشكلة في الإرسال. حاول تاني.'); }
-  finally{ btn.disabled=false; btn.textContent='إرسال ✈'; }
-}
-
-/* ============================================================
-   لوحة الإنجاز
-   ============================================================ */
-let progressData={};
-
-async function loadProgress(code){
-  try{
-    const snap=await window.__db.collection('progress').doc(code).get();
-    progressData=snap.exists ? (snap.data()||{}) : {};
-  }catch(e){ progressData={}; }
-  buildProgressUnits();
-  buildProgressGeneralExams();
-  updateOverall();
-}
-
-async function saveProgress(code){ try{ await window.__db.collection('progress').doc(code).set(progressData,{merge:true}); }catch(e){} }
-
-function buildProgressUnits(){
-  const c1=document.getElementById('progress-units');
-  const c2=document.getElementById('progress-unit-exams');
-  const units=UNITS_LIVE.length?UNITS_LIVE:Array.from({length:12},(_,i)=>({id:'unit-'+i,titleAr:`الوحدة ${i+1}`}));
-  c1.innerHTML=units.map((u,i)=>{
-    const key='unit-'+u.id; const done=progressData[key];
-    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','الوحدة ${i+1}','📚')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">الوحدة ${i+1}</div></div>`;
-  }).join('');
-  c2.innerHTML=units.map((u,i)=>{
-    const key='exam-unit-'+u.id; const done=progressData[key];
-    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','امتحان وحدة ${i+1}','📝')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">امتحان وحدة ${i+1}</div></div>`;
-  }).join('');
-  updateOverall();
-}
-
-function buildProgressGeneralExams(){
-  const c=document.getElementById('progress-general-exams');
-  const count=20;
-  c.innerHTML=Array.from({length:count},(_,i)=>{
-    const key='general-exam-'+(i+1); const done=progressData[key];
-    return `<div class="progress-item ${done?'done':''}" id="pi-${key}" onclick="toggleProgress('${key}','امتحان شامل ${i+1}','🏆')"><div class="progress-check">${done?'✓':''}</div><div class="progress-item-label">امتحان شامل ${i+1}</div></div>`;
-  }).join('');
-  updateOverall();
-}
-
-function toggleProgress(key,label,emoji){
-  const code=document.getElementById('student-code-badge').textContent;
-  if(!code||code==='--') return;
-  const wasDone=progressData[key];
-  progressData[key]=!wasDone;
-  const el=document.getElementById('pi-'+key);
-  if(el){ el.classList.toggle('done',progressData[key]); el.querySelector('.progress-check').textContent=progressData[key]?'✓':''; }
-  if(!wasDone) showCelebrate(label,emoji);
-  saveProgress(code);
-  updateOverall();
-}
-
-function markGeneralExamDone(examId){
-  const keys=Object.keys(progressData).filter(k=>k.startsWith('general-exam-'));
-  const nextNum=keys.length+1;
-  if(nextNum<=20){ const key='general-exam-'+nextNum; if(!progressData[key]){ progressData[key]=true; buildProgressGeneralExams(); const code=document.getElementById('student-code-badge').textContent; saveProgress(code); updateOverall(); } }
-}
-
-function updateOverall(){
-  const total=44; let done=Object.values(progressData).filter(v=>v===true).length;
-  done=Math.min(done,total);
-  document.getElementById('overall-fill').style.width=(done/total*100)+'%';
-  document.getElementById('overall-text').textContent=done+' / '+total;
-}
-
-/* ============================================================
-   البث المباشر — محمي ومخفي عن YouTube
-   ============================================================ */
+/* LIVE */
 async function loadLive(){
   try{
-    const snap = await window.__db.collection('settings').doc('live').get();
-    const data = snap.exists ? snap.data() : {};
-    const isLive = data.active === true;
-    const liveUrl = data.url || '';
-    const liveTitle = data.title || 'بث مباشر — المستر سامي';
-    const liveTab = document.getElementById('live-tab-btn');
-    const liveContent = document.getElementById('live-content');
-
-    if(isLive && liveUrl){
-      // استخراج Video ID من رابط YouTube
-      const match = liveUrl.match(/(?:v=|youtu\.be\/|live\/)([a-zA-Z0-9_-]{11})/);
-      const videoId = match ? match[1] : null;
-
-      if(videoId){
-        // إظهار تبويب البث
-        liveTab.classList.add('show');
-
-        // بناء رابط embed محمي — بدون controls كاملة، بدون logo، بدون related videos
-        const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&showinfo=0&controls=1&disablekb=0&fs=0&iv_load_policy=3`;
-
-        liveContent.innerHTML = `
-          <div style="margin-bottom:14px;">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-              <div class="live-badge"><span class="live-dot"></span> LIVE</div>
-              <span style="font-size:14px;font-weight:700;">${liveTitle}</span>
-            </div>
-            <div style="font-size:12px;color:var(--text-3);">البث حصري لطلاب SamySchool فقط</div>
-          </div>
-          <div class="live-container">
-            <div class="live-frame-wrap">
-              <iframe
-                src="${embedUrl}"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
-                sandbox="allow-scripts allow-same-origin allow-presentation"
-                referrerpolicy="no-referrer"
-                style="width:100%;height:100%;border:none;pointer-events:auto;"
-              ></iframe>
-              <!-- طبقة حماية شفافة على الجوانب تمنع الوصول لروابط YouTube -->
-              <div style="position:absolute;top:0;right:0;width:120px;height:40px;z-index:10;background:transparent;"></div>
-              <div style="position:absolute;top:0;left:0;width:120px;height:40px;z-index:10;background:transparent;"></div>
-              <div style="position:absolute;bottom:0;right:0;left:0;height:44px;z-index:10;background:transparent;"></div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding:10px 14px;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);border-radius:8px;font-size:12px;color:var(--text-2);">
-            ⚠️ البث ده حصري — ممنوع مشاركة الرابط مع أي حد خارج المنصة
-          </div>`;
+    const snap=await window.__db.collection('settings').doc('live').get();
+    const d=snap.exists?snap.data():{};
+    const tab=document.getElementById('ltab');const c=document.getElementById('live-c');
+    if(d.active&&d.url){
+      const m=d.url.match(/(?:v=|youtu\.be\/|live\/)([a-zA-Z0-9_-]{11})/);const vid=m?m[1]:null;
+      if(vid){
+        tab.classList.add('show');
+        c.innerHTML=`<div style="margin-bottom:11px;"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,68,68,.15);border:1px solid rgba(255,68,68,.4);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;color:#ff6666;"><span class="ldot"></span> LIVE NOW — ${d.title||'Mr. Samy Live Session'}</div></div><div class="lcon"><div class="lfr"><iframe src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&showinfo=0&controls=1&fs=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe><div style="position:absolute;top:0;right:0;width:110px;height:38px;z-index:9;"></div><div style="position:absolute;top:0;left:0;width:110px;height:38px;z-index:9;"></div></div></div><div style="margin-top:10px;padding:9px 13px;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);border-radius:7px;font-size:12px;color:var(--t2);">⚠️ Exclusive to SamySchool students.</div>`;
       }
     } else {
-      // إخفاء تبويب البث لو مفيش بث
-      liveTab.classList.remove('show');
-      liveContent.innerHTML = `
-        <div class="live-offline">
-          <div class="live-offline-icon">📡</div>
-          <div class="live-offline-text">مفيش بث مباشر دلوقتي</div>
-          <div class="live-offline-sub">لما المستر سامي يبدأ بث، هيظهر هنا تلقائياً</div>
-        </div>`;
+      tab.classList.remove('show');
+      c.innerHTML='<div class="loffline"><div class="loi">📡</div><h3>No Live Session Right Now</h3><p>When Mr. Samy starts, it will appear here.</p></div>';
     }
-  }catch(e){ console.error('Live load error:', e); }
+  }catch(e){}
 }
 
-
-const celebrates=[{e:'🎉',t:'أحسنت!',s:'استمر كده، بتتقدم!'},{e:'🔥',t:'ممتاز!',s:'عليك نور يا بطل!'},{e:'⭐',t:'برافو!',s:'أنت في الطريق الصح!'},{e:'🏆',t:'رائع!',s:'المذاكرة بتأثر!'},{e:'💪',t:'هتنجح!',s:'الجهد ده هيكون بالنتيجة!'}];
-function showCelebrate(label,emoji){
-  const r=celebrates[Math.floor(Math.random()*celebrates.length)];
-  document.getElementById('celebrate-emoji').textContent=emoji||r.e;
-  document.getElementById('celebrate-title').textContent=r.t+' — '+label;
-  document.getElementById('celebrate-sub').textContent=r.s;
-  document.getElementById('celebrate-modal').classList.add('show');
-  setTimeout(closeCelebrate,4000);
+/* QUESTIONS */
+async function sendQ(){
+  const inp=document.getElementById('q-inp');const q=inp.value.trim();if(!q)return;
+  const code=document.getElementById('sc-tag').textContent;
+  const name=document.getElementById('sn-tag').textContent;
+  const btn=document.querySelector('[onclick="sendQ()"]');btn.disabled=true;btn.textContent='Sending...';
+  try{
+    await window.__db.collection('questions').add({studentCode:code,studentName:name,question:q,answered:false,sentAt:firebase.firestore.FieldValue.serverTimestamp()});
+    inp.value='';const m=document.getElementById('q-sent');m.style.display='block';setTimeout(()=>m.style.display='none',4000);
+  }catch(e){}finally{btn.disabled=false;btn.textContent='Send ✈';}
 }
-function closeCelebrate(){ document.getElementById('celebrate-modal').classList.remove('show'); }
+
+/* PROGRESS */
+let pData={};
+async function loadProgress(code){
+  try{const s=await window.__db.collection('progress').doc(code).get();pData=s.exists?(s.data()||{}):{};
+  }catch(e){pData={};}
+  buildPUnits();buildPGeneral();updOverall();
+}
+async function saveP(code){try{await window.__db.collection('progress').doc(code).set(pData,{merge:true});}catch(e){}}
+
+function buildPUnits(){
+  const c1=document.getElementById('p-units'),c2=document.getElementById('p-uexams');
+  const units=UNITS.length?UNITS:Array.from({length:12},(_,i)=>({id:'u'+i}));
+  c1.innerHTML=units.map((u,i)=>{const k='unit-'+u.id;const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Unit ${i+1}','📚')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Unit ${i+1}</div></div>`;}).join('');
+  c2.innerHTML=units.map((u,i)=>{const k='ue-'+u.id;const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Unit ${i+1} Exam','📝')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Unit ${i+1} Exam</div></div>`;}).join('');
+  updOverall();
+}
+function buildPGeneral(){
+  const c=document.getElementById('p-general');
+  c.innerHTML=Array.from({length:20},(_,i)=>{const k='gen-'+(i+1);const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Exam ${i+1}','🏆')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Exam ${i+1}</div></div>`;}).join('');
+  updOverall();
+}
+function togP(k,lbl,emo){
+  const code=document.getElementById('sc-tag').textContent;if(!code||code==='--')return;
+  const was=pData[k];pData[k]=!was;
+  const el=document.getElementById('pi-'+k);
+  if(el){el.classList.toggle('done',pData[k]);el.querySelector('.pchk').textContent=pData[k]?'✓':'';}
+  if(!was)showCel(lbl,emo);
+  saveP(code);updOverall();
+}
+function markGenDone(examId){
+  const next=Object.keys(pData).filter(k=>k.startsWith('gen-')).length+1;
+  if(next<=20){const k='gen-'+next;if(!pData[k]){pData[k]=true;buildPGeneral();const code=document.getElementById('sc-tag').textContent;saveP(code);updOverall();}}
+}
+function updOverall(){
+  const total=44,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
+  document.getElementById('pb-fill').style.width=(done/total*100)+'%';
+  document.getElementById('pb-text').textContent=done+' / '+total;
+}
+
+/* CELEBRATE */
+const CELS=[{e:'🎉',t:'Excellent!',s:'Keep going strong!'},{e:'🔥',t:'On Fire!',s:"You're doing great!"},{e:'⭐',t:'Well Done!',s:'One step closer!'},{e:'🏆',t:'Champion!',s:'Hard work pays off!'},{e:'💪',t:'Keep it up!',s:"You've got this!"}];
+function showCel(lbl,emo){
+  const r=CELS[Math.floor(Math.random()*CELS.length)];
+  document.getElementById('cel-e').textContent=emo||r.e;
+  document.getElementById('cel-t').textContent=r.t+' — '+lbl;
+  document.getElementById('cel-s').textContent=r.s;
+  document.getElementById('celmod').classList.add('show');
+  setTimeout(closeCel,4000);
+}
+function closeCel(){document.getElementById('celmod').classList.remove('show');}
 </script>
 </body>
 </html>

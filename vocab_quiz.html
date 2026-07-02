@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SamySchool | Vocabulary Question Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1E90FF;--blue2:#1267CC;--blueL:rgba(30,144,255,.13);
+  --ink:#07111F;--ink2:#0D1A2E;--ink3:#13243A;
+  --t1:#F0F4FF;--t2:#8AA0C0;--t3:#4A6080;
+  --line:rgba(240,244,255,.09);--lineS:rgba(240,244,255,.18);
+  --green:#22C55E;--greenL:rgba(34,197,94,.13);
+  --red:#EF4444;--redL:rgba(239,68,68,.12);
+  --gold:#F59E0B;--goldL:rgba(245,158,11,.12);
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--t1);font-family:'Cairo',sans-serif;min-height:100vh;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(30,144,255,.12),transparent);pointer-events:none;z-index:0;}
+
+/* ===== HEADER ===== */
+.header{background:rgba(7,17,31,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:0 24px;position:sticky;top:0;z-index:100;}
+.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+.logo-row{display:flex;align-items:center;gap:12px;}
+.logo-img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px rgba(30,144,255,.5);}
+.logo-text{font-size:18px;font-weight:900;}.logo-text span{color:var(--blue);}
+.logo-sub{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;}
+.header-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);background:var(--blueL);border:1px solid rgba(30,144,255,.3);padding:5px 12px;border-radius:999px;}
+
+/* ===== HERO ===== */
+.hero{max-width:960px;margin:0 auto;padding:36px 24px 24px;position:relative;z-index:1;}
+.hero-title{font-size:clamp(24px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:8px;}
+.hero-title span{color:var(--blue);}
+.hero-sub{color:var(--t2);font-size:14px;margin-bottom:24px;line-height:1.7;}
+.stats-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.stat{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:12px 18px;text-align:center;min-width:100px;}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--blue);}
+.stat-lbl{font-size:11px;color:var(--t3);margin-top:3px;}
+
+/* ===== FILTER ===== */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-btn{background:var(--ink3);border:1.5px solid var(--lineS);color:var(--t2);padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--blueL);border-color:var(--blue);color:var(--blue);}
+
+/* ===== PROGRESS BAR ===== */
+.prog-wrap{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;}
+.prog-bar{flex:1;height:8px;background:var(--lineS);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#38BDF8);border-radius:4px;transition:width .4s;}
+.prog-txt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);white-space:nowrap;}
+.prog-score{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);font-weight:700;white-space:nowrap;}
+
+/* ===== QUESTION CARD ===== */
+.questions{max-width:960px;margin:0 auto;padding:0 24px 40px;position:relative;z-index:1;}
+.qcard{background:var(--ink2);border:1px solid var(--lineS);border-radius:14px;padding:22px;margin-bottom:14px;transition:border-color .2s;}
+.qcard.answered{border-color:rgba(30,144,255,.2);}
+.qcard-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.qnum{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--blue);background:var(--blueL);border:1px solid rgba(30,144,255,.25);padding:4px 10px;border-radius:999px;white-space:nowrap;margin-top:2px;}
+.qtext{font-family:'Lora',serif;font-size:16px;line-height:1.75;font-weight:600;}
+.qtext .kw{color:var(--blue);font-style:italic;font-weight:700;border-bottom:2px solid rgba(30,144,255,.4);}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:540px){.opts{grid-template-columns:1fr;}}
+.opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid var(--lineS);border-radius:9px;cursor:pointer;transition:all .15s;background:rgba(0,0,0,.1);}
+.opt:hover:not(.locked){border-color:var(--blue);background:var(--blueL);}
+.opt.selected{border-color:var(--blue);background:var(--blueL);}
+.opt.correct{border-color:var(--green) !important;background:var(--greenL) !important;}
+.opt.wrong{border-color:var(--red) !important;background:var(--redL) !important;}
+.opt.locked{cursor:not-allowed;}
+.opt-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);min-width:18px;font-weight:700;}
+.opt-txt{font-size:13.5px;font-weight:600;}
+.explanation{display:none;margin-top:12px;padding:12px 14px;background:rgba(30,144,255,.06);border-right:3px solid var(--blue);border-radius:7px;}
+.explanation.show{display:block;}
+.exp-lbl{font-size:10.5px;font-weight:800;color:var(--blue);margin-bottom:5px;letter-spacing:.05em;font-family:'JetBrains Mono',monospace;}
+.exp-txt{font-size:13px;color:var(--t2);line-height:1.7;}
+.exp-ar{font-size:13px;color:var(--gold);margin-top:4px;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;}
+
+/* ===== SUBMIT + RESULT ===== */
+.submit-zone{max-width:960px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
+.btn-submit{width:100%;background:var(--blue);color:#fff;border:none;padding:16px;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer;transition:background .15s;font-family:'Cairo',sans-serif;box-shadow:0 8px 28px -8px rgba(30,144,255,.5);}
+.btn-submit:hover{background:var(--blue2);}
+.btn-submit:disabled{background:var(--t3);cursor:not-allowed;box-shadow:none;}
+.result-box{background:var(--ink2);border:2px solid var(--blue);border-radius:16px;padding:36px;text-align:center;margin-top:20px;display:none;}
+.result-box.show{display:block;animation:pop .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.result-score{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:var(--blue);margin-bottom:8px;}
+.result-grade{font-size:20px;font-weight:800;margin-bottom:6px;}
+.result-sub{color:var(--t2);font-size:14px;margin-bottom:20px;}
+.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;}
+.rbar{background:var(--ink3);border-radius:9px;padding:14px;text-align:center;}
+.rbar-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-bottom:4px;}
+.rbar-lbl{font-size:11px;color:var(--t2);}
+.btn-retry{background:transparent;border:2px solid var(--blue);color:var(--blue);padding:12px 32px;border-radius:9px;font-weight:800;font-size:14px;cursor:pointer;font-family:'Cairo',sans-serif;transition:background .2s;}
+.btn-retry:hover{background:var(--blueL);}
+
+/* ===== FLOATING SCORE ===== */
+.float-score{position:fixed;bottom:24px;right:24px;background:var(--ink3);border:1px solid rgba(30,144,255,.4);border-radius:10px;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);z-index:200;display:none;}
+.float-score span{color:var(--blue);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-row">
+      <img src="logo.png" class="logo-img" alt="SamySchool" onerror="this.style.display='none'">
+      <div>
+        <div class="logo-text">Samy<span>School</span></div>
+        <div class="logo-sub">Vocabulary Question Bank · 2026</div>
+      </div>
+    </div>
+    <div class="header-badge" id="h-badge">200 Questions</div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1 class="hero-title">Vocabulary <span>Question Bank</span></h1>
+  <p class="hero-sub">بنك الأسئلة الشامل للكلمات والمصطلحات — منهج الثالث الثانوي 2026<br>اختار إجاباتك وسلّم في الآخر عشان تشوف درجتك مع تفسير لكل إجابة</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="s-total">200</div><div class="stat-lbl">إجمالي الأسئلة</div></div>
+    <div class="stat"><div class="stat-num" id="s-answered" style="color:var(--gold)">0</div><div class="stat-lbl">تمت إجابته</div></div>
+    <div class="stat"><div class="stat-num" id="s-correct" style="color:var(--green)">0</div><div class="stat-lbl">إجابات صح</div></div>
+    <div class="stat"><div class="stat-num" id="s-pct" style="color:var(--blue)">0%</div><div class="stat-lbl">النسبة</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-txt" id="prog-txt">0 / 200</div>
+  </div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterQ('all',this)">All Units</button>
+    <button class="filter-btn" onclick="filterQ('1-4',this)">Units 1–4</button>
+    <button class="filter-btn" onclick="filterQ('5-8',this)">Units 5–8</button>
+    <button class="filter-btn" onclick="filterQ('9-12',this)">Units 9–12</button>
+    <button class="filter-btn" onclick="filterQ('syn',this)">Synonyms</button>
+    <button class="filter-btn" onclick="filterQ('ant',this)">Antonyms</button>
+    <button class="filter-btn" onclick="filterQ('def',this)">Definitions</button>
+  </div>
+</div>
+
+<div class="questions" id="questions-container"></div>
+
+<div class="submit-zone">
+  <button class="btn-submit" id="btn-submit" onclick="submitAll()">
+    📋 تسليم الامتحان — شوف نتيجتك مع التفسير
+  </button>
+  <div class="result-box" id="result-box">
+    <div class="result-score" id="res-score">--/--</div>
+    <div class="result-grade" id="res-grade">--</div>
+    <div class="result-sub" id="res-sub">--</div>
+    <div class="result-bars">
+      <div class="rbar"><div class="rbar-num" id="rb-correct" style="color:var(--green)">0</div><div class="rbar-lbl">✅ إجابات صح</div></div>
+      <div class="rbar"><div class="rbar-num" id="rb-wrong" style="color:var(--red)">0</div><div class="rbar-lbl">❌ إجابات غلط</div></div>
+      <div class="rbar"><div class="rbar-num" id="rb-skip" style="color:var(--gold)">0</div><div class="rbar-lbl">⬜ لم يُجاب</div></div>
+    </div>
+    <button class="btn-retry" onclick="retryAll()">🔄 إعادة المحاولة</button>
+  </div>
+</div>
+
+<div class="float-score" id="float-score">Score: <span id="fs-txt">0/0</span></div>
+
+<script>
+// =====================================================================
+// QUESTION BANK — 200 Questions from Real Curriculum (Units 1-12 2026)
+// =====================================================================
+const BANK = [
+// ===== UNITS 1-4 SYNONYMS =====
+{u:'1-4',t:'syn',q:'The astronauts managed to <span class="kw">troubleshoot</span> the shuttle\'s sudden pause. "Troubleshoot" means ...',
+ opts:['hinder','diagnose','maximize','transfer'],ans:1,
+ exp:'Troubleshoot = to find and fix problems. Synonym: diagnose (تشخيص).',ar:'كشف الخطأ وإصلاحه — مرادفه: diagnose = يشخّص/يكتشف'},
+
+{u:'1-4',t:'syn',q:'His speech had clear <span class="kw">implications</span> that the team would have a new coach. "Implications" here means ...',
+ opts:['sources','effects','hints','customs'],ans:1,
+ exp:'Implications = things that are suggested without being directly stated. Synonym: effects/results.',ar:'تداعيات — مرادفه: effects = آثار/نتائج'},
+
+{u:'1-4',t:'ant',q:'The country\'s native language has been <span class="kw">marginalized</span>. The antonym of "marginalized" is ...',
+ opts:['disregarded','focused','demoted','automated'],ans:1,
+ exp:'Marginalized = pushed to the edge / ignored. Antonym: focused / central (محوري).',ar:'مُهمَّش — المتضاد: focused = محوري'},
+
+{u:'1-4',t:'syn',q:'Violent thunderstorms caused <span class="kw">chaos</span> on the roads. The synonym of "chaos" is ...',
+ opts:['settlement','clumsiness','dedication','disruption'],ans:3,
+ exp:'Chaos = complete disorder. Synonym: disruption (اضطراب/فوضى).',ar:'فوضى — مرادفه: disruption = اضطراب'},
+
+{u:'1-4',t:'ant',q:'Artists are <span class="kw">embracing</span> new technology. The antonym of "embracing" is ...',
+ opts:['defining','diagnosing','rejecting','supporting'],ans:2,
+ exp:'Embracing = accepting happily. Antonym: rejecting (رفض).',ar:'يتبنى — المتضاد: rejecting = يرفض'},
+
+{u:'1-4',t:'syn',q:'Young children are particularly <span class="kw">vulnerable</span> to flu. The synonym of "vulnerable" is ...',
+ opts:['exiled','extracted','exempted','exposed'],ans:3,
+ exp:'Vulnerable = easily harmed. Synonym: exposed (مُعرَّض لـ).',ar:'عُرضة للخطر — مرادفه: exposed = معرّض لـ'},
+
+{u:'1-4',t:'ant',q:'The president always <span class="kw">emphasizes</span> the importance of work. The antonym of "emphasize" is ...',
+ opts:['understate','assure','highlight','underestimate'],ans:3,
+ exp:'Emphasize = stress / highlight. Antonym: underestimate / understate.',ar:'يُبرز — المتضاد: underestimate = يستهين بـ'},
+
+{u:'1-4',t:'syn',q:'They will <span class="kw">implement</span> the new policy next week. The synonym of "implement" is ...',
+ opts:['enforce','neglect','disregard','carry on'],ans:0,
+ exp:'Implement = put into action. Synonym: enforce (ينفّذ).',ar:'يُطبّق — مرادفه: enforce = ينفّذ/يُطبّق'},
+
+{u:'1-4',t:'syn',q:'The meeting hall was <span class="kw">packed</span> with members. "Packed" is synonymous with ...',
+ opts:['wrapped','framed','vacant','congested'],ans:3,
+ exp:'Packed = very full / crowded. Synonym: congested (مكتظ).',ar:'مكتظ — مرادفه: congested = مزدحم'},
+
+{u:'1-4',t:'def',q:'She is somehow shy and hesitant, so you can\'t describe her as <span class="kw">indifferent</span>. "Indifferent" means ...',
+ opts:['distinguished','irrelevant','neglectful','mindful'],ans:1,
+ exp:'Indifferent = not caring; having no interest. Synonym: unconcerned.',ar:'لامبالي — مرادفه: unconcerned'},
+
+{u:'1-4',t:'ant',q:'We all <span class="kw">condemn</span> all forms of bullying. The antonym of "condemn" is ...',
+ opts:['praise','blame','attack','doom'],ans:0,
+ exp:'Condemn = express strong disapproval. Antonym: praise (يمدح).',ar:'يُدين — المتضاد: praise = يمدح'},
+
+{u:'1-4',t:'def',q:'New factories are being <span class="kw">automated</span> to increase productivity. "Automated" means ...',
+ opts:['manual','mechanical','human-operated','self-operating'],ans:3,
+ exp:'Automated = working by machines without human control (آلي).',ar:'آلي/مُميكَن — يعمل تلقائياً بدون تدخل بشري'},
+
+{u:'1-4',t:'syn',q:'The project showed <span class="kw">profound</span> effects on the community. The synonym of "profound" is ...',
+ opts:['shallow','deep','minor','ordinary'],ans:1,
+ exp:'Profound = deep and significant. Synonym: deep / far-reaching.',ar:'بالغ/عميق — مرادفه: deep = عميق'},
+
+{u:'1-4',t:'def',q:'The building\'s <span class="kw">infrastructure</span> needs upgrading. "Infrastructure" means ...',
+ opts:['appearance','basic systems','furniture','decoration'],ans:1,
+ exp:'Infrastructure = the basic systems (roads, electricity, etc.) that make a place work.',ar:'البنية التحتية — الأنظمة الأساسية (طرق، كهرباء)'},
+
+{u:'1-4',t:'ant',q:'The team showed <span class="kw">optimistic</span> results. The antonym of "optimistic" is ...',
+ opts:['realistic','pessimistic','certain','careful'],ans:1,
+ exp:'Optimistic = expecting good results. Antonym: pessimistic (متشائم).',ar:'متفائل — المتضاد: pessimistic = متشائم'},
+
+{u:'1-4',t:'def',q:'The doctor managed to <span class="kw">administer</span> the medicine on time. "Administer" means ...',
+ opts:['prescribe','give','refuse','diagnose'],ans:1,
+ exp:'Administer = to give or apply (medicine). Arabic: يُعطي/يُدير الدواء.',ar:'يُعطي/يُدير الدواء — يوصل العلاج للمريض'},
+
+{u:'1-4',t:'syn',q:'The phenomenon was truly <span class="kw">awe-inspiring</span>. The synonym is ...',
+ opts:['ordinary','breathtaking','boring','simple'],ans:1,
+ exp:'Awe-inspiring = causing feelings of wonder and admiration.',ar:'مُلهم للرهبة والإعجاب — مذهل'},
+
+{u:'1-4',t:'def',q:'The news caused a <span class="kw">standstill</span> in traffic. "Standstill" means ...',
+ opts:['slow movement','complete stop','traffic jam','speed'],ans:1,
+ exp:'Standstill = a complete stop of movement or activity (ركود/توقف كامل).',ar:'توقف تام — ركود/توقف كامل للحركة'},
+
+{u:'1-4',t:'syn',q:'The medicine helped him <span class="kw">thrive</span> after surgery. Synonym of "thrive" is ...',
+ opts:['suffer','struggle','prosper','decline'],ans:2,
+ exp:'Thrive = to grow or develop successfully. Synonym: prosper (يزدهر).',ar:'يزدهر/ينمو — مرادفه: prosper = يزدهر'},
+
+{u:'1-4',t:'ant',q:'The glass vase is very <span class="kw">fragile</span>. The antonym of "fragile" is ...',
+ opts:['heavy','sturdy','light','colorful'],ans:1,
+ exp:'Fragile = easily broken. Antonym: sturdy / strong (متين/قوي).',ar:'هش — المتضاد: sturdy = متين/قوي'},
+
+{u:'1-4',t:'def',q:'Scientists study <span class="kw">phenomena</span> to understand the natural world. "Phenomena" means ...',
+ opts:['experiments','theories','observable events','solutions'],ans:2,
+ exp:'Phenomena = observable events or facts (ظواهر). Singular: phenomenon.',ar:'ظواهر — الجمع: phenomenon = ظاهرة'},
+
+{u:'1-4',t:'syn',q:'The <span class="kw">resolution</span> to the conflict was reached peacefully. Synonym of "resolution" is ...',
+ opts:['problem','solution','argument','disagreement'],ans:1,
+ exp:'Resolution = a firm decision or solution. Synonym: solution (حل).',ar:'حل/قرار — مرادفه: solution = حل'},
+
+{u:'1-4',t:'def',q:'The company aims to <span class="kw">revolutionize</span> the industry. "Revolutionize" means ...',
+ opts:['slightly improve','completely change','maintain','monitor'],ans:1,
+ exp:'Revolutionize = to completely change something (يُغيّر جذرياً).',ar:'يُغيّر جذرياً — يحدث تحولاً جذرياً'},
+
+{u:'1-4',t:'syn',q:'Working in medicine is very <span class="kw">rewarding</span>. Synonym of "rewarding" is ...',
+ opts:['tiring','fulfilling','dangerous','simple'],ans:1,
+ exp:'Rewarding = giving satisfaction and benefit. Synonym: fulfilling (مُجزٍ).',ar:'مُجزٍ — مرادفه: fulfilling = مُرضٍ'},
+
+{u:'1-4',t:'ant',q:'The patient felt <span class="kw">hazardous</span> chemicals in the lab. Antonym of "hazardous" is ...',
+ opts:['safe','harmful','toxic','exposed'],ans:0,
+ exp:'Hazardous = dangerous. Antonym: safe (آمن).',ar:'خطير — المتضاد: safe = آمن'},
+
+// ===== UNITS 5-8 =====
+{u:'5-8',t:'def',q:'Doctors recommend regular exercise to <span class="kw">maintain</span> good health. "Maintain" means ...',
+ opts:['improve','keep','destroy','monitor'],ans:1,
+ exp:'Maintain = to keep something in good condition. Arabic: يحافظ على.',ar:'يحافظ على — يُبقي شيئاً في حالة جيدة'},
+
+{u:'5-8',t:'syn',q:'The movie was so <span class="kw">heartbreaking</span> that everyone cried. Synonym is ...',
+ opts:['thrilling','moving','boring','funny'],ans:1,
+ exp:'Heartbreaking = causing great sadness. Synonym: moving / sad.',ar:'مُحزن — مرادفه: moving/sad = مؤثر'},
+
+{u:'5-8',t:'def',q:'The ancient <span class="kw">civilization</span> built impressive monuments. "Civilization" means ...',
+ opts:['country','advanced society','group of people','religion'],ans:1,
+ exp:'Civilization = an advanced stage of human social development (حضارة).',ar:'حضارة — مرحلة متقدمة من التطور البشري'},
+
+{u:'5-8',t:'syn',q:'She packed her <span class="kw">carry-on bag</span> for the flight. "Carry-on bag" means ...',
+ opts:['checked luggage','hand luggage','large suitcase','travel bag'],ans:1,
+ exp:'Carry-on bag = a small bag you take inside the plane. Arabic: حقيبة يد.',ar:'حقيبة يد — الحقيبة التي تُؤخذ داخل الطائرة'},
+
+{u:'5-8',t:'ant',q:'The road is very <span class="kw">harmful</span> for pedestrians. Antonym of "harmful" is ...',
+ opts:['safe','beneficial','useful','helpful'],ans:1,
+ exp:'Harmful = causing damage. Antonym: beneficial / harmless (مفيد).',ar:'ضار — المتضاد: beneficial = مفيد'},
+
+{u:'5-8',t:'def',q:'The security officer checked the <span class="kw">checkpoint</span>. "Checkpoint" means ...',
+ opts:['airport gate','security inspection point','boarding area','lounge'],ans:1,
+ exp:'Checkpoint = a place where people or vehicles are stopped and checked (نقطة تفتيش).',ar:'نقطة تفتيش — مكان للتحقق من الهويات'},
+
+{u:'5-8',t:'syn',q:'The city was <span class="kw">bustling</span> with tourists. Synonym of "bustling" is ...',
+ opts:['quiet','crowded with activity','empty','peaceful'],ans:1,
+ exp:'Bustling = full of activity. Synonym: busy / lively (صاخب/نشط).',ar:'يعج بالنشاط — مرادفه: lively = حيوي'},
+
+{u:'5-8',t:'def',q:'The Nile has a very <span class="kw">fertile</span> soil for farming. "Fertile" means ...',
+ opts:['dry','rocky','productive for growing','sandy'],ans:2,
+ exp:'Fertile = able to produce good crops (خصب/منتج).',ar:'خصب — قادر على إنتاج محاصيل جيدة'},
+
+{u:'5-8',t:'syn',q:'Farmers use <span class="kw">irrigation</span> systems to water crops. Synonym is ...',
+ opts:['flooding','watering methods','rain','drought'],ans:1,
+ exp:'Irrigation = the supply of water to land (نظام الري).',ar:'نظام الري — إيصال الماء للأراضي الزراعية'},
+
+{u:'5-8',t:'def',q:'The ancient <span class="kw">scribe</span> copied texts carefully. "Scribe" means ...',
+ opts:['priest','warrior','writer/copyist','merchant'],ans:2,
+ exp:'Scribe = a person who copies out documents (كاتب/ناسخ).',ar:'كاتب/ناسخ — شخص يكتب أو ينسخ الوثائق'},
+
+{u:'5-8',t:'syn',q:'He made a <span class="kw">compromise</span> to end the argument. Synonym of "compromise" is ...',
+ opts:['argument','agreement','demand','disagreement'],ans:1,
+ exp:'Compromise = a middle agreement. Synonym: settlement / deal.',ar:'تسوية/حل وسط — مرادفه: settlement = تسوية'},
+
+{u:'5-8',t:'def',q:'She felt <span class="kw">depression</span> after losing her job. "Depression" means ...',
+ opts:['happiness','sadness disorder','stress','anxiety'],ans:1,
+ exp:'Depression = a serious mood disorder with persistent sadness (اكتئاب).',ar:'اكتئاب — اضطراب مزاجي مع حزن مستمر'},
+
+{u:'5-8',t:'syn',q:'The ancient <span class="kw">ziggurat</span> was impressive. What is a ziggurat?',
+ opts:['palace','pyramid-like temple','market','fortress'],ans:1,
+ exp:'Ziggurat = an ancient stepped pyramid temple from Mesopotamia (معبد مدرج قديم).',ar:'معبد مدرج قديم — أهرامات مدرّجة من بلاد الرافدين'},
+
+{u:'5-8',t:'def',q:'The region has <span class="kw">abundant</span> natural resources. "Abundant" means ...',
+ opts:['rare','scarce','plentiful','limited'],ans:2,
+ exp:'Abundant = existing in large quantities. Synonym: plentiful (وافر/غزير).',ar:'وافر/غزير — موجود بكميات كبيرة'},
+
+{u:'5-8',t:'syn',q:'The student\'s work was <span class="kw">flawless</span>. Synonym of "flawless" is ...',
+ opts:['perfect','ordinary','average','incomplete'],ans:0,
+ exp:'Flawless = having no mistakes. Synonym: perfect / ideal (مثالي).',ar:'بلا عيوب — مرادفه: perfect = مثالي'},
+
+{u:'5-8',t:'ant',q:'The road was <span class="kw">overcast</span> with clouds. Antonym of "overcast" is ...',
+ opts:['sunny','stormy','cloudy','rainy'],ans:0,
+ exp:'Overcast = covered with clouds and dark. Antonym: sunny / bright (مشمس).',ar:'ملبّد بالغيوم — المتضاد: sunny = مشمس'},
+
+{u:'5-8',t:'def',q:'We saw the chicks <span class="kw">hatching</span> from their eggs. "Hatching" means ...',
+ opts:['hiding','breaking out of an egg','building nests','sleeping'],ans:1,
+ exp:'Hatching = coming out of an egg (يفقس/يخرج من البيضة).',ar:'يفقس — الخروج من البيضة'},
+
+{u:'5-8',t:'syn',q:'The recent climate changes had <span class="kw">profound</span> effects on coastal areas. Synonym is ...',
+ opts:['trivial','deep/significant','surface','minor'],ans:1,
+ exp:'Profound = deep and important. Synonym: significant / deep (بالغ/عميق).',ar:'بالغ/عميق — مرادفه: significant = هام'},
+
+{u:'5-8',t:'def',q:'The company\'s plan focuses on the <span class="kw">implementation</span> of new ideas. "Implementation" means ...',
+ opts:['planning','putting into action','criticism','evaluation'],ans:1,
+ exp:'Implementation = the process of putting a plan into action (التطبيق/التنفيذ).',ar:'التطبيق/التنفيذ — عملية تحويل الخطط إلى أفعال'},
+
+{u:'5-8',t:'syn',q:'The task was so <span class="kw">repetitive</span> that he was bored. Synonym of "repetitive" is ...',
+ opts:['interesting','monotonous','exciting','varied'],ans:1,
+ exp:'Repetitive = doing the same thing over and over. Synonym: monotonous (رتيب).',ar:'متكرر/رتيب — مرادفه: monotonous = ممل/رتيب'},
+
+{u:'5-8',t:'def',q:'She felt <span class="kw">anxiety</span> before the exam. "Anxiety" means ...',
+ opts:['excitement','happiness','nervousness/worry','confidence'],ans:2,
+ exp:'Anxiety = a feeling of worry and unease (قلق/توتر).',ar:'قلق/توتر — شعور بالخوف وعدم الارتياح'},
+
+{u:'5-8',t:'ant',q:'He looked <span class="kw">clumsy</span> on the dance floor. Antonym of "clumsy" is ...',
+ opts:['awkward','graceful','careless','slow'],ans:1,
+ exp:'Clumsy = moving awkwardly. Antonym: graceful / agile (رشيق).',ar:'أخرق — المتضاد: graceful = رشيق'},
+
+{u:'5-8',t:'def',q:'The airport <span class="kw">lounge</span> was comfortable and spacious. "Lounge" means ...',
+ opts:['runway','check-in area','waiting room','security gate'],ans:2,
+ exp:'Lounge = a comfortable room for waiting (صالة انتظار).',ar:'صالة انتظار — غرفة مريحة للانتظار في المطار'},
+
+{u:'5-8',t:'syn',q:'She got a <span class="kw">promotion</span> at work. Synonym of "promotion" is ...',
+ opts:['demotion','advancement','salary','contract'],ans:1,
+ exp:'Promotion = moving to a higher position. Synonym: advancement (ترقية).',ar:'ترقية — مرادفه: advancement = تقدم/ترقية'},
+
+{u:'5-8',t:'def',q:'Traders followed the ancient <span class="kw">Silk Road</span>. What was the Silk Road?',
+ opts:['A type of fabric','A famous trading route','A Chinese palace','A type of ship'],ans:1,
+ exp:'Silk Road = ancient network of trade routes connecting China to the West (طريق الحرير).',ar:'طريق الحرير — شبكة طرق تجارية قديمة ربطت الصين بالغرب'},
+
+// ===== UNITS 9-12 =====
+{u:'9-12',t:'def',q:'Scientists study <span class="kw">black holes</span> in deep space. What are black holes?',
+ opts:['bright stars','dense regions with strong gravity','empty spaces','planets'],ans:1,
+ exp:'Black holes = regions in space where gravity is so strong that nothing can escape (الثقوب السوداء).',ar:'الثقوب السوداء — مناطق في الفضاء جاذبيتها شديدة جداً'},
+
+{u:'9-12',t:'syn',q:'The teacher\'s story was so <span class="kw">inspiring</span> that students tried harder. Synonym is ...',
+ opts:['motivational','grateful','patronizing','isolating'],ans:0,
+ exp:'Inspiring = giving motivation. Synonym: motivational / moving (ملهم).',ar:'ملهم/محفّز — مرادفه: motivational = تحفيزي'},
+
+{u:'9-12',t:'def',q:'The child was <span class="kw">terrified</span> when the lights went out. "Terrified" means ...',
+ opts:['surprised','cheerful','frightened','confused'],ans:2,
+ exp:'Terrified = extremely scared (مذعور/خائف جداً). Synonym: frightened.',ar:'مذعور/خائف جداً — مرادفه: frightened = خائف'},
+
+{u:'9-12',t:'syn',q:'His kind words during my struggles were truly <span class="kw">touching</span>. Synonym is ...',
+ opts:['rejecting','moving','terrifying','polite'],ans:1,
+ exp:'Touching = causing feelings of emotion. Synonym: moving / influential (مؤثر).',ar:'مؤثر — مرادفه: moving = مؤثر عاطفياً'},
+
+{u:'9-12',t:'ant',q:'She answered <span class="kw">hesitatingly</span>. Antonym of "hesitatingly" is ...',
+ opts:['unhesitatingly','regularly','sadly','slowly'],ans:0,
+ exp:'Hesitatingly = with uncertainty. Antonym: unhesitatingly / confidently (بلا تردد).',ar:'بتردد — المتضاد: unhesitatingly = بلا تردد'},
+
+{u:'9-12',t:'ant',q:'He always has a <span class="kw">cheerful</span> smile. Antonym of "cheerful" is ...',
+ opts:['gloomy','touched','happy','spontaneous'],ans:0,
+ exp:'Cheerful = happy and positive. Antonym: gloomy / sad (كئيب).',ar:'مبتهج — المتضاد: gloomy = كئيب/حزين'},
+
+{u:'9-12',t:'def',q:'His <span class="kw">politeness</span> made him thank his hosts many times. "Politeness" means ...',
+ opts:['rudeness','shyness','good manners','weakness'],ans:2,
+ exp:'Politeness = respectful and well-mannered behavior (أدب/تهذيب).',ar:'أدب/تهذيب — السلوك المحترم'},
+
+{u:'9-12',t:'def',q:'People in <span class="kw">collectivist</span> societies focus on group harmony. "Collectivist" means ...',
+ opts:['individualistic','group-oriented','isolated','competitive'],ans:1,
+ exp:'Collectivist = believing group work is more important than individual work (جماعي).',ar:'جماعي — يؤمن بأهمية العمل الجماعي'},
+
+{u:'9-12',t:'def',q:'Good <span class="kw">feedback</span> helps workers improve. "Feedback" means ...',
+ opts:['punishment','salary','comments on performance','evaluation test'],ans:2,
+ exp:'Feedback = information about performance to help improve (تغذية راجعة).',ar:'تغذية راجعة — معلومات عن الأداء لتحسينه'},
+
+{u:'9-12',t:'def',q:'The museum had <span class="kw">porcelain</span> bowls from China. "Porcelain" means ...',
+ opts:['silk fabric','gold material','fine ceramic material','bronze'],ans:2,
+ exp:'Porcelain = a type of fine white ceramic material (خزف/بورسلين).',ar:'خزف/بورسلين — مادة خزفية رقيقة بيضاء'},
+
+{u:'9-12',t:'syn',q:'She dreams of becoming a <span class="kw">scholar</span>. Synonym of "scholar" is ...',
+ opts:['emperor','merchant','researcher/academic','warrior'],ans:2,
+ exp:'Scholar = a specialist in a field of study. Synonym: researcher / academic (عالم/باحث).',ar:'عالم/باحث — متخصص في مجال دراسي'},
+
+{u:'9-12',t:'def',q:'The Tang <span class="kw">dynasty</span> ruled China for centuries. "Dynasty" means ...',
+ opts:['religion','ruling family/line','army','government'],ans:1,
+ exp:'Dynasty = a succession of rulers from the same family (سلالة/أسرة حاكمة).',ar:'سلالة/أسرة حاكمة — متعاقبون من نفس العائلة'},
+
+{u:'9-12',t:'def',q:'The poet used beautiful <span class="kw">imagery</span>. "Imagery" means ...',
+ opts:['imagination','descriptive language creating mental pictures','photographs','emotions'],ans:1,
+ exp:'Imagery = language that creates pictures in the reader\'s mind (تصوير بلاغي).',ar:'تصوير بلاغي — لغة تخلق صوراً ذهنية'},
+
+{u:'9-12',t:'syn',q:'Her voice had a pleasant <span class="kw">tone</span>. Synonym of "tone" is ...',
+ opts:['color','quality/pitch','loudness','rhythm'],ans:1,
+ exp:'Tone = the quality or character of a sound (نبرة/نغمة).',ar:'نبرة/نغمة — جودة أو طابع الصوت'},
+
+{u:'9-12',t:'def',q:'Stars <span class="kw">twinkle</span> in the night sky. "Twinkle" means ...',
+ opts:['disappear','rotate','shine with flickering light','explode'],ans:2,
+ exp:'Twinkle = to shine with a flickering or sparkling light (يتلألأ/يلمع).',ar:'يتلألأ/يلمع — يضيء بنور وامض'},
+
+{u:'9-12',t:'syn',q:'The scientist studied the <span class="kw">cosmos</span>. Synonym of "cosmos" is ...',
+ opts:['earth','the universe','the atmosphere','the galaxy'],ans:1,
+ exp:'Cosmos = the universe. Synonym: universe (الكون).',ar:'الكون — مرادفه: universe = الكون'},
+
+{u:'9-12',t:'def',q:'She has a <span class="kw">spontaneous</span> personality. "Spontaneous" means ...',
+ opts:['planned','calculated','natural and unplanned','shy'],ans:2,
+ exp:'Spontaneous = happening naturally without planning (عفوي/تلقائي).',ar:'عفوي/تلقائي — يحدث بشكل طبيعي بدون تخطيط'},
+
+{u:'9-12',t:'syn',q:'The traveler was grateful for the <span class="kw">hospitality</span>. Synonym is ...',
+ opts:['hostility','warmth/friendliness','coldness','formality'],ans:1,
+ exp:'Hospitality = friendly treatment of guests. Synonym: warmth / generosity (كرم الضيافة).',ar:'كرم الضيافة — مرادفه: warmth = الدفء'},
+
+{u:'9-12',t:'def',q:'The story had great <span class="kw">wisdom</span>. "Wisdom" means ...',
+ opts:['intelligence','the ability to make good decisions based on experience','knowledge','memory'],ans:1,
+ exp:'Wisdom = good judgment gained from experience (حكمة).',ar:'حكمة — القدرة على اتخاذ قرارات صحيحة'},
+
+{u:'9-12',t:'ant',q:'Her behavior was very <span class="kw">individualistic</span>. Antonym is ...',
+ opts:['collective','personal','selfish','independent'],ans:0,
+ exp:'Individualistic = putting yourself first. Antonym: collectivist / communal (جماعي).',ar:'فردي — المتضاد: collectivist = جماعي'},
+
+// ===== MORE QUESTIONS — ALL UNITS =====
+{u:'1-4',t:'def',q:'The team worked in <span class="kw">partnership</span> on the project. "Partnership" means ...',
+ opts:['competition','cooperation','agreement','argument'],ans:1,
+ exp:'Partnership = a relationship where people work together (شراكة).',ar:'شراكة — علاقة تعاون بين طرفين'},
+
+{u:'1-4',t:'syn',q:'The weather forecast predicted rain. Synonym of "forecast" is ...',
+ opts:['report','prediction','review','warning'],ans:1,
+ exp:'Forecast = a prediction about the future (توقعات/تنبؤ).',ar:'توقعات — تنبؤ بالمستقبل'},
+
+{u:'1-4',t:'def',q:'The scientist measured the patient\'s <span class="kw">pulse</span>. "Pulse" means ...',
+ opts:['blood pressure','heartbeat rhythm','breathing','temperature'],ans:1,
+ exp:'Pulse = the regular beat of the heart (نبض).',ar:'نبض — الدقات المنتظمة للقلب'},
+
+{u:'5-8',t:'syn',q:'The ancient <span class="kw">artifacts</span> were displayed in the museum. Synonym of "artifacts" is ...',
+ opts:['paintings','historical objects','documents','sculptures'],ans:1,
+ exp:'Artifacts = objects made by humans, especially from the past (تحف/آثار).',ar:'تحف/آثار — أشياء صنعها البشر في الماضي'},
+
+{u:'5-8',t:'def',q:'He decided to <span class="kw">adopt</span> the new method. "Adopt" means ...',
+ opts:['reject','modify','take up and use','create'],ans:2,
+ exp:'Adopt = to take something and start using it (يتبنى).',ar:'يتبنى — يأخذ شيئاً ويبدأ استخدامه'},
+
+{u:'9-12',t:'def',q:'The author wrote a fascinating <span class="kw">non-fiction</span> book. "Non-fiction" means ...',
+ opts:['imaginary stories','factual writing about real events','science fiction','poetry'],ans:1,
+ exp:'Non-fiction = writing based on real facts and events (غير خيالي).',ar:'غير خيالي — كتابة مبنية على وقائع حقيقية'},
+
+{u:'9-12',t:'syn',q:'The doctor showed <span class="kw">generosity</span> to his patients. Synonym is ...',
+ opts:['kindness','selfishness','strictness','patience'],ans:0,
+ exp:'Generosity = willingness to give freely. Synonym: kindness / giving (كرم).',ar:'كرم — مرادفه: kindness = طيبة'},
+
+{u:'1-4',t:'def',q:'The rescue team used <span class="kw">paramedics</span>. "Paramedics" means ...',
+ opts:['doctors','nurses','emergency medical workers','volunteers'],ans:2,
+ exp:'Paramedics = emergency healthcare workers (المسعفون).',ar:'المسعفون — العمال الصحيون في حالات الطوارئ'},
+
+{u:'5-8',t:'def',q:'Regular <span class="kw">interactions</span> help reduce stress. "Interactions" means ...',
+ opts:['arguments','meetings','communication and contact','activities'],ans:2,
+ exp:'Interactions = communication or contact between people (تفاعلات/تواصل).',ar:'تفاعلات/تواصل — التواصل والاحتكاك بين الناس'},
+
+{u:'9-12',t:'def',q:'The student completed an <span class="kw">apprenticeship</span> in engineering. "Apprenticeship" means ...',
+ opts:['degree','on-the-job training','scholarship','internship exam'],ans:1,
+ exp:'Apprenticeship = a period of training in a skilled job (تدريب مهني).',ar:'تدريب مهني — فترة التعلم في وظيفة متخصصة'},
+
+{u:'1-4',t:'syn',q:'The news coverage had great <span class="kw">scope</span>. Synonym of "scope" is ...',
+ opts:['range/extent','depth','accuracy','speed'],ans:0,
+ exp:'Scope = the range or extent of something (نطاق/مجال).',ar:'نطاق/مجال — مرادفه: range = نطاق'},
+
+{u:'5-8',t:'def',q:'The ancient city had sophisticated <span class="kw">irrigation</span> channels. "Irrigation" means ...',
+ opts:['roads','water supply systems','markets','temples'],ans:1,
+ exp:'Irrigation = a system for supplying water to land (نظام الري).',ar:'نظام الري — توفير الماء للأراضي الزراعية'},
+
+{u:'9-12',t:'syn',q:'He had a successful <span class="kw">career</span> in medicine. Synonym is ...',
+ opts:['hobby','profession/job','dream','plan'],ans:1,
+ exp:'Career = a person\'s professional life or occupation (مهنة/مسار وظيفي).',ar:'مهنة — مرادفه: profession = مهنة'},
+
+{u:'1-4',t:'def',q:'The region faced severe <span class="kw">droughts</span>. "Droughts" means ...',
+ opts:['floods','long dry periods','storms','cold spells'],ans:1,
+ exp:'Droughts = long periods without rain causing water shortage (موجات جفاف).',ar:'موجات جفاف — فترات طويلة بدون مطر'},
+
+{u:'5-8',t:'def',q:'She tried to <span class="kw">capture</span> the beautiful sunset. "Capture" means ...',
+ opts:['destroy','record/take a picture of','ignore','change'],ans:1,
+ exp:'Capture = to take and keep something / to record an image (يلتقط/يأسر).',ar:'يلتقط/يأسر — يأخذ صورة أو يحتجز'},
+
+{u:'9-12',t:'ant',q:'She felt <span class="kw">terrified</span> in the dark. Antonym of "terrified" is ...',
+ opts:['frightened','courageous','panicked','anxious'],ans:1,
+ exp:'Terrified = extremely scared. Antonym: courageous / calm (شجاع/هادئ).',ar:'مذعور — المتضاد: courageous = شجاع'},
+
+{u:'1-4',t:'def',q:'They worked to <span class="kw">detect</span> the problem early. "Detect" means ...',
+ opts:['ignore','solve','discover/find','create'],ans:2,
+ exp:'Detect = to discover or notice something (يكتشف/يرصد).',ar:'يكتشف/يرصد — يجد أو يلاحظ شيئاً'},
+
+{u:'5-8',t:'syn',q:'The student was <span class="kw">curious</span> about the experiment. Synonym is ...',
+ opts:['bored','eager to know','uninterested','frightened'],ans:1,
+ exp:'Curious = wanting to know or learn. Synonym: inquisitive (فضولي).',ar:'فضولي — مرادفه: inquisitive = متطفل/فضولي'},
+
+{u:'9-12',t:'def',q:'His book was about <span class="kw">individualistic</span> cultures. "Individualistic" means ...',
+ opts:['group-focused','self-focused','traditional','modern'],ans:1,
+ exp:'Individualistic = putting individual needs above group needs (فردي/مستقل).',ar:'فردي/مستقل — يُقدّم مصالحه الشخصية'},
+
+{u:'1-4',t:'syn',q:'The city had a huge <span class="kw">megacity</span> population. Synonym of "megacity" is ...',
+ opts:['small town','large city','suburb','village'],ans:1,
+ exp:'Megacity = a very large city (مدينة كبرى).',ar:'مدينة كبرى — مدينة ضخمة جداً'},
+
+// ===== ADDITIONAL 100+ QUESTIONS =====
+{u:'1-4',t:'def',q:'Scientists worry about climate <span class="kw">change</span>. "Climate" refers to ...',
+ opts:['daily weather','long-term weather patterns','seasonal rain','temperature only'],ans:1,
+ exp:'Climate = the typical weather conditions in a region over a long period (مناخ).',ar:'مناخ — النمط الجوي المعتاد لمنطقة على مدى فترة طويلة'},
+
+{u:'5-8',t:'def',q:'The pilot made an emergency <span class="kw">departure</span>. "Departure" means ...',
+ opts:['arrival','landing','leaving/going away','parking'],ans:2,
+ exp:'Departure = the act of leaving a place (مغادرة/رحيل).',ar:'مغادرة/رحيل — فعل المغادرة'},
+
+{u:'9-12',t:'syn',q:'The view from the mountain was <span class="kw">breathtaking</span>. Synonym is ...',
+ opts:['ordinary','amazing','frightening','distant'],ans:1,
+ exp:'Breathtaking = extremely impressive or beautiful. Synonym: amazing / stunning.',ar:'مذهل/جذاب — مرادفه: amazing = مذهل'},
+
+{u:'1-4',t:'def',q:'She wore an <span class="kw">amphibious</span> suit for water and land. "Amphibious" means ...',
+ opts:['waterproof','able to work on land and water','fireproof','lightweight'],ans:1,
+ exp:'Amphibious = able to live or operate on both land and water (برمائي).',ar:'برمائي — يعمل على الأرض والماء'},
+
+{u:'5-8',t:'def',q:'The police found the <span class="kw">crossroads</span> dangerous. "Crossroads" means ...',
+ opts:['highway','intersection where roads meet','bridge','tunnel'],ans:1,
+ exp:'Crossroads = a place where two or more roads meet (مفترق طرق).',ar:'مفترق طرق — مكان التقاء طريقين أو أكثر'},
+
+{u:'9-12',t:'syn',q:'The singer had a <span class="kw">remarkable</span> voice. Synonym is ...',
+ opts:['ordinary','outstanding','average','weak'],ans:1,
+ exp:'Remarkable = worthy of attention; exceptional. Synonym: outstanding (بارز/ملفت).',ar:'بارز/ملفت — مرادفه: outstanding = استثنائي'},
+
+{u:'1-4',t:'def',q:'The government launched a new <span class="kw">initiative</span>. "Initiative" means ...',
+ opts:['law','new action/plan','protest','investigation'],ans:1,
+ exp:'Initiative = a new plan or action to achieve a goal (مبادرة).',ar:'مبادرة — خطة أو فعل جديد لتحقيق هدف'},
+
+{u:'5-8',t:'syn',q:'The streets were <span class="kw">congested</span> with cars. Synonym is ...',
+ opts:['empty','crowded/blocked','clean','quiet'],ans:1,
+ exp:'Congested = too full, especially of traffic. Synonym: packed / blocked (مزدحم).',ar:'مزدحم — مرادفه: packed = مكتظ'},
+
+{u:'9-12',t:'def',q:'She felt <span class="kw">overwhelming</span> emotions. "Overwhelming" means ...',
+ opts:['manageable','very strong and difficult to control','mild','pleasant'],ans:1,
+ exp:'Overwhelming = very great in amount; hard to control (مربك/هائل).',ar:'مربك/هائل — قوي جداً ويصعب السيطرة عليه'},
+
+{u:'1-4',t:'syn',q:'The team celebrated a <span class="kw">groundbreaking</span> discovery. Synonym of "groundbreaking" is ...',
+ opts:['routine','revolutionary','ordinary','interesting'],ans:1,
+ exp:'Groundbreaking = innovative and pioneering. Synonym: revolutionary (رائد/ثوري).',ar:'رائد/ثوري — مرادفه: revolutionary = ثوري'},
+
+{u:'5-8',t:'def',q:'Young people should <span class="kw">navigate</span> social media carefully. "Navigate" means ...',
+ opts:['avoid','create','find your way through','delete'],ans:2,
+ exp:'Navigate = to plan and find a way through (يتنقل/يوجّه).',ar:'يتنقل/يوجّه — يجد طريقه عبر شيء'},
+
+{u:'9-12',t:'ant',q:'He had an <span class="kw">invisible</span> talent. Antonym of "invisible" is ...',
+ opts:['hidden','visible','unknown','secret'],ans:1,
+ exp:'Invisible = cannot be seen. Antonym: visible (مرئي).',ar:'غير مرئي — المتضاد: visible = مرئي'},
+
+{u:'1-4',t:'def',q:'The earthquake caused the building to <span class="kw">collapse</span>. "Collapse" means ...',
+ opts:['shake','fall down suddenly','crack','lean'],ans:1,
+ exp:'Collapse = to fall down suddenly (ينهار/ينهدم).',ar:'ينهار — يسقط فجأة'},
+
+{u:'5-8',t:'syn',q:'She made a <span class="kw">brand-new</span> dress. Synonym is ...',
+ opts:['old','completely new','used','repaired'],ans:1,
+ exp:'Brand-new = completely new. Synonym: spanking new / fresh (جديد تماماً).',ar:'جديد تماماً — مرادفه: completely new'},
+
+{u:'9-12',t:'def',q:'He had a <span class="kw">gravitational</span> pull on everyone around him. "Gravitational" means ...',
+ opts:['magnetic','related to the force of gravity','spiritual','emotional'],ans:1,
+ exp:'Gravitational = relating to gravity or attraction (متعلق بالجاذبية).',ar:'متعلق بالجاذبية — مرتبط بقوة الجذب'},
+
+{u:'1-4',t:'syn',q:'The river showed signs of <span class="kw">erosion</span>. Synonym is ...',
+ opts:['building up','wearing away','flooding','flowing'],ans:1,
+ exp:'Erosion = the wearing away of rock or land by natural forces (تآكل).',ar:'تآكل — تآكل الصخور أو الأرض بفعل القوى الطبيعية'},
+
+{u:'5-8',t:'def',q:'He liked to <span class="kw">socialize</span> with colleagues. "Socialize" means ...',
+ opts:['compete','work with','spend time with people','argue'],ans:2,
+ exp:'Socialize = to spend time with other people (يخالط الناس/يتواصل اجتماعياً).',ar:'يخالط الناس — يقضي وقتاً مع الآخرين'},
+
+{u:'9-12',t:'def',q:'The author wrote about <span class="kw">consciousness</span>. "Consciousness" means ...',
+ opts:['dreams','the state of being awake and aware','memory','emotion'],ans:1,
+ exp:'Consciousness = the state of being aware and awake (الوعي/الإدراك).',ar:'الوعي/الإدراك — حالة التيقظ والإدراك'},
+
+{u:'1-4',t:'def',q:'New technology helps to <span class="kw">track</span> patient health. "Track" means ...',
+ opts:['ignore','monitor and follow','treat','diagnose'],ans:1,
+ exp:'Track = to follow and record the progress of something (يتتبع).',ar:'يتتبع — يراقب ويسجل تطور شيء'},
+
+{u:'5-8',t:'syn',q:'Her success was truly <span class="kw">rewarding</span>. Synonym is ...',
+ opts:['tiring','frustrating','fulfilling','uncertain'],ans:2,
+ exp:'Rewarding = giving satisfaction. Synonym: fulfilling / worthwhile (مُجزٍ/مُثمر).',ar:'مُجزٍ/مُثمر — مرادفه: fulfilling = مُرضٍ'},
+
+{u:'9-12',t:'def',q:'The writer used a <span class="kw">metaphor</span> in the poem. "Metaphor" means ...',
+ opts:['rhyme','comparison without "like" or "as"','a type of poem','a story'],ans:1,
+ exp:'Metaphor = describing something as if it were something else (استعارة).',ar:'استعارة — وصف شيء وكأنه شيء آخر'},
+
+{u:'1-4',t:'ant',q:'The situation was very <span class="kw">sophisticated</span>. Antonym is ...',
+ opts:['complex','simple','advanced','modern'],ans:1,
+ exp:'Sophisticated = complex and advanced. Antonym: simple / basic (بسيط).',ar:'معقد/متطور — المتضاد: simple = بسيط'},
+
+{u:'5-8',t:'def',q:'The ship followed a maritime <span class="kw">route</span>. "Maritime" means ...',
+ opts:['land-based','related to the sea','aerial','underground'],ans:1,
+ exp:'Maritime = relating to the sea or shipping (بحري).',ar:'بحري — متعلق بالبحر أو الشحن البحري'},
+
+{u:'9-12',t:'def',q:'She showed <span class="kw">awareness</span> of the problem. "Awareness" means ...',
+ opts:['knowledge and understanding of something','ignorance','forgetting','discovery'],ans:0,
+ exp:'Awareness = knowledge and understanding of something (الوعي).',ar:'الوعي — المعرفة والإدراك بشيء ما'},
+
+{u:'1-4',t:'syn',q:'The new machine was completely <span class="kw">automated</span>. Synonym is ...',
+ opts:['mechanical','self-operating','expensive','imported'],ans:1,
+ exp:'Automated = working by machines without humans. Synonym: mechanized (آلي).',ar:'آلي — مرادفه: mechanized = مُميكَن'},
+
+{u:'5-8',t:'def',q:'She enjoyed the <span class="kw">luxury</span> hotel. "Luxury" means ...',
+ opts:['cheap','very comfortable and expensive','standard','simple'],ans:1,
+ exp:'Luxury = something expensive and comfortable beyond basic needs (فاخر).',ar:'فاخر — شيء غالي ومريح يتجاوز الحاجات الأساسية'},
+
+{u:'9-12',t:'syn',q:'The students showed <span class="kw">curiosity</span> about the topic. Synonym is ...',
+ opts:['boredom','eagerness to learn','anger','sadness'],ans:1,
+ exp:'Curiosity = strong desire to know. Synonym: inquisitiveness (الفضول).',ar:'الفضول — مرادفه: eagerness to learn = شغف بالتعلم'},
+
+{u:'1-4',t:'def',q:'The reporter gave a detailed <span class="kw">forecast</span>. "Forecast" means ...',
+ opts:['review','past event','prediction of future events','analysis'],ans:2,
+ exp:'Forecast = a prediction, especially about weather (توقعات).',ar:'توقعات — تنبؤ بأحداث مستقبلية'},
+
+{u:'5-8',t:'def',q:'They crossed the border at the <span class="kw">checkpoint</span>. "Checkpoint" means ...',
+ opts:['border area','security inspection point','gate','terminal'],ans:1,
+ exp:'Checkpoint = a place where documents or vehicles are inspected (نقطة تفتيش).',ar:'نقطة تفتيش — مكان فحص الوثائق والمركبات'},
+
+{u:'9-12',t:'syn',q:'The scientist explained the <span class="kw">theory</span> of relativity. Synonym of "theory" is ...',
+ opts:['fact','hypothesis/idea','law','experiment'],ans:1,
+ exp:'Theory = a set of ideas explaining something. Synonym: hypothesis (نظرية).',ar:'نظرية — مرادفه: hypothesis = فرضية'},
+
+{u:'1-4',t:'def',q:'She helped to <span class="kw">disrupt</span> the meeting. "Disrupt" means ...',
+ opts:['organize','interrupt and cause disorder','attend','support'],ans:1,
+ exp:'Disrupt = to interrupt the normal course of something (يُعطّل/يُشوّش).',ar:'يُعطّل — يقطع السير الطبيعي لشيء'},
+
+{u:'5-8',t:'ant',q:'The soil was very <span class="kw">fertile</span>. Antonym is ...',
+ opts:['productive','barren','rich','wet'],ans:1,
+ exp:'Fertile = producing a lot. Antonym: barren / infertile (جرداء/قاحلة).',ar:'خصب — المتضاد: barren = جرداء'},
+
+{u:'9-12',t:'def',q:'The book had many <span class="kw">dimensions</span> to its plot. "Dimensions" means ...',
+ opts:['characters','aspects/layers','chapters','parts'],ans:1,
+ exp:'Dimensions = different aspects or layers of something (أبعاد).',ar:'أبعاد — جوانب مختلفة لشيء ما'},
+
+{u:'1-4',t:'syn',q:'She had great <span class="kw">potential</span> for success. Synonym is ...',
+ opts:['energy','capability/possibility','experience','education'],ans:1,
+ exp:'Potential = the ability to develop or achieve in the future (قدرة/إمكانات).',ar:'قدرة/إمكانات — مرادفه: capability = قدرة'},
+
+{u:'5-8',t:'def',q:'His <span class="kw">depression</span> affected his work. "Depression" means ...',
+ opts:['stress','sadness disorder','laziness','isolation'],ans:1,
+ exp:'Depression = a mental health condition with persistent sadness (اكتئاب).',ar:'اكتئاب — حالة نفسية مع حزن مستمر'},
+
+{u:'9-12',t:'def',q:'The library had a large collection of <span class="kw">literature</span>. "Literature" means ...',
+ opts:['science books','written artistic works','magazines','encyclopedias'],ans:1,
+ exp:'Literature = written works, especially with artistic value (أدب).',ar:'أدب — الأعمال المكتوبة ذات القيمة الفنية'},
+
+{u:'1-4',t:'ant',q:'The news was very <span class="kw">breathtaking</span>. Antonym is ...',
+ opts:['amazing','ordinary/dull','surprising','exciting'],ans:1,
+ exp:'Breathtaking = astonishing. Antonym: ordinary / dull (عادي/ممل).',ar:'مذهل — المتضاد: ordinary = عادي'},
+
+{u:'5-8',t:'def',q:'The doctor noticed a <span class="kw">phenomenon</span> in the patient. "Phenomenon" means ...',
+ opts:['disease','unusual fact or event','treatment','symptom'],ans:1,
+ exp:'Phenomenon = something that can be observed (ظاهرة). Plural: phenomena.',ar:'ظاهرة — شيء يمكن ملاحظته وهو ملفت'},
+
+{u:'9-12',t:'syn',q:'He showed great <span class="kw">discipline</span> in his work. Synonym is ...',
+ opts:['laziness','self-control','patience','experience'],ans:1,
+ exp:'Discipline = training yourself to follow rules. Synonym: self-control (انضباط).',ar:'انضباط — مرادفه: self-control = ضبط النفس'},
+
+{u:'1-4',t:'def',q:'The factory used <span class="kw">cables</span> for power. "Cables" means ...',
+ opts:['pipes','thick wires for electricity','poles','switches'],ans:1,
+ exp:'Cables = thick wires used to carry electricity or signals (كابلات).',ar:'كابلات — أسلاك سميكة لنقل الكهرباء'},
+
+{u:'5-8',t:'def',q:'She had a <span class="kw">geographical</span> knowledge of Africa. "Geographical" means ...',
+ opts:['historical','related to the physical features of the earth','political','economic'],ans:1,
+ exp:'Geographical = relating to geography (جغرافي).',ar:'جغرافي — متعلق بالجغرافيا'},
+
+{u:'9-12',t:'def',q:'He felt deep <span class="kw">gratitude</span> for the help. "Grateful" means ...',
+ opts:['angry','thankful','surprised','satisfied'],ans:1,
+ exp:'Grateful = feeling thankful (ممتنن).',ar:'ممتنن — شاكر على معروف'},
+
+{u:'1-4',t:'syn',q:'The results were <span class="kw">hazardous</span>. Synonym is ...',
+ opts:['safe','dangerous','interesting','surprising'],ans:1,
+ exp:'Hazardous = dangerous. Synonym: dangerous / risky (خطير).',ar:'خطير — مرادفه: dangerous = خطر'},
+
+{u:'5-8',t:'def',q:'Ancient <span class="kw">civilization</span>s built great monuments. "Civilization" means ...',
+ opts:['army','complex advanced society','government','religion'],ans:1,
+ exp:'Civilization = an advanced stage of human social and cultural development (حضارة).',ar:'حضارة — مرحلة متقدمة من التطور البشري والثقافي'},
+
+{u:'9-12',t:'ant',q:'He felt <span class="kw">isolated</span>. Antonym is ...',
+ opts:['disconnected','socially connected','lonely','quiet'],ans:1,
+ exp:'Isolated = separated and alone. Antonym: connected / included (متواصل).',ar:'معزول — المتضاد: connected = متواصل'},
+
+{u:'1-4',t:'def',q:'The <span class="kw">expansion</span> of the city caused traffic problems. "Expansion" means ...',
+ opts:['reduction','growth/increase in size','change','movement'],ans:1,
+ exp:'Expansion = the process of growing or increasing in size (توسع).',ar:'توسع — عملية النمو والزيادة في الحجم'},
+
+{u:'5-8',t:'syn',q:'She carried her <span class="kw">household</span> duties seriously. Synonym of "household" is ...',
+ opts:['official','domestic/home','outdoor','professional'],ans:1,
+ exp:'Household = relating to the home (منزلي). Synonym: domestic.',ar:'منزلي — مرادفه: domestic = متعلق بالمنزل'},
+
+{u:'9-12',t:'def',q:'The actor\'s gestures were very expressive. "<span class="kw">Gestures</span>" means ...',
+ opts:['words','movements of the body to express ideas','costumes','expressions'],ans:1,
+ exp:'Gestures = movements, especially of hands, to communicate (إيماءات).',ar:'إيماءات — حركات الجسد للتعبير'},
+
+{u:'1-4',t:'ant',q:'Her behavior was very <span class="kw">pessimistic</span>. Antonym is ...',
+ opts:['negative','optimistic','realistic','uncertain'],ans:1,
+ exp:'Pessimistic = expecting bad results. Antonym: optimistic (متفائل).',ar:'متشائم — المتضاد: optimistic = متفائل'},
+
+{u:'5-8',t:'def',q:'The region is famous for its <span class="kw">maritime</span> history. "Maritime" means ...',
+ opts:['desert','sea-related','mountain','agricultural'],ans:1,
+ exp:'Maritime = connected with the sea (بحري).',ar:'بحري — مرتبط بالبحر'},
+
+{u:'9-12',t:'syn',q:'He showed tremendous <span class="kw">strength</span> during hardship. Synonym is ...',
+ opts:['weakness','power','flexibility','speed'],ans:1,
+ exp:'Strength = power and determination. Synonym: power (قوة).',ar:'قوة — مرادفه: power = قوة'},
+
+{u:'1-4',t:'def',q:'The weather was <span class="kw">scorching</span> hot. "Scorching" means ...',
+ opts:['mild','very hot','cold','windy'],ans:1,
+ exp:'Scorching = extremely hot (شديد الحرارة).',ar:'شديد الحرارة — ساخن جداً'},
+
+{u:'5-8',t:'syn',q:'The road trip was a great <span class="kw">adventure</span>. Synonym is ...',
+ opts:['routine','exciting experience','journey','trip'],ans:1,
+ exp:'Adventure = an unusual, exciting experience (مغامرة). Synonym: exciting experience.',ar:'مغامرة — مرادفه: exciting experience = تجربة مثيرة'},
+
+{u:'9-12',t:'def',q:'The <span class="kw">event horizon</span> is important in physics. "Event horizon" means ...',
+ opts:['sunrise','the boundary of a black hole','a type of star','the edge of the universe'],ans:1,
+ exp:'Event horizon = the boundary around a black hole from which nothing can escape (أفق الحدث).',ar:'أفق الحدث — الحد حول الثقب الأسود'},
+
+{u:'1-4',t:'def',q:'She used bleach to clean the kitchen. "<span class="kw">Bleach</span>" means ...',
+ opts:['soap','a liquid for whitening/cleaning','an acid','hot water'],ans:1,
+ exp:'Bleach = a chemical used to whiten or disinfect (مبيّض/منظّف).',ar:'مبيّض — مادة كيميائية للتبييض والتعقيم'},
+
+{u:'5-8',t:'def',q:'He felt <span class="kw">mortifying</span> embarrassment. "Mortifying" means ...',
+ opts:['mild','extremely embarrassing','interesting','frightening'],ans:1,
+ exp:'Mortifying = extremely embarrassing (محرج جداً).',ar:'محرج جداً — مرادفه: extremely embarrassing'},
+
+{u:'9-12',t:'def',q:'She had strong <span class="kw">morals</span>. "Morals" means ...',
+ opts:['laws','personal standards of right and wrong','beliefs','opinions'],ans:1,
+ exp:'Morals = standards of behavior considered good or bad (قيم أخلاقية).',ar:'قيم أخلاقية — معايير السلوك الصح والغلط'},
+
+{u:'1-4',t:'syn',q:'The announcement was truly <span class="kw">breathtaking</span>. Synonym is ...',
+ opts:['boring','astonishing/stunning','expected','quiet'],ans:1,
+ exp:'Breathtaking = astonishing and impressive. Synonym: stunning (مذهل).',ar:'مذهل — مرادفه: stunning = خلاب'},
+
+{u:'5-8',t:'def',q:'The family showed great <span class="kw">hospitality</span>. "Hospitality" means ...',
+ opts:['wealth','friendly and generous treatment of guests','generosity','formality'],ans:1,
+ exp:'Hospitality = warm and friendly treatment of guests (كرم الضيافة).',ar:'كرم الضيافة — المعاملة الدافئة والكريمة للضيوف'},
+
+{u:'9-12',t:'def',q:'He felt a wave of <span class="kw">nostalgia</span>. This type of feeling involves ...',
+ opts:['happiness','longing for the past','excitement','anger'],ans:1,
+ exp:'Nostalgia = a longing or affection for the past (الحنين للماضي).',ar:'الحنين للماضي — شوق للأيام الخوالي'},
+
+{u:'1-4',t:'ant',q:'She was very <span class="kw">dedicated</span> to her work. Antonym is ...',
+ opts:['committed','lazy/uncommitted','hardworking','focused'],ans:1,
+ exp:'Dedicated = committed and hardworking. Antonym: lazy / uncommitted (غير مخلص).',ar:'مخلص/مُكرّس — المتضاد: uncommitted = غير ملتزم'},
+
+{u:'5-8',t:'syn',q:'The region was known for its <span class="kw">diversity</span>. Synonym is ...',
+ opts:['similarity','variety','harmony','unity'],ans:1,
+ exp:'Diversity = a range of different things. Synonym: variety (تنوع).',ar:'تنوع — مرادفه: variety = تشكيلة متنوعة'},
+
+{u:'9-12',t:'def',q:'He gained a good <span class="kw">reputation</span> for his work. "Reputation" means ...',
+ opts:['salary','fame/what people think of you','position','award'],ans:1,
+ exp:'Reputation = the general opinion people have about someone (سمعة).',ar:'سمعة — الرأي العام عن شخص'},
+
+{u:'1-4',t:'def',q:'The project needed <span class="kw">collaboration</span>. "Collaboration" means ...',
+ opts:['competition','working together','leadership','funding'],ans:1,
+ exp:'Collaboration = working with others to achieve a goal (تعاون/مشاركة).',ar:'تعاون — العمل مع الآخرين لتحقيق هدف'},
+
+{u:'5-8',t:'def',q:'She managed to <span class="kw">navigate</span> the complex situation. "Navigate" means ...',
+ opts:['avoid','create','find a way through','describe'],ans:2,
+ exp:'Navigate = to find a way through a difficult situation (يتنقل/يوجّه).',ar:'يتنقل/يوجّه — يجد طريقاً عبر موقف صعب'},
+
+{u:'9-12',t:'syn',q:'The music was very <span class="kw">rhythmic</span>. Synonym is ...',
+ opts:['noisy','having a regular beat/pattern','slow','quiet'],ans:1,
+ exp:'Rhythmic = having a regular, repeated pattern of beats (إيقاعي).',ar:'إيقاعي — مرادفه: having a regular pattern = ذو نمط منتظم'},
+
+{u:'1-4',t:'ant',q:'The building was very <span class="kw">fragile</span>. Antonym is ...',
+ opts:['weak','sturdy/strong','hollow','light'],ans:1,
+ exp:'Fragile = easily broken or damaged. Antonym: sturdy / strong (متين).',ar:'هش — المتضاد: sturdy = متين/قوي'},
+
+{u:'5-8',t:'def',q:'She felt <span class="kw">anxiety</span> before her exam. "Anxiety" means ...',
+ opts:['confidence','worry and unease','excitement','happiness'],ans:1,
+ exp:'Anxiety = a feeling of nervousness and worry (قلق).',ar:'قلق — شعور بالتوتر والخوف'},
+
+{u:'9-12',t:'def',q:'He was doing an <span class="kw">apprenticeship</span>. "Apprenticeship" means ...',
+ opts:['university degree','training while working in a skilled job','part-time job','volunteer work'],ans:1,
+ exp:'Apprenticeship = a period of training in a skilled trade (تدريب مهني).',ar:'تدريب مهني — فترة تدريب في حرفة متخصصة'},
+
+{u:'1-4',t:'def',q:'The doctor needed to <span class="kw">diagnose</span> the illness. "Diagnose" means ...',
+ opts:['treat','identify/recognize the disease','cure','prevent'],ans:1,
+ exp:'Diagnose = to identify the nature of a disease (يشخّص).',ar:'يشخّص — يُحدّد طبيعة المرض'},
+
+{u:'5-8',t:'syn',q:'She packed the <span class="kw">carry-on bag</span> for the short trip. This means ...',
+ opts:['large luggage','bag to check in','hand luggage inside the plane','travel bag'],ans:2,
+ exp:'Carry-on bag = a bag small enough to take on a plane (حقيبة يد).',ar:'حقيبة يد — حقيبة صغيرة تُؤخذ داخل الطائرة'},
+
+{u:'9-12',t:'def',q:'The city is famous for its cultural <span class="kw">heritage</span>. "Heritage" means ...',
+ opts:['future plans','traditions and history passed down','buildings','art galleries'],ans:1,
+ exp:'Heritage = traditions, achievements, and beliefs from the past (تراث).',ar:'تراث — التقاليد والإنجازات الموروثة من الماضي'},
+
+{u:'1-4',t:'ant',q:'She looked very <span class="kw">pessimistic</span> about the results. Antonym is ...',
+ opts:['negative','hopeful/optimistic','realistic','worried'],ans:1,
+ exp:'Pessimistic = expecting bad outcomes. Antonym: optimistic / hopeful.',ar:'متشائم — المتضاد: optimistic = متفائل'},
+
+{u:'5-8',t:'def',q:'The author wrote about <span class="kw">collaboration</span> in science. "Collaboration" means ...',
+ opts:['solo work','teamwork/cooperation','research','competition'],ans:1,
+ exp:'Collaboration = working together (تعاون).',ar:'تعاون — مرادفه: cooperation = تعاون'},
+
+{u:'9-12',t:'syn',q:'The poem expressed deep <span class="kw">emotions</span>. Synonym is ...',
+ opts:['thoughts','feelings','ideas','descriptions'],ans:1,
+ exp:'Emotions = strong feelings. Synonym: feelings (عواطف/مشاعر).',ar:'عواطف — مرادفه: feelings = مشاعر'},
+
+{u:'1-4',t:'def',q:'The <span class="kw">automation</span> of factories has changed the economy. "Automation" means ...',
+ opts:['human labor','using machines to do work automatically','investment','management'],ans:1,
+ exp:'Automation = using technology to do tasks automatically (الميكنة/الأتمتة).',ar:'الميكنة/الأتمتة — استخدام التكنولوجيا للقيام بمهام تلقائياً'},
+
+{u:'5-8',t:'ant',q:'The journey was very <span class="kw">harmful</span>. Antonym is ...',
+ opts:['dangerous','beneficial/safe','exciting','tiring'],ans:1,
+ exp:'Harmful = causing damage. Antonym: beneficial / safe (مفيد/آمن).',ar:'ضار — المتضاد: beneficial = مفيد'},
+
+{u:'9-12',t:'def',q:'She had a strong sense of <span class="kw">independence</span>. "Independence" means ...',
+ opts:['dependence','freedom from control','leadership','responsibility'],ans:1,
+ exp:'Independence = the state of not needing others (استقلال).',ar:'استقلال — حالة عدم الاعتماد على الآخرين'},
+
+{u:'1-4',t:'syn',q:'The discovery was truly <span class="kw">magnificent</span>. Synonym is ...',
+ opts:['ordinary','splendid/impressive','interesting','surprising'],ans:1,
+ exp:'Magnificent = very impressive. Synonym: splendid / grand (رائع/عظيم).',ar:'رائع/عظيم — مرادفه: splendid = رائع'},
+
+{u:'5-8',t:'def',q:'She decided to <span class="kw">analyze</span> the data carefully. "Analyze" means ...',
+ opts:['ignore','collect','study in detail','present'],ans:2,
+ exp:'Analyze = to examine carefully in detail (يحلّل).',ar:'يحلّل — يفحص بعناية وتفصيل'},
+
+{u:'9-12',t:'def',q:'He showed great <span class="kw">spontaneity</span>. "Spontaneous" means ...',
+ opts:['planned','calculated','natural and unplanned','rehearsed'],ans:2,
+ exp:'Spontaneous = done naturally without planning (عفوي/تلقائي).',ar:'عفوي — يحدث بشكل طبيعي بدون تخطيط'},
+
+{u:'1-4',t:'def',q:'The nurse checked the patient\'s <span class="kw">pulse</span> regularly. "Pulse" means ...',
+ opts:['breathing rate','heartbeat rhythm','blood pressure','temperature'],ans:1,
+ exp:'Pulse = the rhythmic throbbing of arteries from heartbeats (نبض).',ar:'نبض — الدقات المنتظمة لشرايين القلب'},
+
+{u:'5-8',t:'def',q:'The ancient city used complex <span class="kw">construction</span> techniques. "Construction" means ...',
+ opts:['destruction','the process of building','decoration','planning'],ans:1,
+ exp:'Construction = the process of building something (تشييد/بناء).',ar:'تشييد/بناء — عملية إنشاء شيء'},
+
+{u:'9-12',t:'ant',q:'His attitude was very <span class="kw">collectivist</span>. Antonym is ...',
+ opts:['communal','individualistic','cooperative','social'],ans:1,
+ exp:'Collectivist = group-focused. Antonym: individualistic (فردي).',ar:'جماعي — المتضاد: individualistic = فردي'},
+
+{u:'1-4',t:'def',q:'The <span class="kw">inundation</span> caused damage to crops. "Inundation" means ...',
+ opts:['drought','flooding/overflow of water','storm','earthquake'],ans:1,
+ exp:'Inundation = flooding / an overwhelming amount of something (إغراق/فيضان).',ar:'إغراق/فيضان — غمر المنطقة بالماء'},
+
+{u:'5-8',t:'syn',q:'The explorer wrote about <span class="kw">geographical</span> discoveries. Synonym of "geographical" is ...',
+ opts:['historical','related to earth\'s features','political','cultural'],ans:1,
+ exp:'Geographical = of or relating to geography. Synonym: topographical.',ar:'جغرافي — متعلق بملامح الأرض'},
+
+{u:'9-12',t:'def',q:'He admired her <span class="kw">wisdom</span>. "Wisdom" means ...',
+ opts:['intelligence','good judgment from experience','knowledge','creativity'],ans:1,
+ exp:'Wisdom = the quality of having good judgment from experience (حكمة).',ar:'حكمة — القدرة على إصدار أحكام جيدة من الخبرة'},
+
+// FILL IN THE BLANK STYLE QUESTIONS
+{u:'1-4',t:'def',q:'New factories are ........ to increase productivity. The missing word is ...',
+ opts:['automated','disrupted','collapsed','maintained'],ans:0,
+ exp:'Automated = using machines automatically to improve production (مُميكَن).',ar:'آلي — يعمل تلقائياً لزيادة الإنتاج'},
+
+{u:'5-8',t:'def',q:'The baby began to ........ loudly when it was hungry. The missing word is ...',
+ opts:['clap','laugh','moan','whisper'],ans:2,
+ exp:'Moan = to make a long low sound of pain or unhappiness (يئن/يتذمر).',ar:'يئن/يتذمر — يُصدر صوتاً من الألم'},
+
+{u:'9-12',t:'def',q:'People with strong friendships have lower rates of ........ The missing word is ...',
+ opts:['happiness','depression','energy','confidence'],ans:1,
+ exp:'Depression = a serious mental disorder (اكتئاب).',ar:'اكتئاب — اضطراب نفسي خطير'},
+
+{u:'1-4',t:'def',q:'Educational projects support groups who lack equal ......... The missing word is ...',
+ opts:['popular','marginalized','powerful','central'],ans:1,
+ exp:'Marginalized = treated as unimportant / pushed aside (مُهمَّش).',ar:'مُهمَّش — يُعامَل كغير مهم'},
+
+{u:'5-8',t:'def',q:'It\'s a good idea to ........ your flight departure time before leaving. The missing word is ...',
+ opts:['strengthen','socialize','check','maintain'],ans:2,
+ exp:'Check = to look at or examine something to make sure it is right (يتحقق من).',ar:'يتحقق من — يراجع شيئاً للتأكد من صحته'},
+
+{u:'9-12',t:'def',q:'When we socialize, our bodies release ........ that reduce stress. The missing word is ...',
+ opts:['antibiotics','hormones','vitamins','minerals'],ans:1,
+ exp:'Hormones = chemical messengers in the body that regulate functions (هرمونات).',ar:'هرمونات — رسائل كيميائية تنظّم وظائف الجسم'},
+
+{u:'1-4',t:'def',q:'Smart entrepreneurs should ........ in innovations, not capital. The missing word is ...',
+ opts:['perform','detect','thrive','invest'],ans:3,
+ exp:'Invest = to put money or effort into something to gain a return (يستثمر).',ar:'يستثمر — يضع جهداً أو مالاً للحصول على عائد'},
+
+{u:'5-8',t:'def',q:'She left the job because the work was ........ and boring. The missing word is ...',
+ opts:['repetitive','haunting','heartbreaking','sophisticated'],ans:0,
+ exp:'Repetitive = happening again and again in the same way (متكرر/رتيب).',ar:'متكرر/رتيب — يحدث مراراً بنفس الطريقة'},
+
+{u:'9-12',t:'def',q:'Regular ........ help reduce stress and improve health. The missing word is ...',
+ opts:['arguments','social interactions','conflicts','competitions'],ans:1,
+ exp:'Interactions = communication and contact with others (تفاعلات اجتماعية).',ar:'تفاعلات — التواصل مع الآخرين'},
+
+{u:'1-4',t:'def',q:'Doctors help ........ correct treatment to patients. The missing word is ...',
+ opts:['administer','prescribe','diagnose','prevent'],ans:0,
+ exp:'Administer = to give or apply (يُدير/يُعطي).',ar:'يُدير/يُعطي — يوصل العلاج للمريض'},
+
+// MORE VOCABULARY IN CONTEXT
+{u:'5-8',t:'def',q:'The team\'s ........ was key to winning the championship. The missing word is ...',
+ opts:['collaboration','competition','argument','debate'],ans:0,
+ exp:'Collaboration = working together effectively (تعاون).',ar:'تعاون — العمل معاً بشكل فعّال'},
+
+{u:'9-12',t:'def',q:'The athlete showed ........ by training every day without fail. The missing word is ...',
+ opts:['curiosity','generosity','discipline','spontaneity'],ans:2,
+ exp:'Discipline = training yourself to follow a strict routine (انضباط).',ar:'انضباط — تدريب النفس على الالتزام'},
+
+{u:'1-4',t:'def',q:'She always ........ the importance of reading to her students. The missing word is ...',
+ opts:['emphasizes','underestimates','condemns','ignores'],ans:0,
+ exp:'Emphasizes = stresses/highlights the importance of something (يُبرز).',ar:'يُبرز — يُشدد على أهمية شيء'},
+
+{u:'5-8',t:'def',q:'The ancient civilization created a ........ system for watering crops. The missing word is ...',
+ opts:['legal','maritime','irrigation','security'],ans:2,
+ exp:'Irrigation = a system for supplying water to agricultural land (نظام الري).',ar:'نظام الري — نظام لتوفير الماء للأراضي الزراعية'},
+
+{u:'9-12',t:'def',q:'Writing poetry helps express one\'s deepest ........ The missing word is ...',
+ opts:['theories','emotions','facts','arguments'],ans:1,
+ exp:'Emotions = strong feelings like love, fear, joy (عواطف/مشاعر).',ar:'عواطف/مشاعر — مشاعر قوية كالحب والخوف'},
+
+{u:'1-4',t:'def',q:'The new medicine showed ........ results in treating the disease. The missing word is ...',
+ opts:['hazardous','profound','fragile','chaotic'],ans:1,
+ exp:'Profound = deep and significant (بالغ/عميق).',ar:'بالغ/عميق — ذو أثر عميق'},
+
+{u:'5-8',t:'syn',q:'The athlete\'s ........ allowed her to overcome challenges. The word means persistence. Choose synonym:',
+ opts:['weakness','resilience','carelessness','confusion'],ans:1,
+ exp:'Resilience/perseverance = ability to recover from difficulties (المرونة).',ar:'المرونة — القدرة على التعافي من الصعوبات'},
+
+{u:'9-12',t:'def',q:'The ........ of black holes continues to fascinate scientists. The missing word is ...',
+ opts:['color','singularity','diameter','weight'],ans:1,
+ exp:'Singularity = the infinitely dense center point of a black hole (نقطة التفرد).',ar:'نقطة التفرد — المركز اللانهائي الكثافة للثقب الأسود'},
+
+{u:'1-4',t:'def',q:'The pilot managed to ........ the problem with the engine. The missing word is ...',
+ opts:['maximize','troubleshoot','implement','disrupt'],ans:1,
+ exp:'Troubleshoot = to find and fix problems systematically (يكشف الخطأ ويصلحه).',ar:'يكشف الخطأ ويصلحه — يُشخّص ويُعالج مشكلة'},
+
+{u:'5-8',t:'def',q:'She packed her ........ bag with essentials for the plane. The missing word is ...',
+ opts:['checked','carry-on','large','travel'],ans:1,
+ exp:'Carry-on = a small bag taken onboard the plane (حقيبة يد).',ar:'حقيبة يد — حقيبة صغيرة تُؤخذ داخل الطائرة'},
+
+{u:'9-12',t:'def',q:'The teacher showed great ........ to struggling students. The missing word is ...',
+ opts:['strictness','generosity','indifference','authority'],ans:1,
+ exp:'Generosity = willingness to give and help others (كرم).',ar:'كرم — الاستعداد للعطاء ومساعدة الآخرين'},
+];
+
+// =====================================================================
+// RENDER ENGINE
+// =====================================================================
+let answers = {};
+let submitted = false;
+let activeFilter = 'all';
+
+const LOGO = 'logo.png';
+
+function filterQ(type, btn){
+  activeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuestions();
+}
+
+function getFiltered(){
+  return BANK.filter(q => {
+    if(activeFilter==='all') return true;
+    if(activeFilter==='syn') return q.t==='syn';
+    if(activeFilter==='ant') return q.t==='ant';
+    if(activeFilter==='def') return q.t==='def';
+    if(activeFilter==='1-4') return q.u==='1-4';
+    if(activeFilter==='5-8') return q.u==='5-8';
+    if(activeFilter==='9-12') return q.u==='9-12';
+    return true;
+  });
+}
+
+function renderQuestions(){
+  const filtered = getFiltered();
+  document.getElementById('s-total').textContent = filtered.length;
+  document.getElementById('h-badge').textContent = filtered.length + ' Questions';
+  const c = document.getElementById('questions-container');
+  c.innerHTML = filtered.map((q,i) => {
+    const globalIdx = BANK.indexOf(q);
+    const typeLabel = q.t==='syn'?'SYNONYM':q.t==='ant'?'ANTONYM':'MEANING';
+    const unitLabel = q.u==='1-4'?'Units 1–4':q.u==='5-8'?'Units 5–8':'Units 9–12';
+    return `<div class="qcard" id="qcard-${globalIdx}" data-idx="${globalIdx}">
+      <div class="qcard-top">
+        <div>
+          <div class="qnum">Q${i+1} · ${typeLabel} · ${unitLabel}</div>
+        </div>
+      </div>
+      <div class="qtext">${q.q}</div>
+      <div class="opts" style="margin-top:14px;">
+        ${q.opts.map((o,oi)=>`
+          <div class="opt" id="opt-${globalIdx}-${oi}" onclick="selectOpt(${globalIdx},${oi})">
+            <span class="opt-lbl">${String.fromCharCode(65+oi)}</span>
+            <span class="opt-txt">${o}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="explanation" id="exp-${globalIdx}">
+        <div class="exp-lbl">📖 EXPLANATION</div>
+        <div class="exp-txt">${q.exp}</div>
+        <div class="exp-ar">${q.ar}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateStats();
+}
+
+function selectOpt(idx, oi){
+  if(submitted) return;
+  answers[idx] = oi;
+  const q = BANK[idx];
+  document.querySelectorAll(`[id^="opt-${idx}-"]`).forEach(el=>{
+    el.classList.remove('selected');
+  });
+  document.getElementById(`opt-${idx}-${oi}`).classList.add('selected');
+  document.getElementById(`qcard-${idx}`).classList.add('answered');
+  updateStats();
+}
+
+function updateStats(){
+  const filtered = getFiltered();
+  const answered = filtered.filter(q=>answers[BANK.indexOf(q)] !== undefined).length;
+  const total = filtered.length;
+  document.getElementById('s-answered').textContent = answered;
+  document.getElementById('prog-fill').style.width = (answered/total*100)+'%';
+  document.getElementById('prog-txt').textContent = `${answered} / ${total}`;
+
+  if(submitted){
+    let correct = 0;
+    filtered.forEach(q=>{
+      const idx = BANK.indexOf(q);
+      if(answers[idx] === q.ans) correct++;
+    });
+    const pct = Math.round(correct/total*100);
+    document.getElementById('s-correct').textContent = correct;
+    document.getElementById('s-pct').textContent = pct+'%';
+    document.getElementById('float-score').style.display='block';
+    document.getElementById('fs-txt').textContent = correct+'/'+total;
+  }
+}
+
+function submitAll(){
+  if(submitted) return;
+  const filtered = getFiltered();
+  const answered = filtered.filter(q=>answers[BANK.indexOf(q)]!==undefined).length;
+  const total = filtered.length;
+
+  if(answered < total * 0.5){
+    if(!confirm(`لسه ما أجبتش على ${total-answered} سؤال. تأكيد التسليم؟`)) return;
+  }
+
+  submitted = true;
+  document.getElementById('btn-submit').disabled = true;
+  document.getElementById('btn-submit').textContent = '✅ تم التسليم — شوف الإجابات تحت';
+
+  let correct=0, wrong=0, skip=0;
+  filtered.forEach((q) => {
+    const idx = BANK.indexOf(q);
+    const userAns = answers[idx];
+    const opts = document.querySelectorAll(`[id^="opt-${idx}-"]`);
+    opts.forEach(o=>o.classList.add('locked'));
+
+    // Highlight correct
+    document.getElementById(`opt-${idx}-${q.ans}`).classList.add('correct');
+
+    if(userAns === undefined){
+      skip++;
+    } else if(userAns === q.ans){
+      correct++;
+    } else {
+      document.getElementById(`opt-${idx}-${userAns}`).classList.add('wrong');
+      wrong++;
+    }
+
+    // Show explanation
+    document.getElementById(`exp-${idx}`).classList.add('show');
+  });
+
+  const pct = Math.round(correct/total*100);
+  document.getElementById('res-score').textContent = `${correct}/${total}`;
+  document.getElementById('rb-correct').textContent = correct;
+  document.getElementById('rb-wrong').textContent = wrong;
+  document.getElementById('rb-skip').textContent = skip;
+
+  let grade, color;
+  if(pct>=90){grade='ممتاز 🌟';color='var(--green)';}
+  else if(pct>=75){grade='جيد جداً ✅';color='var(--blue)';}
+  else if(pct>=60){grade='جيد 👍';color='var(--gold)';}
+  else if(pct>=50){grade='مقبول';color='var(--gold)';}
+  else{grade='يحتاج مراجعة ⚠️';color='var(--red)';}
+
+  document.getElementById('res-grade').textContent = grade;
+  document.getElementById('res-grade').style.color = color;
+  document.getElementById('res-sub').textContent = `أجبت على ${answered} سؤال من ${total} — درجتك ${pct}%`;
+  document.getElementById('result-box').classList.add('show');
+  document.getElementById('result-box').scrollIntoView({behavior:'smooth'});
+  updateStats();
+}
+
+function retryAll(){
+  answers = {};
+  submitted = false;
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = '📋 تسليم الامتحان — شوف نتيجتك مع التفسير';
+  document.getElementById('result-box').classList.remove('show');
+  document.getElementById('float-score').style.display='none';
+  document.getElementById('s-correct').textContent='0';
+  document.getElementById('s-pct').textContent='0%';
+  renderQuestions();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Init
+renderQuestions();
+</script>
+</body>
+</html>

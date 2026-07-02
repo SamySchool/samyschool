@@ -402,11 +402,15 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
       <div class="pcard">
         <div class="ptitle">🏆 Achievement Board</div>
         <div class="pbtrack"><div class="pbfill" id="pb-fill" style="width:0%"></div></div>
-        <div class="pbtext" id="pb-text">0 / 68</div>
+        <div class="pbtext" id="pb-text">0 / 26</div>
       </div>
       <div class="pcard">
-        <div class="pslbl">📚 الوحدات (48 عنصر)</div>
+        <div class="pslbl">📚 الوحدات</div>
         <div class="pitems" id="p-units"></div>
+      </div>
+      <div class="pcard">
+        <div class="pslbl">✏️ Skills</div>
+        <div class="pitems" id="p-skills"></div>
       </div>
       <div class="pcard">
         <div class="pslbl">📋 امتحانات شاملة ث.ع (20)</div>
@@ -620,15 +624,21 @@ function stCard(ico,name,sub,url,act){
 }
 function stCardAudio(ico,name,sub,url){
   if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
+  // تحويل رابط Drive لرابط Stream مباشر عبر Google Drive viewer
+  let streamUrl = url;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(m) streamUrl = `https://drive.google.com/file/d/${m[1]}/preview`;
   return`<div class="sc" style="cursor:default;">
     <div class="sico">${ico}</div>
     <div class="sname">${name}</div>
     <div class="ssub" style="margin-bottom:10px;">${sub}</div>
-    <div style="width:100%;background:rgba(30,144,255,.06);border:1px solid rgba(30,144,255,.25);border-radius:8px;padding:10px 12px;">
-      <audio controls style="width:100%;accent-color:var(--blue);height:36px;" src="${url}" preload="metadata">
-        متصفحك لا يدعم تشغيل الصوت
-      </audio>
-    </div>
+    <iframe
+      src="${streamUrl}"
+      style="width:100%;height:80px;border:none;border-radius:8px;background:rgba(30,144,255,.06);"
+      allow="autoplay"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+      title="Story Audio Player">
+    </iframe>
   </div>`;
 }
 
@@ -773,22 +783,38 @@ async function loadProgress(code){
 async function saveP(code){try{await window.__db.collection('progress').doc(code).set(pData,{merge:true});}catch(e){}}
 
 function buildPUnits(){
-  const c=document.getElementById('p-units');
-  const units=UNITS.length?UNITS:Array.from({length:12},(_,i)=>({id:'u'+i}));
-  // 4 عناصر لكل وحدة: مراجعة الكلمات، الحل على الكلمات، مراجعة الجرامر، الحل على الجرامر
-  const items=[];
-  units.forEach((u,i)=>{
-    const n=i+1;
-    const k1=`wrev-${u.id}`,k2=`wsol-${u.id}`,k3=`grev-${u.id}`,k4=`gsol-${u.id}`;
-    items.push(`
-      <div style="font-size:10px;font-weight:800;color:var(--blue);margin:8px 0 4px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;">UNIT ${n}</div>
-      <div class="pitem ${pData[k1]?'done':''}" id="pi-${k1}" onclick="togP('${k1}','Unit ${n} — مراجعة الكلمات','📖')"><div class="pchk">${pData[k1]?'✓':''}</div><div class="plbl">مراجعة الكلمات</div></div>
-      <div class="pitem ${pData[k2]?'done':''}" id="pi-${k2}" onclick="togP('${k2}','Unit ${n} — الحل على الكلمات','✅')"><div class="pchk">${pData[k2]?'✓':''}</div><div class="plbl">الحل على الكلمات</div></div>
-      <div class="pitem ${pData[k3]?'done':''}" id="pi-${k3}" onclick="togP('${k3}','Unit ${n} — مراجعة الجرامر','📄')"><div class="pchk">${pData[k3]?'✓':''}</div><div class="plbl">مراجعة الجرامر</div></div>
-      <div class="pitem ${pData[k4]?'done':''}" id="pi-${k4}" onclick="togP('${k4}','Unit ${n} — الحل على الجرامر','✅')"><div class="pchk">${pData[k4]?'✓':''}</div><div class="plbl">الحل على الجرامر</div></div>
-    `);
-  });
-  c.innerHTML=items.join('');
+  const c = document.getElementById('p-units');
+  // 4 عناصر كلية للوحدات كلها — مش لكل وحدة
+  const items = [
+    {k:'all-wrev', lbl:'مراجعة الكلمات والمصطلحات كلها', emo:'📖'},
+    {k:'all-wsol', lbl:'الحل على الكلمات والمصطلحات كلها', emo:'✅'},
+    {k:'all-grev', lbl:'مراجعة الجرامر كله', emo:'📄'},
+    {k:'all-gsol', lbl:'الحل على الجرامر كله', emo:'✅'},
+  ];
+  c.innerHTML = items.map(item => {
+    const done = pData[item.k];
+    return `<div class="pitem ${done?'done':''}" id="pi-${item.k}" onclick="togP('${item.k}','${item.lbl}','${item.emo}')">
+      <div class="pchk">${done?'✓':''}</div>
+      <div class="plbl">${item.lbl}</div>
+    </div>`;
+  }).join('');
+  buildPSkills();
+  updOverall();
+}
+
+function buildPSkills(){
+  const c = document.getElementById('p-skills');
+  const items = [
+    {k:'skills-rev', lbl:'مراجعة أفكار المهارات', emo:'💡'},
+    {k:'skills-sol', lbl:'حل بنك أسئلة المهارات', emo:'❓'},
+  ];
+  c.innerHTML = items.map(item => {
+    const done = pData[item.k];
+    return `<div class="pitem ${done?'done':''}" id="pi-${item.k}" onclick="togP('${item.k}','${item.lbl}','${item.emo}')">
+      <div class="pchk">${done?'✓':''}</div>
+      <div class="plbl">${item.lbl}</div>
+    </div>`;
+  }).join('');
   updOverall();
 }
 function buildPGeneral(){
@@ -809,7 +835,7 @@ function markGenDone(examId){
   if(next<=20){const k='gen-'+next;if(!pData[k]){pData[k]=true;buildPGeneral();const code=document.getElementById('sc-tag').textContent;saveP(code);updOverall();}}
 }
 function updOverall(){
-  const total=68,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
+  const total=26,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
   document.getElementById('pb-fill').style.width=(done/total*100)+'%';
   document.getElementById('pb-text').textContent=done+' / '+total;
 }

@@ -309,13 +309,8 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
     <div class="admin-panel active" id="panel-units">
       <div class="section-title">📚 إضافة وحدة جديدة <span>هتظهر للطلاب فوراً</span></div>
       <div class="form-card">
-        <div class="form-field">
-          <label>اسم الوحدة بالإنجليزي *</label>
-          <input type="text" id="unit-en" placeholder="مثال: Unit 1 — Reading & Comprehension">
-        </div>
-
-        <div style="border-top:1px solid var(--line);margin:16px 0;padding-top:16px;">
-          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:14px;">📎 محتوى الوحدة — 6 عناصر</div>
+        <div style="border-bottom:1px solid var(--line);margin-bottom:16px;padding-bottom:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:12px;">📎 محتوى الوحدة — 4 عناصر</div>
           <div class="form-grid">
             <div class="form-field">
               <label>📄 A — ملف شرح الجرامر (PDF)</label>
@@ -323,37 +318,24 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
               <div class="form-hint">PDF شرح قواعد الوحدة — من Google Drive</div>
             </div>
             <div class="form-field">
-              <label>🎬 B — فيديو شرح الجرامر (YouTube)</label>
-              <input type="text" id="unit-video-grammar" placeholder="https://youtu.be/VIDEO_ID أو رابط كامل">
-              <div class="form-hint">رابط YouTube Unlisted لشرح الجرامر بالفيديو</div>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="form-field">
-              <label>❓ C — بنك أسئلة الجرامر (HTML/رابط)</label>
+              <label>❓ B — بنك أسئلة الجرامر (HTML/رابط)</label>
               <input type="text" id="unit-bank-grammar" placeholder="رابط ملف HTML أو صفحة تفاعلية">
               <div class="form-hint">بنك أسئلة تفاعلي على الجرامر</div>
             </div>
-            <div class="form-field">
-              <label>📖 D — الدليل الشامل للكلمات (PDF)</label>
-              <input type="text" id="unit-pdf-vocab" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">دليل الكلمات والمصطلحات — من Google Drive</div>
-            </div>
           </div>
           <div class="form-grid">
             <div class="form-field">
-              <label>🔤 E — بنك أسئلة الكلمات (HTML/رابط)</label>
+              <label>📖 C — الدليل الشامل للكلمات (PDF)</label>
+              <input type="text" id="unit-pdf-vocab" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+              <div class="form-hint">دليل الكلمات والمصطلحات — من Google Drive</div>
+            </div>
+            <div class="form-field">
+              <label>🔤 D — بنك أسئلة الكلمات (HTML/رابط)</label>
               <input type="text" id="unit-bank-vocab" placeholder="رابط بنك أسئلة تفاعلي للكلمات">
               <div class="form-hint">بنك أسئلة تفاعلي على الكلمات والمصطلحات</div>
             </div>
-            <div class="form-field">
-              <label>🎧 F — فويس الجرامر (MP3 — Google Drive)</label>
-              <input type="text" id="unit-audio-grammar" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">ملف MP3 صوتي لشرح جرامر الوحدة</div>
-            </div>
           </div>
         </div>
-
         <button class="btn-add" id="btn-add-unit">➕ إضافة الوحدة</button>
       </div>
 
@@ -362,6 +344,7 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
         <div id="units-list"><div style="color:var(--text-3); font-size:13px;">جاري التحميل...</div></div>
       </div>
     </div>
+
 
 
     <!-- ===== تبويب Story ===== -->
@@ -764,15 +747,14 @@ function loadAll(){
    الوحدات
    ============================================================ */
 document.getElementById('btn-add-unit').addEventListener('click', async () => {
-  const en = document.getElementById('unit-en').value.trim();
   const pdfGrammar = document.getElementById('unit-pdf-grammar').value.trim();
-  const videoGrammar = document.getElementById('unit-video-grammar').value.trim();
   const bankGrammar = document.getElementById('unit-bank-grammar').value.trim();
   const pdfVocab = document.getElementById('unit-pdf-vocab').value.trim();
   const bankVocab = document.getElementById('unit-bank-vocab').value.trim();
-  const audioGrammar = document.getElementById('unit-audio-grammar').value.trim();
 
-  if(!en){ showToast('اكتب اسم الوحدة بالإنجليزي', 'error'); return; }
+  if(!pdfGrammar && !bankGrammar && !pdfVocab && !bankVocab){
+    showToast('أضف محتوى للوحدة على الأقل', 'error'); return;
+  }
 
   const btn = document.getElementById('btn-add-unit');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
@@ -782,25 +764,17 @@ document.getElementById('btn-add-unit').addEventListener('click', async () => {
     const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     return m ? `https://drive.google.com/file/d/${m[1]}/preview` : url;
   }
-  function driveAudio(url){
-    if(!url) return '';
-    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return m ? `https://drive.google.com/uc?export=download&id=${m[1]}` : url;
-  }
 
   try{
     await db.collection('units').add({
-      titleEn: en,
       pdfGrammar: drivePreview(pdfGrammar),
-      videoGrammar: videoGrammar,
       bankGrammar: bankGrammar,
       pdfVocab: drivePreview(pdfVocab),
       bankVocab: bankVocab,
-      audioGrammar: driveAudio(audioGrammar),
       done: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    ['unit-en','unit-pdf-grammar','unit-video-grammar','unit-bank-grammar','unit-pdf-vocab','unit-bank-vocab','unit-audio-grammar'].forEach(id => {
+    ['unit-pdf-grammar','unit-bank-grammar','unit-pdf-vocab','unit-bank-vocab'].forEach(id => {
       const el = document.getElementById(id); if(el) el.value = '';
     });
     showToast('✅ الوحدة اتضافت — هتظهر للطلاب فوراً');

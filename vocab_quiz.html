@@ -1,1624 +1,510 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SamySchool | Vocabulary Question Bank</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>بنك أسئلة ليلة امتحان ثالثة ثانوي | Samy School</title>
 <style>
-:root{
-  --blue:#1E90FF;--blue2:#1267CC;--blueL:rgba(30,144,255,.13);
-  --ink:#07111F;--ink2:#0D1A2E;--ink3:#13243A;
-  --t1:#F0F4FF;--t2:#8AA0C0;--t3:#4A6080;
-  --line:rgba(240,244,255,.09);--lineS:rgba(240,244,255,.18);
-  --green:#22C55E;--greenL:rgba(34,197,94,.13);
-  --red:#EF4444;--redL:rgba(239,68,68,.12);
-  --gold:#F59E0B;--goldL:rgba(245,158,11,.12);
-  --r:10px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--ink);color:var(--t1);font-family:'Cairo',sans-serif;min-height:100vh;}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(30,144,255,.12),transparent);pointer-events:none;z-index:0;}
-
-/* ===== HEADER ===== */
-.header{background:rgba(7,17,31,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:0 24px;position:sticky;top:0;z-index:100;}
-.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
-.logo-row{display:flex;align-items:center;gap:12px;}
-.logo-img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px rgba(30,144,255,.5);}
-.logo-text{font-size:18px;font-weight:900;}.logo-text span{color:var(--blue);}
-.logo-sub{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;}
-.header-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);background:var(--blueL);border:1px solid rgba(30,144,255,.3);padding:5px 12px;border-radius:999px;}
-
-/* ===== HERO ===== */
-.hero{max-width:960px;margin:0 auto;padding:36px 24px 24px;position:relative;z-index:1;}
-.hero-title{font-size:clamp(24px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:8px;}
-.hero-title span{color:var(--blue);}
-.hero-sub{color:var(--t2);font-size:14px;margin-bottom:24px;line-height:1.7;}
-.stats-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
-.stat{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:12px 18px;text-align:center;min-width:100px;}
-.stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--blue);}
-.stat-lbl{font-size:11px;color:var(--t3);margin-top:3px;}
-
-/* ===== FILTER ===== */
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
-.filter-btn{background:var(--ink3);border:1.5px solid var(--lineS);color:var(--t2);padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;}
-.filter-btn:hover,.filter-btn.active{background:var(--blueL);border-color:var(--blue);color:var(--blue);}
-
-/* ===== PROGRESS BAR ===== */
-.prog-wrap{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;}
-.prog-bar{flex:1;height:8px;background:var(--lineS);border-radius:4px;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#38BDF8);border-radius:4px;transition:width .4s;}
-.prog-txt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);white-space:nowrap;}
-.prog-score{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);font-weight:700;white-space:nowrap;}
-
-/* ===== QUESTION CARD ===== */
-.questions{max-width:960px;margin:0 auto;padding:0 24px 40px;position:relative;z-index:1;}
-.qcard{background:var(--ink2);border:1px solid var(--lineS);border-radius:14px;padding:22px;margin-bottom:14px;transition:border-color .2s;}
-.qcard.answered{border-color:rgba(30,144,255,.2);}
-.qcard-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
-.qnum{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--blue);background:var(--blueL);border:1px solid rgba(30,144,255,.25);padding:4px 10px;border-radius:999px;white-space:nowrap;margin-top:2px;}
-.qtext{font-family:'Lora',serif;font-size:16px;line-height:1.75;font-weight:600;}
-.qtext .kw{color:var(--blue);font-style:italic;font-weight:700;border-bottom:2px solid rgba(30,144,255,.4);}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-@media(max-width:540px){.opts{grid-template-columns:1fr;}}
-.opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid var(--lineS);border-radius:9px;cursor:pointer;transition:all .15s;background:rgba(0,0,0,.1);}
-.opt:hover:not(.locked){border-color:var(--blue);background:var(--blueL);}
-.opt.selected{border-color:var(--blue);background:var(--blueL);}
-.opt.correct{border-color:var(--green) !important;background:var(--greenL) !important;}
-.opt.wrong{border-color:var(--red) !important;background:var(--redL) !important;}
-.opt.locked{cursor:not-allowed;}
-.opt-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);min-width:18px;font-weight:700;}
-.opt-txt{font-size:13.5px;font-weight:600;}
-.explanation{display:none;margin-top:12px;padding:12px 14px;background:rgba(30,144,255,.06);border-right:3px solid var(--blue);border-radius:7px;}
-.explanation.show{display:block;}
-.exp-lbl{font-size:10.5px;font-weight:800;color:var(--blue);margin-bottom:5px;letter-spacing:.05em;font-family:'JetBrains Mono',monospace;}
-.exp-txt{font-size:13px;color:var(--t2);line-height:1.7;}
-.exp-ar{font-size:13px;color:var(--gold);margin-top:4px;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;}
-
-/* ===== SUBMIT + RESULT ===== */
-.submit-zone{max-width:960px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
-.btn-submit{width:100%;background:var(--blue);color:#fff;border:none;padding:16px;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer;transition:background .15s;font-family:'Cairo',sans-serif;box-shadow:0 8px 28px -8px rgba(30,144,255,.5);}
-.btn-submit:hover{background:var(--blue2);}
-.btn-submit:disabled{background:var(--t3);cursor:not-allowed;box-shadow:none;}
-.result-box{background:var(--ink2);border:2px solid var(--blue);border-radius:16px;padding:36px;text-align:center;margin-top:20px;display:none;}
-.result-box.show{display:block;animation:pop .4s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
-.result-score{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:var(--blue);margin-bottom:8px;}
-.result-grade{font-size:20px;font-weight:800;margin-bottom:6px;}
-.result-sub{color:var(--t2);font-size:14px;margin-bottom:20px;}
-.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;}
-.rbar{background:var(--ink3);border-radius:9px;padding:14px;text-align:center;}
-.rbar-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-bottom:4px;}
-.rbar-lbl{font-size:11px;color:var(--t2);}
-.btn-retry{background:transparent;border:2px solid var(--blue);color:var(--blue);padding:12px 32px;border-radius:9px;font-weight:800;font-size:14px;cursor:pointer;font-family:'Cairo',sans-serif;transition:background .2s;}
-.btn-retry:hover{background:var(--blueL);}
-
-/* ===== FLOATING SCORE ===== */
-.float-score{position:fixed;bottom:24px;right:24px;background:var(--ink3);border:1px solid rgba(30,144,255,.4);border-radius:10px;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);z-index:200;display:none;}
-.float-score span{color:var(--blue);font-weight:700;}
+:root{--p:#1565C0;--pd:#0D47A1;--pdd:#082E6E;--pl:#42A5F5;--pb:#E3F2FD;--pbl:#F0F7FF;--s:#2E7D32;--sl:#66BB6A;--sb:#E8F5E9;--e:#C62828;--el:#EF5350;--eb:#FFEBEE;--t:#0D1B2A;--ts:#455A64;--tl:#78909C;--c:#FFF;--bd:#CFD8DC;--bl:#ECEFF1;--bg:#EEF2F7;--r:14px;--rs:10px;--rl:20px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;direction:rtl;line-height:1.6;overflow-x:hidden}
+.tb{background:linear-gradient(135deg,var(--pdd),var(--pd) 50%,var(--p));color:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 20px rgba(13,71,161,.35);position:sticky;top:0;z-index:100;gap:12px;flex-wrap:wrap}
+.la{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.li-img{width:50px;height:50px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);object-fit:contain;background:#fff;padding:3px}
+.li-fb{width:50px;height:50px;border-radius:50%;background:#fff;display:none;align-items:center;justify-content:center;color:var(--pd);font-weight:800;font-size:8px;text-align:center;line-height:1.15;border:2.5px solid rgba(255,255,255,.35)}
+.sn{font-size:1.1rem;font-weight:700;letter-spacing:.7px}
+.taa{text-align:center;flex:1;min-width:200px}
+.mt{font-size:1.2rem;font-weight:800}
+.stt{font-size:.78rem;opacity:.8}
+.sa{display:flex;gap:12px;align-items:center;flex-shrink:0}
+.si{text-align:center;min-width:48px;background:rgba(255,255,255,.1);padding:5px 8px;border-radius:var(--rs);backdrop-filter:blur(4px)}
+.sv{font-size:1.45rem;font-weight:800;line-height:1}
+.sl{font-size:.65rem;opacity:.85;margin-top:2px;font-weight:500}
+.sc .sv{color:#A5D6A7}.sw .sv{color:#EF9A9A}
+.sbar{background:var(--pb);padding:7px 24px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--bl);font-size:.85rem;color:var(--pd);font-weight:700}
+.sbg{background:var(--p);color:#fff;padding:3px 12px;border-radius:14px;font-size:.75rem;white-space:nowrap}
+.mc{max-width:900px;margin:18px auto;padding:0 18px}
+.qc{background:var(--c);border-radius:var(--rl);box-shadow:0 2px 16px rgba(13,71,161,.08);overflow:hidden;animation:ci .4s cubic-bezier(.22,1,.36,1);border:1px solid var(--bl)}
+@keyframes ci{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.qh{background:linear-gradient(135deg,var(--pb),var(--pbl));padding:12px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bl);flex-wrap:wrap;gap:6px}
+.qn{background:var(--p);color:#fff;padding:4px 16px;border-radius:22px;font-weight:700;font-size:.88rem;box-shadow:0 2px 8px rgba(21,101,192,.3)}
+.pr{color:var(--ts);font-size:.85rem;display:flex;align-items:center;gap:5px}
+.pgb{background:var(--pl);color:#fff;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.qb{padding:24px 28px 20px}
+.qt{font-size:1.35rem;font-weight:700;line-height:1.8;margin-bottom:22px}
+.qt .hl{color:var(--p);border-bottom:3px solid var(--pl);padding-bottom:1px}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.op{padding:13px 16px;border:2.5px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .22s cubic-bezier(.22,1,.36,1);font-size:1.02rem;display:flex;align-items:center;gap:11px;background:var(--c);user-select:none;position:relative;overflow:hidden}
+.op::before{content:'';position:absolute;inset:0;background:var(--pb);opacity:0;transition:opacity .2s}
+.op:hover:not(.lk)::before{opacity:1}
+.op:hover:not(.lk){border-color:var(--pl);transform:translateY(-2px);box-shadow:0 5px 18px rgba(21,101,192,.1)}
+.op.lk{cursor:default}
+.op.ok{border-color:var(--s)!important;background:var(--sb)!important;transform:scale(1.01);box-shadow:0 4px 14px rgba(46,125,50,.15)}
+.op.ok::before{display:none}
+.op.no{border-color:var(--e)!important;background:var(--eb)!important;animation:shk .45s ease}
+.op.no::before{display:none}
+.op.dm{opacity:.38}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.ol{width:34px;height:34px;border-radius:50%;background:var(--pb);color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;transition:all .22s;position:relative;z-index:1}
+.op.ok .ol{background:var(--s);color:#fff;box-shadow:0 2px 8px rgba(46,125,50,.3)}
+.op.no .ol{background:var(--e);color:#fff;box-shadow:0 2px 8px rgba(198,40,40,.3)}
+.otx{flex:1;line-height:1.5;position:relative;z-index:1;font-weight:500}
+.oic{font-size:1.2rem;flex-shrink:0;opacity:0;transform:scale(0);transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative;z-index:1}
+.op.ok .oic,.op.no .oic{opacity:1;transform:scale(1)}
+.eb{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.22,1,.36,1),padding .5s,opacity .4s;opacity:0}
+.eb.sh{max-height:350px;opacity:1;padding:18px 28px}
+.eb.ec{background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border-top:2.5px solid var(--sl)}
+.eb.ew{background:linear-gradient(135deg,#FFEBEE,#FFF3E0);border-top:2.5px solid var(--el)}
+.ebg{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:18px;font-weight:700;font-size:.85rem;margin-bottom:7px}
+.ebg.bc{background:var(--s);color:#fff}.ebg.bw{background:var(--e);color:#fff}
+.etx{font-size:.98rem;line-height:1.8;color:var(--ts)}
+.eca{margin-top:8px;padding:7px 14px;background:rgba(46,125,50,.08);border-radius:var(--rs);font-weight:600;color:var(--s);font-size:.92rem;border-right:4px solid var(--s)}
+.bb{max-width:900px;margin:0 auto 8px;padding:0 18px;display:flex;align-items:center;gap:10px}
+.nb{padding:9px 18px;border:none;border-radius:var(--rs);font-size:.9rem;font-weight:600;cursor:pointer;transition:all .22s;font-family:inherit;white-space:nowrap}
+.nb:disabled{opacity:.35;cursor:default;transform:none!important}
+.bp{background:var(--c);color:var(--t);border:2px solid var(--bd);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.bp:hover:not(:disabled){border-color:var(--p);color:var(--p)}
+.bn{background:var(--p);color:#fff;box-shadow:0 2px 10px rgba(21,101,192,.25)}
+.bn:hover:not(:disabled){background:var(--pd);transform:translateY(-1px)}
+.pc{flex:1;display:flex;flex-direction:column;gap:3px}
+.ptx{font-size:.75rem;color:var(--tl);text-align:center;font-weight:500}
+.pbr{height:8px;background:var(--bl);border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.06)}
+.pfl{height:100%;background:linear-gradient(90deg,var(--pl),var(--p));border-radius:4px;transition:width .6s cubic-bezier(.22,1,.36,1);width:0%}
+.bgt{background:var(--c);color:var(--p);border:2px solid var(--p);padding:9px 13px;border-radius:var(--rs);cursor:pointer;font-size:1.05rem;transition:all .22s;font-family:inherit;line-height:1}
+.bgt:hover{background:var(--p);color:#fff}
+.kh{text-align:center;margin-bottom:14px;font-size:.7rem;color:var(--tl);opacity:.7}
+kbd{background:var(--pb);color:var(--p);padding:1px 5px;border-radius:4px;font-family:inherit;font-size:.68rem;border:1px solid var(--bd);font-weight:600}
+.ov{position:fixed;inset:0;background:rgba(13,27,42,.4);backdrop-filter:blur(3px);z-index:150;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.sh{opacity:1;pointer-events:auto}
+.np{position:fixed;top:0;right:-360px;width:330px;height:100vh;background:var(--c);box-shadow:-6px 0 36px rgba(13,71,161,.18);z-index:200;transition:right .4s cubic-bezier(.22,1,.36,1);overflow-y:auto;padding:22px 18px}
+.np.op{right:0}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--bl)}
+.pt{font-size:1.05rem;font-weight:800;color:var(--pd)}
+.pcl{width:34px;height:34px;border:none;background:var(--pb);color:var(--p);border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .2s;font-weight:700}
+.pcl:hover{background:var(--p);color:#fff}
+.ng{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.nc{aspect-ratio:1;border:2px solid var(--bd);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s;background:var(--c);color:var(--tl)}
+.nc:hover{border-color:var(--p);color:var(--p);transform:scale(1.1)}
+.nc.cu{border-color:var(--p);background:var(--pb);color:var(--p);box-shadow:0 0 0 3px rgba(21,101,192,.15);transform:scale(1.05)}
+.nc.cc{border-color:var(--s);background:var(--sb);color:var(--s)}
+.nc.cw{border-color:var(--e);background:var(--eb);color:var(--e)}
+.nlg{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.lii{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--ts);font-weight:500}
+.ld{width:13px;height:13px;border-radius:4px;border:2px solid}
+.du{border-color:var(--bd);background:var(--c)}.dc{border-color:var(--s);background:var(--sb)}.dw{border-color:var(--e);background:var(--eb)}
+.pa{margin-top:20px;padding-top:16px;border-top:2px solid var(--bl)}
+.brs{width:100%;padding:10px;border:2.5px solid var(--e);background:var(--c);color:var(--e);border-radius:var(--rs);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .22s;font-family:inherit}
+.brs:hover{background:var(--e);color:#fff}
+.co{position:fixed;inset:0;background:rgba(13,27,42,.5);backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.co.sh{opacity:1;pointer-events:auto}
+.cbx{background:var(--c);padding:30px 34px;border-radius:var(--rl);box-shadow:0 8px 40px rgba(13,71,161,.14);text-align:center;transform:scale(.9) translateY(20px);transition:transform .35s cubic-bezier(.22,1,.36,1);max-width:380px;width:90%}
+.co.sh .cbx{transform:scale(1) translateY(0)}
+.cii{font-size:2.8rem;margin-bottom:8px;display:block}
+.ctt{font-size:.95rem;margin-bottom:22px;line-height:1.7;color:var(--ts)}
+.ctt strong{color:var(--e)}
+.cbs{display:flex;gap:10px;justify-content:center}
+.cbu{padding:9px 26px;border:none;border-radius:var(--rs);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
+.cby{background:var(--e);color:#fff}.cby:hover{background:#B71C1C}
+.cbn{background:var(--bd);color:var(--t)}.cbn:hover{background:#BDBDBD}
+.cpb{background:linear-gradient(135deg,var(--sb),#F1F8E9);border:2px solid var(--sl);border-radius:var(--r);padding:16px 22px;margin-top:14px;text-align:center;animation:ci .5s}
+.cpb h3{color:var(--s);font-size:1.1rem;margin-bottom:3px}
+.cpb p{color:var(--ts);font-size:.9rem}
+@media(max-width:768px){.tb{padding:8px 12px}.taa{order:-1;width:100%}.mt{font-size:1rem}.stt{display:none}.sn{font-size:.85rem}.li-img,.li-fb{width:38px;height:38px}.sa{gap:6px}.si{min-width:38px;padding:3px 6px}.sv{font-size:1.15rem}.qt{font-size:1.1rem}.og{grid-template-columns:1fr}.qb{padding:16px 14px 14px}.eb.sh{padding:12px 14px}.np{width:270px;right:-290px}.kh{display:none}.bb{gap:6px}.nb{padding:8px 12px;font-size:.82rem}.sbar{padding:5px 12px;font-size:.78rem}}
+@media(max-width:480px){.op{padding:10px 10px;font-size:.92rem}.ol{width:28px;height:28px;font-size:.78rem}.qh{padding:10px 12px}.qn{font-size:.78rem;padding:3px 12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="header-inner">
-    <div class="logo-row">
-      <img src="logo.png" class="logo-img" alt="SamySchool" onerror="this.style.display='none'">
-      <div>
-        <div class="logo-text">Samy<span>School</span></div>
-        <div class="logo-sub">Vocabulary Question Bank · 2026</div>
-      </div>
-    </div>
-    <div class="header-badge" id="h-badge">200 Questions</div>
-  </div>
+<header class="tb">
+<div class="la">
+<img class="li-img" src="logo.png" alt="Samy School" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+<div class="li-fb">SAMY<br>SCHOOL</div>
+<span class="sn">Samy School</span>
+</div>
+<div class="taa"><div class="mt">بنك أسئلة الكلمات والمصطلحات</div><div class="stt">ليلة امتحان ثالثة ثانوي — اللغة الإنجليزية</div></div>
+<div class="sa">
+<div class="si sc"><div class="sv" id="sC">0</div><div class="sl">صحيح</div></div>
+<div class="si sw"><div class="sv" id="sW">0</div><div class="sl">خطأ</div></div>
+<div class="si"><div class="sv" id="sT">0</div><div class="sl">أُجيب</div></div>
+</div>
 </header>
-
-<div class="hero">
-  <h1 class="hero-title">Vocabulary <span>Question Bank</span></h1>
-  <p class="hero-sub">بنك الأسئلة الشامل للكلمات والمصطلحات — منهج الثالث الثانوي 2026<br>اختار إجاباتك وسلّم في الآخر عشان تشوف درجتك مع تفسير لكل إجابة</p>
-  <div class="stats-row">
-    <div class="stat"><div class="stat-num" id="s-total">200</div><div class="stat-lbl">إجمالي الأسئلة</div></div>
-    <div class="stat"><div class="stat-num" id="s-answered" style="color:var(--gold)">0</div><div class="stat-lbl">تمت إجابته</div></div>
-    <div class="stat"><div class="stat-num" id="s-correct" style="color:var(--green)">0</div><div class="stat-lbl">إجابات صح</div></div>
-    <div class="stat"><div class="stat-num" id="s-pct" style="color:var(--blue)">0%</div><div class="stat-lbl">النسبة</div></div>
-  </div>
-  <div class="prog-wrap">
-    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="prog-txt" id="prog-txt">0 / 200</div>
-  </div>
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="filterQ('all',this)">All Units</button>
-    <button class="filter-btn" onclick="filterQ('1-4',this)">Units 1–4</button>
-    <button class="filter-btn" onclick="filterQ('5-8',this)">Units 5–8</button>
-    <button class="filter-btn" onclick="filterQ('9-12',this)">Units 9–12</button>
-    <button class="filter-btn" onclick="filterQ('syn',this)">Synonyms</button>
-    <button class="filter-btn" onclick="filterQ('ant',this)">Antonyms</button>
-    <button class="filter-btn" onclick="filterQ('def',this)">Definitions</button>
-  </div>
+<div class="sbar"><span class="sbg" id="sBg">الجزء 1</span><span id="sNm">أسئلة النماذج الاسترشادية (Unit 1-6)</span></div>
+<main class="mc" id="MC" role="main" aria-live="polite"></main>
+<div class="bb">
+<button class="nb bp" id="bP">&#8594; السابق</button>
+<div class="pc"><div class="ptx" id="pTx">0 من 0</div><div class="pbr"><div class="pfl" id="pFl"></div></div></div>
+<button class="nb bn" id="bN">التالي &#8592;</button>
+<button class="bgt" id="bG" title="خريطة الأسئلة">&#9776;</button>
 </div>
-
-<div class="questions" id="questions-container"></div>
-
-<div class="submit-zone">
-  <button class="btn-submit" id="btn-submit" onclick="submitAll()">
-    📋 تسليم الامتحان — شوف نتيجتك مع التفسير
-  </button>
-  <div class="result-box" id="result-box">
-    <div class="result-score" id="res-score">--/--</div>
-    <div class="result-grade" id="res-grade">--</div>
-    <div class="result-sub" id="res-sub">--</div>
-    <div class="result-bars">
-      <div class="rbar"><div class="rbar-num" id="rb-correct" style="color:var(--green)">0</div><div class="rbar-lbl">✅ إجابات صح</div></div>
-      <div class="rbar"><div class="rbar-num" id="rb-wrong" style="color:var(--red)">0</div><div class="rbar-lbl">❌ إجابات غلط</div></div>
-      <div class="rbar"><div class="rbar-num" id="rb-skip" style="color:var(--gold)">0</div><div class="rbar-lbl">⬜ لم يُجاب</div></div>
-    </div>
-    <button class="btn-retry" onclick="retryAll()">🔄 إعادة المحاولة</button>
-  </div>
+<div class="kh"><kbd>&#8592;</kbd><kbd>&#8594;</kbd> تنقل | <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> اختيار | <kbd>G</kbd> خريطة</div>
+<div class="ov" id="ov"></div>
+<nav class="np" id="nP" aria-label="خريطة الأسئلة">
+<div class="ph"><span class="pt">خريطة الأسئلة</span><button class="pcl" id="pCl">&times;</button></div>
+<div class="ng" id="nG"></div>
+<div class="nlg">
+<div class="lii"><div class="ld du"></div><span>لم يُجب</span></div>
+<div class="lii"><div class="ld dc"></div><span>صحيح</span></div>
+<div class="lii"><div class="ld dw"></div><span>خطأ</span></div>
 </div>
-
-<div class="float-score" id="float-score">Score: <span id="fs-txt">0/0</span></div>
-
+<div class="pa"><button class="brs" id="bR">مسح كل التقدم وإعادة البدء</button></div>
+</nav>
+<div class="co" id="cO">
+<div class="cbx">
+<span class="cii" aria-hidden="true">&#9888;</span>
+<div class="ctt">هل أنت متأكد من <strong>مسح كل التقدم</strong>؟<br>لا يمكن التراجع.</div>
+<div class="cbs">
+<button class="cbu cby" id="cY">نعم، امسح الكل</button>
+<button class="cbu cbn" id="cN">إلغاء</button>
+</div>
+</div>
+</div>
 <script>
-// =====================================================================
-// QUESTION BANK — 200 Questions from Real Curriculum (Units 1-12 2026)
-// =====================================================================
-const BANK = [
-// ===== UNITS 1-4 SYNONYMS =====
-{u:'1-4',t:'syn',q:'The astronauts managed to <span class="kw">troubleshoot</span> the shuttle\'s sudden pause. "Troubleshoot" means ...',
- opts:['hinder','diagnose','maximize','transfer'],ans:1,
- exp:'Troubleshoot = to find and fix problems. Synonym: diagnose (تشخيص).',ar:'كشف الخطأ وإصلاحه — مرادفه: diagnose = يشخّص/يكتشف'},
-
-{u:'1-4',t:'syn',q:'His speech had clear <span class="kw">implications</span> that the team would have a new coach. "Implications" here means ...',
- opts:['sources','effects','hints','customs'],ans:1,
- exp:'Implications = things that are suggested without being directly stated. Synonym: effects/results.',ar:'تداعيات — مرادفه: effects = آثار/نتائج'},
-
-{u:'1-4',t:'ant',q:'The country\'s native language has been <span class="kw">marginalized</span>. The antonym of "marginalized" is ...',
- opts:['disregarded','focused','demoted','automated'],ans:1,
- exp:'Marginalized = pushed to the edge / ignored. Antonym: focused / central (محوري).',ar:'مُهمَّش — المتضاد: focused = محوري'},
-
-{u:'1-4',t:'syn',q:'Violent thunderstorms caused <span class="kw">chaos</span> on the roads. The synonym of "chaos" is ...',
- opts:['settlement','clumsiness','dedication','disruption'],ans:3,
- exp:'Chaos = complete disorder. Synonym: disruption (اضطراب/فوضى).',ar:'فوضى — مرادفه: disruption = اضطراب'},
-
-{u:'1-4',t:'ant',q:'Artists are <span class="kw">embracing</span> new technology. The antonym of "embracing" is ...',
- opts:['defining','diagnosing','rejecting','supporting'],ans:2,
- exp:'Embracing = accepting happily. Antonym: rejecting (رفض).',ar:'يتبنى — المتضاد: rejecting = يرفض'},
-
-{u:'1-4',t:'syn',q:'Young children are particularly <span class="kw">vulnerable</span> to flu. The synonym of "vulnerable" is ...',
- opts:['exiled','extracted','exempted','exposed'],ans:3,
- exp:'Vulnerable = easily harmed. Synonym: exposed (مُعرَّض لـ).',ar:'عُرضة للخطر — مرادفه: exposed = معرّض لـ'},
-
-{u:'1-4',t:'ant',q:'The president always <span class="kw">emphasizes</span> the importance of work. The antonym of "emphasize" is ...',
- opts:['understate','assure','highlight','underestimate'],ans:3,
- exp:'Emphasize = stress / highlight. Antonym: underestimate / understate.',ar:'يُبرز — المتضاد: underestimate = يستهين بـ'},
-
-{u:'1-4',t:'syn',q:'They will <span class="kw">implement</span> the new policy next week. The synonym of "implement" is ...',
- opts:['enforce','neglect','disregard','carry on'],ans:0,
- exp:'Implement = put into action. Synonym: enforce (ينفّذ).',ar:'يُطبّق — مرادفه: enforce = ينفّذ/يُطبّق'},
-
-{u:'1-4',t:'syn',q:'The meeting hall was <span class="kw">packed</span> with members. "Packed" is synonymous with ...',
- opts:['wrapped','framed','vacant','congested'],ans:3,
- exp:'Packed = very full / crowded. Synonym: congested (مكتظ).',ar:'مكتظ — مرادفه: congested = مزدحم'},
-
-{u:'1-4',t:'def',q:'She is somehow shy and hesitant, so you can\'t describe her as <span class="kw">indifferent</span>. "Indifferent" means ...',
- opts:['distinguished','irrelevant','neglectful','mindful'],ans:1,
- exp:'Indifferent = not caring; having no interest. Synonym: unconcerned.',ar:'لامبالي — مرادفه: unconcerned'},
-
-{u:'1-4',t:'ant',q:'We all <span class="kw">condemn</span> all forms of bullying. The antonym of "condemn" is ...',
- opts:['praise','blame','attack','doom'],ans:0,
- exp:'Condemn = express strong disapproval. Antonym: praise (يمدح).',ar:'يُدين — المتضاد: praise = يمدح'},
-
-{u:'1-4',t:'def',q:'New factories are being <span class="kw">automated</span> to increase productivity. "Automated" means ...',
- opts:['manual','mechanical','human-operated','self-operating'],ans:3,
- exp:'Automated = working by machines without human control (آلي).',ar:'آلي/مُميكَن — يعمل تلقائياً بدون تدخل بشري'},
-
-{u:'1-4',t:'syn',q:'The project showed <span class="kw">profound</span> effects on the community. The synonym of "profound" is ...',
- opts:['shallow','deep','minor','ordinary'],ans:1,
- exp:'Profound = deep and significant. Synonym: deep / far-reaching.',ar:'بالغ/عميق — مرادفه: deep = عميق'},
-
-{u:'1-4',t:'def',q:'The building\'s <span class="kw">infrastructure</span> needs upgrading. "Infrastructure" means ...',
- opts:['appearance','basic systems','furniture','decoration'],ans:1,
- exp:'Infrastructure = the basic systems (roads, electricity, etc.) that make a place work.',ar:'البنية التحتية — الأنظمة الأساسية (طرق، كهرباء)'},
-
-{u:'1-4',t:'ant',q:'The team showed <span class="kw">optimistic</span> results. The antonym of "optimistic" is ...',
- opts:['realistic','pessimistic','certain','careful'],ans:1,
- exp:'Optimistic = expecting good results. Antonym: pessimistic (متشائم).',ar:'متفائل — المتضاد: pessimistic = متشائم'},
-
-{u:'1-4',t:'def',q:'The doctor managed to <span class="kw">administer</span> the medicine on time. "Administer" means ...',
- opts:['prescribe','give','refuse','diagnose'],ans:1,
- exp:'Administer = to give or apply (medicine). Arabic: يُعطي/يُدير الدواء.',ar:'يُعطي/يُدير الدواء — يوصل العلاج للمريض'},
-
-{u:'1-4',t:'syn',q:'The phenomenon was truly <span class="kw">awe-inspiring</span>. The synonym is ...',
- opts:['ordinary','breathtaking','boring','simple'],ans:1,
- exp:'Awe-inspiring = causing feelings of wonder and admiration.',ar:'مُلهم للرهبة والإعجاب — مذهل'},
-
-{u:'1-4',t:'def',q:'The news caused a <span class="kw">standstill</span> in traffic. "Standstill" means ...',
- opts:['slow movement','complete stop','traffic jam','speed'],ans:1,
- exp:'Standstill = a complete stop of movement or activity (ركود/توقف كامل).',ar:'توقف تام — ركود/توقف كامل للحركة'},
-
-{u:'1-4',t:'syn',q:'The medicine helped him <span class="kw">thrive</span> after surgery. Synonym of "thrive" is ...',
- opts:['suffer','struggle','prosper','decline'],ans:2,
- exp:'Thrive = to grow or develop successfully. Synonym: prosper (يزدهر).',ar:'يزدهر/ينمو — مرادفه: prosper = يزدهر'},
-
-{u:'1-4',t:'ant',q:'The glass vase is very <span class="kw">fragile</span>. The antonym of "fragile" is ...',
- opts:['heavy','sturdy','light','colorful'],ans:1,
- exp:'Fragile = easily broken. Antonym: sturdy / strong (متين/قوي).',ar:'هش — المتضاد: sturdy = متين/قوي'},
-
-{u:'1-4',t:'def',q:'Scientists study <span class="kw">phenomena</span> to understand the natural world. "Phenomena" means ...',
- opts:['experiments','theories','observable events','solutions'],ans:2,
- exp:'Phenomena = observable events or facts (ظواهر). Singular: phenomenon.',ar:'ظواهر — الجمع: phenomenon = ظاهرة'},
-
-{u:'1-4',t:'syn',q:'The <span class="kw">resolution</span> to the conflict was reached peacefully. Synonym of "resolution" is ...',
- opts:['problem','solution','argument','disagreement'],ans:1,
- exp:'Resolution = a firm decision or solution. Synonym: solution (حل).',ar:'حل/قرار — مرادفه: solution = حل'},
-
-{u:'1-4',t:'def',q:'The company aims to <span class="kw">revolutionize</span> the industry. "Revolutionize" means ...',
- opts:['slightly improve','completely change','maintain','monitor'],ans:1,
- exp:'Revolutionize = to completely change something (يُغيّر جذرياً).',ar:'يُغيّر جذرياً — يحدث تحولاً جذرياً'},
-
-{u:'1-4',t:'syn',q:'Working in medicine is very <span class="kw">rewarding</span>. Synonym of "rewarding" is ...',
- opts:['tiring','fulfilling','dangerous','simple'],ans:1,
- exp:'Rewarding = giving satisfaction and benefit. Synonym: fulfilling (مُجزٍ).',ar:'مُجزٍ — مرادفه: fulfilling = مُرضٍ'},
-
-{u:'1-4',t:'ant',q:'The patient felt <span class="kw">hazardous</span> chemicals in the lab. Antonym of "hazardous" is ...',
- opts:['safe','harmful','toxic','exposed'],ans:0,
- exp:'Hazardous = dangerous. Antonym: safe (آمن).',ar:'خطير — المتضاد: safe = آمن'},
-
-// ===== UNITS 5-8 =====
-{u:'5-8',t:'def',q:'Doctors recommend regular exercise to <span class="kw">maintain</span> good health. "Maintain" means ...',
- opts:['improve','keep','destroy','monitor'],ans:1,
- exp:'Maintain = to keep something in good condition. Arabic: يحافظ على.',ar:'يحافظ على — يُبقي شيئاً في حالة جيدة'},
-
-{u:'5-8',t:'syn',q:'The movie was so <span class="kw">heartbreaking</span> that everyone cried. Synonym is ...',
- opts:['thrilling','moving','boring','funny'],ans:1,
- exp:'Heartbreaking = causing great sadness. Synonym: moving / sad.',ar:'مُحزن — مرادفه: moving/sad = مؤثر'},
-
-{u:'5-8',t:'def',q:'The ancient <span class="kw">civilization</span> built impressive monuments. "Civilization" means ...',
- opts:['country','advanced society','group of people','religion'],ans:1,
- exp:'Civilization = an advanced stage of human social development (حضارة).',ar:'حضارة — مرحلة متقدمة من التطور البشري'},
-
-{u:'5-8',t:'syn',q:'She packed her <span class="kw">carry-on bag</span> for the flight. "Carry-on bag" means ...',
- opts:['checked luggage','hand luggage','large suitcase','travel bag'],ans:1,
- exp:'Carry-on bag = a small bag you take inside the plane. Arabic: حقيبة يد.',ar:'حقيبة يد — الحقيبة التي تُؤخذ داخل الطائرة'},
-
-{u:'5-8',t:'ant',q:'The road is very <span class="kw">harmful</span> for pedestrians. Antonym of "harmful" is ...',
- opts:['safe','beneficial','useful','helpful'],ans:1,
- exp:'Harmful = causing damage. Antonym: beneficial / harmless (مفيد).',ar:'ضار — المتضاد: beneficial = مفيد'},
-
-{u:'5-8',t:'def',q:'The security officer checked the <span class="kw">checkpoint</span>. "Checkpoint" means ...',
- opts:['airport gate','security inspection point','boarding area','lounge'],ans:1,
- exp:'Checkpoint = a place where people or vehicles are stopped and checked (نقطة تفتيش).',ar:'نقطة تفتيش — مكان للتحقق من الهويات'},
-
-{u:'5-8',t:'syn',q:'The city was <span class="kw">bustling</span> with tourists. Synonym of "bustling" is ...',
- opts:['quiet','crowded with activity','empty','peaceful'],ans:1,
- exp:'Bustling = full of activity. Synonym: busy / lively (صاخب/نشط).',ar:'يعج بالنشاط — مرادفه: lively = حيوي'},
-
-{u:'5-8',t:'def',q:'The Nile has a very <span class="kw">fertile</span> soil for farming. "Fertile" means ...',
- opts:['dry','rocky','productive for growing','sandy'],ans:2,
- exp:'Fertile = able to produce good crops (خصب/منتج).',ar:'خصب — قادر على إنتاج محاصيل جيدة'},
-
-{u:'5-8',t:'syn',q:'Farmers use <span class="kw">irrigation</span> systems to water crops. Synonym is ...',
- opts:['flooding','watering methods','rain','drought'],ans:1,
- exp:'Irrigation = the supply of water to land (نظام الري).',ar:'نظام الري — إيصال الماء للأراضي الزراعية'},
-
-{u:'5-8',t:'def',q:'The ancient <span class="kw">scribe</span> copied texts carefully. "Scribe" means ...',
- opts:['priest','warrior','writer/copyist','merchant'],ans:2,
- exp:'Scribe = a person who copies out documents (كاتب/ناسخ).',ar:'كاتب/ناسخ — شخص يكتب أو ينسخ الوثائق'},
-
-{u:'5-8',t:'syn',q:'He made a <span class="kw">compromise</span> to end the argument. Synonym of "compromise" is ...',
- opts:['argument','agreement','demand','disagreement'],ans:1,
- exp:'Compromise = a middle agreement. Synonym: settlement / deal.',ar:'تسوية/حل وسط — مرادفه: settlement = تسوية'},
-
-{u:'5-8',t:'def',q:'She felt <span class="kw">depression</span> after losing her job. "Depression" means ...',
- opts:['happiness','sadness disorder','stress','anxiety'],ans:1,
- exp:'Depression = a serious mood disorder with persistent sadness (اكتئاب).',ar:'اكتئاب — اضطراب مزاجي مع حزن مستمر'},
-
-{u:'5-8',t:'syn',q:'The ancient <span class="kw">ziggurat</span> was impressive. What is a ziggurat?',
- opts:['palace','pyramid-like temple','market','fortress'],ans:1,
- exp:'Ziggurat = an ancient stepped pyramid temple from Mesopotamia (معبد مدرج قديم).',ar:'معبد مدرج قديم — أهرامات مدرّجة من بلاد الرافدين'},
-
-{u:'5-8',t:'def',q:'The region has <span class="kw">abundant</span> natural resources. "Abundant" means ...',
- opts:['rare','scarce','plentiful','limited'],ans:2,
- exp:'Abundant = existing in large quantities. Synonym: plentiful (وافر/غزير).',ar:'وافر/غزير — موجود بكميات كبيرة'},
-
-{u:'5-8',t:'syn',q:'The student\'s work was <span class="kw">flawless</span>. Synonym of "flawless" is ...',
- opts:['perfect','ordinary','average','incomplete'],ans:0,
- exp:'Flawless = having no mistakes. Synonym: perfect / ideal (مثالي).',ar:'بلا عيوب — مرادفه: perfect = مثالي'},
-
-{u:'5-8',t:'ant',q:'The road was <span class="kw">overcast</span> with clouds. Antonym of "overcast" is ...',
- opts:['sunny','stormy','cloudy','rainy'],ans:0,
- exp:'Overcast = covered with clouds and dark. Antonym: sunny / bright (مشمس).',ar:'ملبّد بالغيوم — المتضاد: sunny = مشمس'},
-
-{u:'5-8',t:'def',q:'We saw the chicks <span class="kw">hatching</span> from their eggs. "Hatching" means ...',
- opts:['hiding','breaking out of an egg','building nests','sleeping'],ans:1,
- exp:'Hatching = coming out of an egg (يفقس/يخرج من البيضة).',ar:'يفقس — الخروج من البيضة'},
-
-{u:'5-8',t:'syn',q:'The recent climate changes had <span class="kw">profound</span> effects on coastal areas. Synonym is ...',
- opts:['trivial','deep/significant','surface','minor'],ans:1,
- exp:'Profound = deep and important. Synonym: significant / deep (بالغ/عميق).',ar:'بالغ/عميق — مرادفه: significant = هام'},
-
-{u:'5-8',t:'def',q:'The company\'s plan focuses on the <span class="kw">implementation</span> of new ideas. "Implementation" means ...',
- opts:['planning','putting into action','criticism','evaluation'],ans:1,
- exp:'Implementation = the process of putting a plan into action (التطبيق/التنفيذ).',ar:'التطبيق/التنفيذ — عملية تحويل الخطط إلى أفعال'},
-
-{u:'5-8',t:'syn',q:'The task was so <span class="kw">repetitive</span> that he was bored. Synonym of "repetitive" is ...',
- opts:['interesting','monotonous','exciting','varied'],ans:1,
- exp:'Repetitive = doing the same thing over and over. Synonym: monotonous (رتيب).',ar:'متكرر/رتيب — مرادفه: monotonous = ممل/رتيب'},
-
-{u:'5-8',t:'def',q:'She felt <span class="kw">anxiety</span> before the exam. "Anxiety" means ...',
- opts:['excitement','happiness','nervousness/worry','confidence'],ans:2,
- exp:'Anxiety = a feeling of worry and unease (قلق/توتر).',ar:'قلق/توتر — شعور بالخوف وعدم الارتياح'},
-
-{u:'5-8',t:'ant',q:'He looked <span class="kw">clumsy</span> on the dance floor. Antonym of "clumsy" is ...',
- opts:['awkward','graceful','careless','slow'],ans:1,
- exp:'Clumsy = moving awkwardly. Antonym: graceful / agile (رشيق).',ar:'أخرق — المتضاد: graceful = رشيق'},
-
-{u:'5-8',t:'def',q:'The airport <span class="kw">lounge</span> was comfortable and spacious. "Lounge" means ...',
- opts:['runway','check-in area','waiting room','security gate'],ans:2,
- exp:'Lounge = a comfortable room for waiting (صالة انتظار).',ar:'صالة انتظار — غرفة مريحة للانتظار في المطار'},
-
-{u:'5-8',t:'syn',q:'She got a <span class="kw">promotion</span> at work. Synonym of "promotion" is ...',
- opts:['demotion','advancement','salary','contract'],ans:1,
- exp:'Promotion = moving to a higher position. Synonym: advancement (ترقية).',ar:'ترقية — مرادفه: advancement = تقدم/ترقية'},
-
-{u:'5-8',t:'def',q:'Traders followed the ancient <span class="kw">Silk Road</span>. What was the Silk Road?',
- opts:['A type of fabric','A famous trading route','A Chinese palace','A type of ship'],ans:1,
- exp:'Silk Road = ancient network of trade routes connecting China to the West (طريق الحرير).',ar:'طريق الحرير — شبكة طرق تجارية قديمة ربطت الصين بالغرب'},
-
-// ===== UNITS 9-12 =====
-{u:'9-12',t:'def',q:'Scientists study <span class="kw">black holes</span> in deep space. What are black holes?',
- opts:['bright stars','dense regions with strong gravity','empty spaces','planets'],ans:1,
- exp:'Black holes = regions in space where gravity is so strong that nothing can escape (الثقوب السوداء).',ar:'الثقوب السوداء — مناطق في الفضاء جاذبيتها شديدة جداً'},
-
-{u:'9-12',t:'syn',q:'The teacher\'s story was so <span class="kw">inspiring</span> that students tried harder. Synonym is ...',
- opts:['motivational','grateful','patronizing','isolating'],ans:0,
- exp:'Inspiring = giving motivation. Synonym: motivational / moving (ملهم).',ar:'ملهم/محفّز — مرادفه: motivational = تحفيزي'},
-
-{u:'9-12',t:'def',q:'The child was <span class="kw">terrified</span> when the lights went out. "Terrified" means ...',
- opts:['surprised','cheerful','frightened','confused'],ans:2,
- exp:'Terrified = extremely scared (مذعور/خائف جداً). Synonym: frightened.',ar:'مذعور/خائف جداً — مرادفه: frightened = خائف'},
-
-{u:'9-12',t:'syn',q:'His kind words during my struggles were truly <span class="kw">touching</span>. Synonym is ...',
- opts:['rejecting','moving','terrifying','polite'],ans:1,
- exp:'Touching = causing feelings of emotion. Synonym: moving / influential (مؤثر).',ar:'مؤثر — مرادفه: moving = مؤثر عاطفياً'},
-
-{u:'9-12',t:'ant',q:'She answered <span class="kw">hesitatingly</span>. Antonym of "hesitatingly" is ...',
- opts:['unhesitatingly','regularly','sadly','slowly'],ans:0,
- exp:'Hesitatingly = with uncertainty. Antonym: unhesitatingly / confidently (بلا تردد).',ar:'بتردد — المتضاد: unhesitatingly = بلا تردد'},
-
-{u:'9-12',t:'ant',q:'He always has a <span class="kw">cheerful</span> smile. Antonym of "cheerful" is ...',
- opts:['gloomy','touched','happy','spontaneous'],ans:0,
- exp:'Cheerful = happy and positive. Antonym: gloomy / sad (كئيب).',ar:'مبتهج — المتضاد: gloomy = كئيب/حزين'},
-
-{u:'9-12',t:'def',q:'His <span class="kw">politeness</span> made him thank his hosts many times. "Politeness" means ...',
- opts:['rudeness','shyness','good manners','weakness'],ans:2,
- exp:'Politeness = respectful and well-mannered behavior (أدب/تهذيب).',ar:'أدب/تهذيب — السلوك المحترم'},
-
-{u:'9-12',t:'def',q:'People in <span class="kw">collectivist</span> societies focus on group harmony. "Collectivist" means ...',
- opts:['individualistic','group-oriented','isolated','competitive'],ans:1,
- exp:'Collectivist = believing group work is more important than individual work (جماعي).',ar:'جماعي — يؤمن بأهمية العمل الجماعي'},
-
-{u:'9-12',t:'def',q:'Good <span class="kw">feedback</span> helps workers improve. "Feedback" means ...',
- opts:['punishment','salary','comments on performance','evaluation test'],ans:2,
- exp:'Feedback = information about performance to help improve (تغذية راجعة).',ar:'تغذية راجعة — معلومات عن الأداء لتحسينه'},
-
-{u:'9-12',t:'def',q:'The museum had <span class="kw">porcelain</span> bowls from China. "Porcelain" means ...',
- opts:['silk fabric','gold material','fine ceramic material','bronze'],ans:2,
- exp:'Porcelain = a type of fine white ceramic material (خزف/بورسلين).',ar:'خزف/بورسلين — مادة خزفية رقيقة بيضاء'},
-
-{u:'9-12',t:'syn',q:'She dreams of becoming a <span class="kw">scholar</span>. Synonym of "scholar" is ...',
- opts:['emperor','merchant','researcher/academic','warrior'],ans:2,
- exp:'Scholar = a specialist in a field of study. Synonym: researcher / academic (عالم/باحث).',ar:'عالم/باحث — متخصص في مجال دراسي'},
-
-{u:'9-12',t:'def',q:'The Tang <span class="kw">dynasty</span> ruled China for centuries. "Dynasty" means ...',
- opts:['religion','ruling family/line','army','government'],ans:1,
- exp:'Dynasty = a succession of rulers from the same family (سلالة/أسرة حاكمة).',ar:'سلالة/أسرة حاكمة — متعاقبون من نفس العائلة'},
-
-{u:'9-12',t:'def',q:'The poet used beautiful <span class="kw">imagery</span>. "Imagery" means ...',
- opts:['imagination','descriptive language creating mental pictures','photographs','emotions'],ans:1,
- exp:'Imagery = language that creates pictures in the reader\'s mind (تصوير بلاغي).',ar:'تصوير بلاغي — لغة تخلق صوراً ذهنية'},
-
-{u:'9-12',t:'syn',q:'Her voice had a pleasant <span class="kw">tone</span>. Synonym of "tone" is ...',
- opts:['color','quality/pitch','loudness','rhythm'],ans:1,
- exp:'Tone = the quality or character of a sound (نبرة/نغمة).',ar:'نبرة/نغمة — جودة أو طابع الصوت'},
-
-{u:'9-12',t:'def',q:'Stars <span class="kw">twinkle</span> in the night sky. "Twinkle" means ...',
- opts:['disappear','rotate','shine with flickering light','explode'],ans:2,
- exp:'Twinkle = to shine with a flickering or sparkling light (يتلألأ/يلمع).',ar:'يتلألأ/يلمع — يضيء بنور وامض'},
-
-{u:'9-12',t:'syn',q:'The scientist studied the <span class="kw">cosmos</span>. Synonym of "cosmos" is ...',
- opts:['earth','the universe','the atmosphere','the galaxy'],ans:1,
- exp:'Cosmos = the universe. Synonym: universe (الكون).',ar:'الكون — مرادفه: universe = الكون'},
-
-{u:'9-12',t:'def',q:'She has a <span class="kw">spontaneous</span> personality. "Spontaneous" means ...',
- opts:['planned','calculated','natural and unplanned','shy'],ans:2,
- exp:'Spontaneous = happening naturally without planning (عفوي/تلقائي).',ar:'عفوي/تلقائي — يحدث بشكل طبيعي بدون تخطيط'},
-
-{u:'9-12',t:'syn',q:'The traveler was grateful for the <span class="kw">hospitality</span>. Synonym is ...',
- opts:['hostility','warmth/friendliness','coldness','formality'],ans:1,
- exp:'Hospitality = friendly treatment of guests. Synonym: warmth / generosity (كرم الضيافة).',ar:'كرم الضيافة — مرادفه: warmth = الدفء'},
-
-{u:'9-12',t:'def',q:'The story had great <span class="kw">wisdom</span>. "Wisdom" means ...',
- opts:['intelligence','the ability to make good decisions based on experience','knowledge','memory'],ans:1,
- exp:'Wisdom = good judgment gained from experience (حكمة).',ar:'حكمة — القدرة على اتخاذ قرارات صحيحة'},
-
-{u:'9-12',t:'ant',q:'Her behavior was very <span class="kw">individualistic</span>. Antonym is ...',
- opts:['collective','personal','selfish','independent'],ans:0,
- exp:'Individualistic = putting yourself first. Antonym: collectivist / communal (جماعي).',ar:'فردي — المتضاد: collectivist = جماعي'},
-
-// ===== MORE QUESTIONS — ALL UNITS =====
-{u:'1-4',t:'def',q:'The team worked in <span class="kw">partnership</span> on the project. "Partnership" means ...',
- opts:['competition','cooperation','agreement','argument'],ans:1,
- exp:'Partnership = a relationship where people work together (شراكة).',ar:'شراكة — علاقة تعاون بين طرفين'},
-
-{u:'1-4',t:'syn',q:'The weather forecast predicted rain. Synonym of "forecast" is ...',
- opts:['report','prediction','review','warning'],ans:1,
- exp:'Forecast = a prediction about the future (توقعات/تنبؤ).',ar:'توقعات — تنبؤ بالمستقبل'},
-
-{u:'1-4',t:'def',q:'The scientist measured the patient\'s <span class="kw">pulse</span>. "Pulse" means ...',
- opts:['blood pressure','heartbeat rhythm','breathing','temperature'],ans:1,
- exp:'Pulse = the regular beat of the heart (نبض).',ar:'نبض — الدقات المنتظمة للقلب'},
-
-{u:'5-8',t:'syn',q:'The ancient <span class="kw">artifacts</span> were displayed in the museum. Synonym of "artifacts" is ...',
- opts:['paintings','historical objects','documents','sculptures'],ans:1,
- exp:'Artifacts = objects made by humans, especially from the past (تحف/آثار).',ar:'تحف/آثار — أشياء صنعها البشر في الماضي'},
-
-{u:'5-8',t:'def',q:'He decided to <span class="kw">adopt</span> the new method. "Adopt" means ...',
- opts:['reject','modify','take up and use','create'],ans:2,
- exp:'Adopt = to take something and start using it (يتبنى).',ar:'يتبنى — يأخذ شيئاً ويبدأ استخدامه'},
-
-{u:'9-12',t:'def',q:'The author wrote a fascinating <span class="kw">non-fiction</span> book. "Non-fiction" means ...',
- opts:['imaginary stories','factual writing about real events','science fiction','poetry'],ans:1,
- exp:'Non-fiction = writing based on real facts and events (غير خيالي).',ar:'غير خيالي — كتابة مبنية على وقائع حقيقية'},
-
-{u:'9-12',t:'syn',q:'The doctor showed <span class="kw">generosity</span> to his patients. Synonym is ...',
- opts:['kindness','selfishness','strictness','patience'],ans:0,
- exp:'Generosity = willingness to give freely. Synonym: kindness / giving (كرم).',ar:'كرم — مرادفه: kindness = طيبة'},
-
-{u:'1-4',t:'def',q:'The rescue team used <span class="kw">paramedics</span>. "Paramedics" means ...',
- opts:['doctors','nurses','emergency medical workers','volunteers'],ans:2,
- exp:'Paramedics = emergency healthcare workers (المسعفون).',ar:'المسعفون — العمال الصحيون في حالات الطوارئ'},
-
-{u:'5-8',t:'def',q:'Regular <span class="kw">interactions</span> help reduce stress. "Interactions" means ...',
- opts:['arguments','meetings','communication and contact','activities'],ans:2,
- exp:'Interactions = communication or contact between people (تفاعلات/تواصل).',ar:'تفاعلات/تواصل — التواصل والاحتكاك بين الناس'},
-
-{u:'9-12',t:'def',q:'The student completed an <span class="kw">apprenticeship</span> in engineering. "Apprenticeship" means ...',
- opts:['degree','on-the-job training','scholarship','internship exam'],ans:1,
- exp:'Apprenticeship = a period of training in a skilled job (تدريب مهني).',ar:'تدريب مهني — فترة التعلم في وظيفة متخصصة'},
-
-{u:'1-4',t:'syn',q:'The news coverage had great <span class="kw">scope</span>. Synonym of "scope" is ...',
- opts:['range/extent','depth','accuracy','speed'],ans:0,
- exp:'Scope = the range or extent of something (نطاق/مجال).',ar:'نطاق/مجال — مرادفه: range = نطاق'},
-
-{u:'5-8',t:'def',q:'The ancient city had sophisticated <span class="kw">irrigation</span> channels. "Irrigation" means ...',
- opts:['roads','water supply systems','markets','temples'],ans:1,
- exp:'Irrigation = a system for supplying water to land (نظام الري).',ar:'نظام الري — توفير الماء للأراضي الزراعية'},
-
-{u:'9-12',t:'syn',q:'He had a successful <span class="kw">career</span> in medicine. Synonym is ...',
- opts:['hobby','profession/job','dream','plan'],ans:1,
- exp:'Career = a person\'s professional life or occupation (مهنة/مسار وظيفي).',ar:'مهنة — مرادفه: profession = مهنة'},
-
-{u:'1-4',t:'def',q:'The region faced severe <span class="kw">droughts</span>. "Droughts" means ...',
- opts:['floods','long dry periods','storms','cold spells'],ans:1,
- exp:'Droughts = long periods without rain causing water shortage (موجات جفاف).',ar:'موجات جفاف — فترات طويلة بدون مطر'},
-
-{u:'5-8',t:'def',q:'She tried to <span class="kw">capture</span> the beautiful sunset. "Capture" means ...',
- opts:['destroy','record/take a picture of','ignore','change'],ans:1,
- exp:'Capture = to take and keep something / to record an image (يلتقط/يأسر).',ar:'يلتقط/يأسر — يأخذ صورة أو يحتجز'},
-
-{u:'9-12',t:'ant',q:'She felt <span class="kw">terrified</span> in the dark. Antonym of "terrified" is ...',
- opts:['frightened','courageous','panicked','anxious'],ans:1,
- exp:'Terrified = extremely scared. Antonym: courageous / calm (شجاع/هادئ).',ar:'مذعور — المتضاد: courageous = شجاع'},
-
-{u:'1-4',t:'def',q:'They worked to <span class="kw">detect</span> the problem early. "Detect" means ...',
- opts:['ignore','solve','discover/find','create'],ans:2,
- exp:'Detect = to discover or notice something (يكتشف/يرصد).',ar:'يكتشف/يرصد — يجد أو يلاحظ شيئاً'},
-
-{u:'5-8',t:'syn',q:'The student was <span class="kw">curious</span> about the experiment. Synonym is ...',
- opts:['bored','eager to know','uninterested','frightened'],ans:1,
- exp:'Curious = wanting to know or learn. Synonym: inquisitive (فضولي).',ar:'فضولي — مرادفه: inquisitive = متطفل/فضولي'},
-
-{u:'9-12',t:'def',q:'His book was about <span class="kw">individualistic</span> cultures. "Individualistic" means ...',
- opts:['group-focused','self-focused','traditional','modern'],ans:1,
- exp:'Individualistic = putting individual needs above group needs (فردي/مستقل).',ar:'فردي/مستقل — يُقدّم مصالحه الشخصية'},
-
-{u:'1-4',t:'syn',q:'The city had a huge <span class="kw">megacity</span> population. Synonym of "megacity" is ...',
- opts:['small town','large city','suburb','village'],ans:1,
- exp:'Megacity = a very large city (مدينة كبرى).',ar:'مدينة كبرى — مدينة ضخمة جداً'},
-
-// ===== ADDITIONAL 100+ QUESTIONS =====
-{u:'1-4',t:'def',q:'Scientists worry about climate <span class="kw">change</span>. "Climate" refers to ...',
- opts:['daily weather','long-term weather patterns','seasonal rain','temperature only'],ans:1,
- exp:'Climate = the typical weather conditions in a region over a long period (مناخ).',ar:'مناخ — النمط الجوي المعتاد لمنطقة على مدى فترة طويلة'},
-
-{u:'5-8',t:'def',q:'The pilot made an emergency <span class="kw">departure</span>. "Departure" means ...',
- opts:['arrival','landing','leaving/going away','parking'],ans:2,
- exp:'Departure = the act of leaving a place (مغادرة/رحيل).',ar:'مغادرة/رحيل — فعل المغادرة'},
-
-{u:'9-12',t:'syn',q:'The view from the mountain was <span class="kw">breathtaking</span>. Synonym is ...',
- opts:['ordinary','amazing','frightening','distant'],ans:1,
- exp:'Breathtaking = extremely impressive or beautiful. Synonym: amazing / stunning.',ar:'مذهل/جذاب — مرادفه: amazing = مذهل'},
-
-{u:'1-4',t:'def',q:'She wore an <span class="kw">amphibious</span> suit for water and land. "Amphibious" means ...',
- opts:['waterproof','able to work on land and water','fireproof','lightweight'],ans:1,
- exp:'Amphibious = able to live or operate on both land and water (برمائي).',ar:'برمائي — يعمل على الأرض والماء'},
-
-{u:'5-8',t:'def',q:'The police found the <span class="kw">crossroads</span> dangerous. "Crossroads" means ...',
- opts:['highway','intersection where roads meet','bridge','tunnel'],ans:1,
- exp:'Crossroads = a place where two or more roads meet (مفترق طرق).',ar:'مفترق طرق — مكان التقاء طريقين أو أكثر'},
-
-{u:'9-12',t:'syn',q:'The singer had a <span class="kw">remarkable</span> voice. Synonym is ...',
- opts:['ordinary','outstanding','average','weak'],ans:1,
- exp:'Remarkable = worthy of attention; exceptional. Synonym: outstanding (بارز/ملفت).',ar:'بارز/ملفت — مرادفه: outstanding = استثنائي'},
-
-{u:'1-4',t:'def',q:'The government launched a new <span class="kw">initiative</span>. "Initiative" means ...',
- opts:['law','new action/plan','protest','investigation'],ans:1,
- exp:'Initiative = a new plan or action to achieve a goal (مبادرة).',ar:'مبادرة — خطة أو فعل جديد لتحقيق هدف'},
-
-{u:'5-8',t:'syn',q:'The streets were <span class="kw">congested</span> with cars. Synonym is ...',
- opts:['empty','crowded/blocked','clean','quiet'],ans:1,
- exp:'Congested = too full, especially of traffic. Synonym: packed / blocked (مزدحم).',ar:'مزدحم — مرادفه: packed = مكتظ'},
-
-{u:'9-12',t:'def',q:'She felt <span class="kw">overwhelming</span> emotions. "Overwhelming" means ...',
- opts:['manageable','very strong and difficult to control','mild','pleasant'],ans:1,
- exp:'Overwhelming = very great in amount; hard to control (مربك/هائل).',ar:'مربك/هائل — قوي جداً ويصعب السيطرة عليه'},
-
-{u:'1-4',t:'syn',q:'The team celebrated a <span class="kw">groundbreaking</span> discovery. Synonym of "groundbreaking" is ...',
- opts:['routine','revolutionary','ordinary','interesting'],ans:1,
- exp:'Groundbreaking = innovative and pioneering. Synonym: revolutionary (رائد/ثوري).',ar:'رائد/ثوري — مرادفه: revolutionary = ثوري'},
-
-{u:'5-8',t:'def',q:'Young people should <span class="kw">navigate</span> social media carefully. "Navigate" means ...',
- opts:['avoid','create','find your way through','delete'],ans:2,
- exp:'Navigate = to plan and find a way through (يتنقل/يوجّه).',ar:'يتنقل/يوجّه — يجد طريقه عبر شيء'},
-
-{u:'9-12',t:'ant',q:'He had an <span class="kw">invisible</span> talent. Antonym of "invisible" is ...',
- opts:['hidden','visible','unknown','secret'],ans:1,
- exp:'Invisible = cannot be seen. Antonym: visible (مرئي).',ar:'غير مرئي — المتضاد: visible = مرئي'},
-
-{u:'1-4',t:'def',q:'The earthquake caused the building to <span class="kw">collapse</span>. "Collapse" means ...',
- opts:['shake','fall down suddenly','crack','lean'],ans:1,
- exp:'Collapse = to fall down suddenly (ينهار/ينهدم).',ar:'ينهار — يسقط فجأة'},
-
-{u:'5-8',t:'syn',q:'She made a <span class="kw">brand-new</span> dress. Synonym is ...',
- opts:['old','completely new','used','repaired'],ans:1,
- exp:'Brand-new = completely new. Synonym: spanking new / fresh (جديد تماماً).',ar:'جديد تماماً — مرادفه: completely new'},
-
-{u:'9-12',t:'def',q:'He had a <span class="kw">gravitational</span> pull on everyone around him. "Gravitational" means ...',
- opts:['magnetic','related to the force of gravity','spiritual','emotional'],ans:1,
- exp:'Gravitational = relating to gravity or attraction (متعلق بالجاذبية).',ar:'متعلق بالجاذبية — مرتبط بقوة الجذب'},
-
-{u:'1-4',t:'syn',q:'The river showed signs of <span class="kw">erosion</span>. Synonym is ...',
- opts:['building up','wearing away','flooding','flowing'],ans:1,
- exp:'Erosion = the wearing away of rock or land by natural forces (تآكل).',ar:'تآكل — تآكل الصخور أو الأرض بفعل القوى الطبيعية'},
-
-{u:'5-8',t:'def',q:'He liked to <span class="kw">socialize</span> with colleagues. "Socialize" means ...',
- opts:['compete','work with','spend time with people','argue'],ans:2,
- exp:'Socialize = to spend time with other people (يخالط الناس/يتواصل اجتماعياً).',ar:'يخالط الناس — يقضي وقتاً مع الآخرين'},
-
-{u:'9-12',t:'def',q:'The author wrote about <span class="kw">consciousness</span>. "Consciousness" means ...',
- opts:['dreams','the state of being awake and aware','memory','emotion'],ans:1,
- exp:'Consciousness = the state of being aware and awake (الوعي/الإدراك).',ar:'الوعي/الإدراك — حالة التيقظ والإدراك'},
-
-{u:'1-4',t:'def',q:'New technology helps to <span class="kw">track</span> patient health. "Track" means ...',
- opts:['ignore','monitor and follow','treat','diagnose'],ans:1,
- exp:'Track = to follow and record the progress of something (يتتبع).',ar:'يتتبع — يراقب ويسجل تطور شيء'},
-
-{u:'5-8',t:'syn',q:'Her success was truly <span class="kw">rewarding</span>. Synonym is ...',
- opts:['tiring','frustrating','fulfilling','uncertain'],ans:2,
- exp:'Rewarding = giving satisfaction. Synonym: fulfilling / worthwhile (مُجزٍ/مُثمر).',ar:'مُجزٍ/مُثمر — مرادفه: fulfilling = مُرضٍ'},
-
-{u:'9-12',t:'def',q:'The writer used a <span class="kw">metaphor</span> in the poem. "Metaphor" means ...',
- opts:['rhyme','comparison without "like" or "as"','a type of poem','a story'],ans:1,
- exp:'Metaphor = describing something as if it were something else (استعارة).',ar:'استعارة — وصف شيء وكأنه شيء آخر'},
-
-{u:'1-4',t:'ant',q:'The situation was very <span class="kw">sophisticated</span>. Antonym is ...',
- opts:['complex','simple','advanced','modern'],ans:1,
- exp:'Sophisticated = complex and advanced. Antonym: simple / basic (بسيط).',ar:'معقد/متطور — المتضاد: simple = بسيط'},
-
-{u:'5-8',t:'def',q:'The ship followed a maritime <span class="kw">route</span>. "Maritime" means ...',
- opts:['land-based','related to the sea','aerial','underground'],ans:1,
- exp:'Maritime = relating to the sea or shipping (بحري).',ar:'بحري — متعلق بالبحر أو الشحن البحري'},
-
-{u:'9-12',t:'def',q:'She showed <span class="kw">awareness</span> of the problem. "Awareness" means ...',
- opts:['knowledge and understanding of something','ignorance','forgetting','discovery'],ans:0,
- exp:'Awareness = knowledge and understanding of something (الوعي).',ar:'الوعي — المعرفة والإدراك بشيء ما'},
-
-{u:'1-4',t:'syn',q:'The new machine was completely <span class="kw">automated</span>. Synonym is ...',
- opts:['mechanical','self-operating','expensive','imported'],ans:1,
- exp:'Automated = working by machines without humans. Synonym: mechanized (آلي).',ar:'آلي — مرادفه: mechanized = مُميكَن'},
-
-{u:'5-8',t:'def',q:'She enjoyed the <span class="kw">luxury</span> hotel. "Luxury" means ...',
- opts:['cheap','very comfortable and expensive','standard','simple'],ans:1,
- exp:'Luxury = something expensive and comfortable beyond basic needs (فاخر).',ar:'فاخر — شيء غالي ومريح يتجاوز الحاجات الأساسية'},
-
-{u:'9-12',t:'syn',q:'The students showed <span class="kw">curiosity</span> about the topic. Synonym is ...',
- opts:['boredom','eagerness to learn','anger','sadness'],ans:1,
- exp:'Curiosity = strong desire to know. Synonym: inquisitiveness (الفضول).',ar:'الفضول — مرادفه: eagerness to learn = شغف بالتعلم'},
-
-{u:'1-4',t:'def',q:'The reporter gave a detailed <span class="kw">forecast</span>. "Forecast" means ...',
- opts:['review','past event','prediction of future events','analysis'],ans:2,
- exp:'Forecast = a prediction, especially about weather (توقعات).',ar:'توقعات — تنبؤ بأحداث مستقبلية'},
-
-{u:'5-8',t:'def',q:'They crossed the border at the <span class="kw">checkpoint</span>. "Checkpoint" means ...',
- opts:['border area','security inspection point','gate','terminal'],ans:1,
- exp:'Checkpoint = a place where documents or vehicles are inspected (نقطة تفتيش).',ar:'نقطة تفتيش — مكان فحص الوثائق والمركبات'},
-
-{u:'9-12',t:'syn',q:'The scientist explained the <span class="kw">theory</span> of relativity. Synonym of "theory" is ...',
- opts:['fact','hypothesis/idea','law','experiment'],ans:1,
- exp:'Theory = a set of ideas explaining something. Synonym: hypothesis (نظرية).',ar:'نظرية — مرادفه: hypothesis = فرضية'},
-
-{u:'1-4',t:'def',q:'She helped to <span class="kw">disrupt</span> the meeting. "Disrupt" means ...',
- opts:['organize','interrupt and cause disorder','attend','support'],ans:1,
- exp:'Disrupt = to interrupt the normal course of something (يُعطّل/يُشوّش).',ar:'يُعطّل — يقطع السير الطبيعي لشيء'},
-
-{u:'5-8',t:'ant',q:'The soil was very <span class="kw">fertile</span>. Antonym is ...',
- opts:['productive','barren','rich','wet'],ans:1,
- exp:'Fertile = producing a lot. Antonym: barren / infertile (جرداء/قاحلة).',ar:'خصب — المتضاد: barren = جرداء'},
-
-{u:'9-12',t:'def',q:'The book had many <span class="kw">dimensions</span> to its plot. "Dimensions" means ...',
- opts:['characters','aspects/layers','chapters','parts'],ans:1,
- exp:'Dimensions = different aspects or layers of something (أبعاد).',ar:'أبعاد — جوانب مختلفة لشيء ما'},
-
-{u:'1-4',t:'syn',q:'She had great <span class="kw">potential</span> for success. Synonym is ...',
- opts:['energy','capability/possibility','experience','education'],ans:1,
- exp:'Potential = the ability to develop or achieve in the future (قدرة/إمكانات).',ar:'قدرة/إمكانات — مرادفه: capability = قدرة'},
-
-{u:'5-8',t:'def',q:'His <span class="kw">depression</span> affected his work. "Depression" means ...',
- opts:['stress','sadness disorder','laziness','isolation'],ans:1,
- exp:'Depression = a mental health condition with persistent sadness (اكتئاب).',ar:'اكتئاب — حالة نفسية مع حزن مستمر'},
-
-{u:'9-12',t:'def',q:'The library had a large collection of <span class="kw">literature</span>. "Literature" means ...',
- opts:['science books','written artistic works','magazines','encyclopedias'],ans:1,
- exp:'Literature = written works, especially with artistic value (أدب).',ar:'أدب — الأعمال المكتوبة ذات القيمة الفنية'},
-
-{u:'1-4',t:'ant',q:'The news was very <span class="kw">breathtaking</span>. Antonym is ...',
- opts:['amazing','ordinary/dull','surprising','exciting'],ans:1,
- exp:'Breathtaking = astonishing. Antonym: ordinary / dull (عادي/ممل).',ar:'مذهل — المتضاد: ordinary = عادي'},
-
-{u:'5-8',t:'def',q:'The doctor noticed a <span class="kw">phenomenon</span> in the patient. "Phenomenon" means ...',
- opts:['disease','unusual fact or event','treatment','symptom'],ans:1,
- exp:'Phenomenon = something that can be observed (ظاهرة). Plural: phenomena.',ar:'ظاهرة — شيء يمكن ملاحظته وهو ملفت'},
-
-{u:'9-12',t:'syn',q:'He showed great <span class="kw">discipline</span> in his work. Synonym is ...',
- opts:['laziness','self-control','patience','experience'],ans:1,
- exp:'Discipline = training yourself to follow rules. Synonym: self-control (انضباط).',ar:'انضباط — مرادفه: self-control = ضبط النفس'},
-
-{u:'1-4',t:'def',q:'The factory used <span class="kw">cables</span> for power. "Cables" means ...',
- opts:['pipes','thick wires for electricity','poles','switches'],ans:1,
- exp:'Cables = thick wires used to carry electricity or signals (كابلات).',ar:'كابلات — أسلاك سميكة لنقل الكهرباء'},
-
-{u:'5-8',t:'def',q:'She had a <span class="kw">geographical</span> knowledge of Africa. "Geographical" means ...',
- opts:['historical','related to the physical features of the earth','political','economic'],ans:1,
- exp:'Geographical = relating to geography (جغرافي).',ar:'جغرافي — متعلق بالجغرافيا'},
-
-{u:'9-12',t:'def',q:'He felt deep <span class="kw">gratitude</span> for the help. "Grateful" means ...',
- opts:['angry','thankful','surprised','satisfied'],ans:1,
- exp:'Grateful = feeling thankful (ممتنن).',ar:'ممتنن — شاكر على معروف'},
-
-{u:'1-4',t:'syn',q:'The results were <span class="kw">hazardous</span>. Synonym is ...',
- opts:['safe','dangerous','interesting','surprising'],ans:1,
- exp:'Hazardous = dangerous. Synonym: dangerous / risky (خطير).',ar:'خطير — مرادفه: dangerous = خطر'},
-
-{u:'5-8',t:'def',q:'Ancient <span class="kw">civilization</span>s built great monuments. "Civilization" means ...',
- opts:['army','complex advanced society','government','religion'],ans:1,
- exp:'Civilization = an advanced stage of human social and cultural development (حضارة).',ar:'حضارة — مرحلة متقدمة من التطور البشري والثقافي'},
-
-{u:'9-12',t:'ant',q:'He felt <span class="kw">isolated</span>. Antonym is ...',
- opts:['disconnected','socially connected','lonely','quiet'],ans:1,
- exp:'Isolated = separated and alone. Antonym: connected / included (متواصل).',ar:'معزول — المتضاد: connected = متواصل'},
-
-{u:'1-4',t:'def',q:'The <span class="kw">expansion</span> of the city caused traffic problems. "Expansion" means ...',
- opts:['reduction','growth/increase in size','change','movement'],ans:1,
- exp:'Expansion = the process of growing or increasing in size (توسع).',ar:'توسع — عملية النمو والزيادة في الحجم'},
-
-{u:'5-8',t:'syn',q:'She carried her <span class="kw">household</span> duties seriously. Synonym of "household" is ...',
- opts:['official','domestic/home','outdoor','professional'],ans:1,
- exp:'Household = relating to the home (منزلي). Synonym: domestic.',ar:'منزلي — مرادفه: domestic = متعلق بالمنزل'},
-
-{u:'9-12',t:'def',q:'The actor\'s gestures were very expressive. "<span class="kw">Gestures</span>" means ...',
- opts:['words','movements of the body to express ideas','costumes','expressions'],ans:1,
- exp:'Gestures = movements, especially of hands, to communicate (إيماءات).',ar:'إيماءات — حركات الجسد للتعبير'},
-
-{u:'1-4',t:'ant',q:'Her behavior was very <span class="kw">pessimistic</span>. Antonym is ...',
- opts:['negative','optimistic','realistic','uncertain'],ans:1,
- exp:'Pessimistic = expecting bad results. Antonym: optimistic (متفائل).',ar:'متشائم — المتضاد: optimistic = متفائل'},
-
-{u:'5-8',t:'def',q:'The region is famous for its <span class="kw">maritime</span> history. "Maritime" means ...',
- opts:['desert','sea-related','mountain','agricultural'],ans:1,
- exp:'Maritime = connected with the sea (بحري).',ar:'بحري — مرتبط بالبحر'},
-
-{u:'9-12',t:'syn',q:'He showed tremendous <span class="kw">strength</span> during hardship. Synonym is ...',
- opts:['weakness','power','flexibility','speed'],ans:1,
- exp:'Strength = power and determination. Synonym: power (قوة).',ar:'قوة — مرادفه: power = قوة'},
-
-{u:'1-4',t:'def',q:'The weather was <span class="kw">scorching</span> hot. "Scorching" means ...',
- opts:['mild','very hot','cold','windy'],ans:1,
- exp:'Scorching = extremely hot (شديد الحرارة).',ar:'شديد الحرارة — ساخن جداً'},
-
-{u:'5-8',t:'syn',q:'The road trip was a great <span class="kw">adventure</span>. Synonym is ...',
- opts:['routine','exciting experience','journey','trip'],ans:1,
- exp:'Adventure = an unusual, exciting experience (مغامرة). Synonym: exciting experience.',ar:'مغامرة — مرادفه: exciting experience = تجربة مثيرة'},
-
-{u:'9-12',t:'def',q:'The <span class="kw">event horizon</span> is important in physics. "Event horizon" means ...',
- opts:['sunrise','the boundary of a black hole','a type of star','the edge of the universe'],ans:1,
- exp:'Event horizon = the boundary around a black hole from which nothing can escape (أفق الحدث).',ar:'أفق الحدث — الحد حول الثقب الأسود'},
-
-{u:'1-4',t:'def',q:'She used bleach to clean the kitchen. "<span class="kw">Bleach</span>" means ...',
- opts:['soap','a liquid for whitening/cleaning','an acid','hot water'],ans:1,
- exp:'Bleach = a chemical used to whiten or disinfect (مبيّض/منظّف).',ar:'مبيّض — مادة كيميائية للتبييض والتعقيم'},
-
-{u:'5-8',t:'def',q:'He felt <span class="kw">mortifying</span> embarrassment. "Mortifying" means ...',
- opts:['mild','extremely embarrassing','interesting','frightening'],ans:1,
- exp:'Mortifying = extremely embarrassing (محرج جداً).',ar:'محرج جداً — مرادفه: extremely embarrassing'},
-
-{u:'9-12',t:'def',q:'She had strong <span class="kw">morals</span>. "Morals" means ...',
- opts:['laws','personal standards of right and wrong','beliefs','opinions'],ans:1,
- exp:'Morals = standards of behavior considered good or bad (قيم أخلاقية).',ar:'قيم أخلاقية — معايير السلوك الصح والغلط'},
-
-{u:'1-4',t:'syn',q:'The announcement was truly <span class="kw">breathtaking</span>. Synonym is ...',
- opts:['boring','astonishing/stunning','expected','quiet'],ans:1,
- exp:'Breathtaking = astonishing and impressive. Synonym: stunning (مذهل).',ar:'مذهل — مرادفه: stunning = خلاب'},
-
-{u:'5-8',t:'def',q:'The family showed great <span class="kw">hospitality</span>. "Hospitality" means ...',
- opts:['wealth','friendly and generous treatment of guests','generosity','formality'],ans:1,
- exp:'Hospitality = warm and friendly treatment of guests (كرم الضيافة).',ar:'كرم الضيافة — المعاملة الدافئة والكريمة للضيوف'},
-
-{u:'9-12',t:'def',q:'He felt a wave of <span class="kw">nostalgia</span>. This type of feeling involves ...',
- opts:['happiness','longing for the past','excitement','anger'],ans:1,
- exp:'Nostalgia = a longing or affection for the past (الحنين للماضي).',ar:'الحنين للماضي — شوق للأيام الخوالي'},
-
-{u:'1-4',t:'ant',q:'She was very <span class="kw">dedicated</span> to her work. Antonym is ...',
- opts:['committed','lazy/uncommitted','hardworking','focused'],ans:1,
- exp:'Dedicated = committed and hardworking. Antonym: lazy / uncommitted (غير مخلص).',ar:'مخلص/مُكرّس — المتضاد: uncommitted = غير ملتزم'},
-
-{u:'5-8',t:'syn',q:'The region was known for its <span class="kw">diversity</span>. Synonym is ...',
- opts:['similarity','variety','harmony','unity'],ans:1,
- exp:'Diversity = a range of different things. Synonym: variety (تنوع).',ar:'تنوع — مرادفه: variety = تشكيلة متنوعة'},
-
-{u:'9-12',t:'def',q:'He gained a good <span class="kw">reputation</span> for his work. "Reputation" means ...',
- opts:['salary','fame/what people think of you','position','award'],ans:1,
- exp:'Reputation = the general opinion people have about someone (سمعة).',ar:'سمعة — الرأي العام عن شخص'},
-
-{u:'1-4',t:'def',q:'The project needed <span class="kw">collaboration</span>. "Collaboration" means ...',
- opts:['competition','working together','leadership','funding'],ans:1,
- exp:'Collaboration = working with others to achieve a goal (تعاون/مشاركة).',ar:'تعاون — العمل مع الآخرين لتحقيق هدف'},
-
-{u:'5-8',t:'def',q:'She managed to <span class="kw">navigate</span> the complex situation. "Navigate" means ...',
- opts:['avoid','create','find a way through','describe'],ans:2,
- exp:'Navigate = to find a way through a difficult situation (يتنقل/يوجّه).',ar:'يتنقل/يوجّه — يجد طريقاً عبر موقف صعب'},
-
-{u:'9-12',t:'syn',q:'The music was very <span class="kw">rhythmic</span>. Synonym is ...',
- opts:['noisy','having a regular beat/pattern','slow','quiet'],ans:1,
- exp:'Rhythmic = having a regular, repeated pattern of beats (إيقاعي).',ar:'إيقاعي — مرادفه: having a regular pattern = ذو نمط منتظم'},
-
-{u:'1-4',t:'ant',q:'The building was very <span class="kw">fragile</span>. Antonym is ...',
- opts:['weak','sturdy/strong','hollow','light'],ans:1,
- exp:'Fragile = easily broken or damaged. Antonym: sturdy / strong (متين).',ar:'هش — المتضاد: sturdy = متين/قوي'},
-
-{u:'5-8',t:'def',q:'She felt <span class="kw">anxiety</span> before her exam. "Anxiety" means ...',
- opts:['confidence','worry and unease','excitement','happiness'],ans:1,
- exp:'Anxiety = a feeling of nervousness and worry (قلق).',ar:'قلق — شعور بالتوتر والخوف'},
-
-{u:'9-12',t:'def',q:'He was doing an <span class="kw">apprenticeship</span>. "Apprenticeship" means ...',
- opts:['university degree','training while working in a skilled job','part-time job','volunteer work'],ans:1,
- exp:'Apprenticeship = a period of training in a skilled trade (تدريب مهني).',ar:'تدريب مهني — فترة تدريب في حرفة متخصصة'},
-
-{u:'1-4',t:'def',q:'The doctor needed to <span class="kw">diagnose</span> the illness. "Diagnose" means ...',
- opts:['treat','identify/recognize the disease','cure','prevent'],ans:1,
- exp:'Diagnose = to identify the nature of a disease (يشخّص).',ar:'يشخّص — يُحدّد طبيعة المرض'},
-
-{u:'5-8',t:'syn',q:'She packed the <span class="kw">carry-on bag</span> for the short trip. This means ...',
- opts:['large luggage','bag to check in','hand luggage inside the plane','travel bag'],ans:2,
- exp:'Carry-on bag = a bag small enough to take on a plane (حقيبة يد).',ar:'حقيبة يد — حقيبة صغيرة تُؤخذ داخل الطائرة'},
-
-{u:'9-12',t:'def',q:'The city is famous for its cultural <span class="kw">heritage</span>. "Heritage" means ...',
- opts:['future plans','traditions and history passed down','buildings','art galleries'],ans:1,
- exp:'Heritage = traditions, achievements, and beliefs from the past (تراث).',ar:'تراث — التقاليد والإنجازات الموروثة من الماضي'},
-
-{u:'1-4',t:'ant',q:'She looked very <span class="kw">pessimistic</span> about the results. Antonym is ...',
- opts:['negative','hopeful/optimistic','realistic','worried'],ans:1,
- exp:'Pessimistic = expecting bad outcomes. Antonym: optimistic / hopeful.',ar:'متشائم — المتضاد: optimistic = متفائل'},
-
-{u:'5-8',t:'def',q:'The author wrote about <span class="kw">collaboration</span> in science. "Collaboration" means ...',
- opts:['solo work','teamwork/cooperation','research','competition'],ans:1,
- exp:'Collaboration = working together (تعاون).',ar:'تعاون — مرادفه: cooperation = تعاون'},
-
-{u:'9-12',t:'syn',q:'The poem expressed deep <span class="kw">emotions</span>. Synonym is ...',
- opts:['thoughts','feelings','ideas','descriptions'],ans:1,
- exp:'Emotions = strong feelings. Synonym: feelings (عواطف/مشاعر).',ar:'عواطف — مرادفه: feelings = مشاعر'},
-
-{u:'1-4',t:'def',q:'The <span class="kw">automation</span> of factories has changed the economy. "Automation" means ...',
- opts:['human labor','using machines to do work automatically','investment','management'],ans:1,
- exp:'Automation = using technology to do tasks automatically (الميكنة/الأتمتة).',ar:'الميكنة/الأتمتة — استخدام التكنولوجيا للقيام بمهام تلقائياً'},
-
-{u:'5-8',t:'ant',q:'The journey was very <span class="kw">harmful</span>. Antonym is ...',
- opts:['dangerous','beneficial/safe','exciting','tiring'],ans:1,
- exp:'Harmful = causing damage. Antonym: beneficial / safe (مفيد/آمن).',ar:'ضار — المتضاد: beneficial = مفيد'},
-
-{u:'9-12',t:'def',q:'She had a strong sense of <span class="kw">independence</span>. "Independence" means ...',
- opts:['dependence','freedom from control','leadership','responsibility'],ans:1,
- exp:'Independence = the state of not needing others (استقلال).',ar:'استقلال — حالة عدم الاعتماد على الآخرين'},
-
-{u:'1-4',t:'syn',q:'The discovery was truly <span class="kw">magnificent</span>. Synonym is ...',
- opts:['ordinary','splendid/impressive','interesting','surprising'],ans:1,
- exp:'Magnificent = very impressive. Synonym: splendid / grand (رائع/عظيم).',ar:'رائع/عظيم — مرادفه: splendid = رائع'},
-
-{u:'5-8',t:'def',q:'She decided to <span class="kw">analyze</span> the data carefully. "Analyze" means ...',
- opts:['ignore','collect','study in detail','present'],ans:2,
- exp:'Analyze = to examine carefully in detail (يحلّل).',ar:'يحلّل — يفحص بعناية وتفصيل'},
-
-{u:'9-12',t:'def',q:'He showed great <span class="kw">spontaneity</span>. "Spontaneous" means ...',
- opts:['planned','calculated','natural and unplanned','rehearsed'],ans:2,
- exp:'Spontaneous = done naturally without planning (عفوي/تلقائي).',ar:'عفوي — يحدث بشكل طبيعي بدون تخطيط'},
-
-{u:'1-4',t:'def',q:'The nurse checked the patient\'s <span class="kw">pulse</span> regularly. "Pulse" means ...',
- opts:['breathing rate','heartbeat rhythm','blood pressure','temperature'],ans:1,
- exp:'Pulse = the rhythmic throbbing of arteries from heartbeats (نبض).',ar:'نبض — الدقات المنتظمة لشرايين القلب'},
-
-{u:'5-8',t:'def',q:'The ancient city used complex <span class="kw">construction</span> techniques. "Construction" means ...',
- opts:['destruction','the process of building','decoration','planning'],ans:1,
- exp:'Construction = the process of building something (تشييد/بناء).',ar:'تشييد/بناء — عملية إنشاء شيء'},
-
-{u:'9-12',t:'ant',q:'His attitude was very <span class="kw">collectivist</span>. Antonym is ...',
- opts:['communal','individualistic','cooperative','social'],ans:1,
- exp:'Collectivist = group-focused. Antonym: individualistic (فردي).',ar:'جماعي — المتضاد: individualistic = فردي'},
-
-{u:'1-4',t:'def',q:'The <span class="kw">inundation</span> caused damage to crops. "Inundation" means ...',
- opts:['drought','flooding/overflow of water','storm','earthquake'],ans:1,
- exp:'Inundation = flooding / an overwhelming amount of something (إغراق/فيضان).',ar:'إغراق/فيضان — غمر المنطقة بالماء'},
-
-{u:'5-8',t:'syn',q:'The explorer wrote about <span class="kw">geographical</span> discoveries. Synonym of "geographical" is ...',
- opts:['historical','related to earth\'s features','political','cultural'],ans:1,
- exp:'Geographical = of or relating to geography. Synonym: topographical.',ar:'جغرافي — متعلق بملامح الأرض'},
-
-{u:'9-12',t:'def',q:'He admired her <span class="kw">wisdom</span>. "Wisdom" means ...',
- opts:['intelligence','good judgment from experience','knowledge','creativity'],ans:1,
- exp:'Wisdom = the quality of having good judgment from experience (حكمة).',ar:'حكمة — القدرة على إصدار أحكام جيدة من الخبرة'},
-
-// FILL IN THE BLANK STYLE QUESTIONS
-{u:'1-4',t:'def',q:'New factories are ........ to increase productivity. The missing word is ...',
- opts:['automated','disrupted','collapsed','maintained'],ans:0,
- exp:'Automated = using machines automatically to improve production (مُميكَن).',ar:'آلي — يعمل تلقائياً لزيادة الإنتاج'},
-
-{u:'5-8',t:'def',q:'The baby began to ........ loudly when it was hungry. The missing word is ...',
- opts:['clap','laugh','moan','whisper'],ans:2,
- exp:'Moan = to make a long low sound of pain or unhappiness (يئن/يتذمر).',ar:'يئن/يتذمر — يُصدر صوتاً من الألم'},
-
-{u:'9-12',t:'def',q:'People with strong friendships have lower rates of ........ The missing word is ...',
- opts:['happiness','depression','energy','confidence'],ans:1,
- exp:'Depression = a serious mental disorder (اكتئاب).',ar:'اكتئاب — اضطراب نفسي خطير'},
-
-{u:'1-4',t:'def',q:'Educational projects support groups who lack equal ......... The missing word is ...',
- opts:['popular','marginalized','powerful','central'],ans:1,
- exp:'Marginalized = treated as unimportant / pushed aside (مُهمَّش).',ar:'مُهمَّش — يُعامَل كغير مهم'},
-
-{u:'5-8',t:'def',q:'It\'s a good idea to ........ your flight departure time before leaving. The missing word is ...',
- opts:['strengthen','socialize','check','maintain'],ans:2,
- exp:'Check = to look at or examine something to make sure it is right (يتحقق من).',ar:'يتحقق من — يراجع شيئاً للتأكد من صحته'},
-
-{u:'9-12',t:'def',q:'When we socialize, our bodies release ........ that reduce stress. The missing word is ...',
- opts:['antibiotics','hormones','vitamins','minerals'],ans:1,
- exp:'Hormones = chemical messengers in the body that regulate functions (هرمونات).',ar:'هرمونات — رسائل كيميائية تنظّم وظائف الجسم'},
-
-{u:'1-4',t:'def',q:'Smart entrepreneurs should ........ in innovations, not capital. The missing word is ...',
- opts:['perform','detect','thrive','invest'],ans:3,
- exp:'Invest = to put money or effort into something to gain a return (يستثمر).',ar:'يستثمر — يضع جهداً أو مالاً للحصول على عائد'},
-
-{u:'5-8',t:'def',q:'She left the job because the work was ........ and boring. The missing word is ...',
- opts:['repetitive','haunting','heartbreaking','sophisticated'],ans:0,
- exp:'Repetitive = happening again and again in the same way (متكرر/رتيب).',ar:'متكرر/رتيب — يحدث مراراً بنفس الطريقة'},
-
-{u:'9-12',t:'def',q:'Regular ........ help reduce stress and improve health. The missing word is ...',
- opts:['arguments','social interactions','conflicts','competitions'],ans:1,
- exp:'Interactions = communication and contact with others (تفاعلات اجتماعية).',ar:'تفاعلات — التواصل مع الآخرين'},
-
-{u:'1-4',t:'def',q:'Doctors help ........ correct treatment to patients. The missing word is ...',
- opts:['administer','prescribe','diagnose','prevent'],ans:0,
- exp:'Administer = to give or apply (يُدير/يُعطي).',ar:'يُدير/يُعطي — يوصل العلاج للمريض'},
-
-// MORE VOCABULARY IN CONTEXT
-{u:'5-8',t:'def',q:'The team\'s ........ was key to winning the championship. The missing word is ...',
- opts:['collaboration','competition','argument','debate'],ans:0,
- exp:'Collaboration = working together effectively (تعاون).',ar:'تعاون — العمل معاً بشكل فعّال'},
-
-{u:'9-12',t:'def',q:'The athlete showed ........ by training every day without fail. The missing word is ...',
- opts:['curiosity','generosity','discipline','spontaneity'],ans:2,
- exp:'Discipline = training yourself to follow a strict routine (انضباط).',ar:'انضباط — تدريب النفس على الالتزام'},
-
-{u:'1-4',t:'def',q:'She always ........ the importance of reading to her students. The missing word is ...',
- opts:['emphasizes','underestimates','condemns','ignores'],ans:0,
- exp:'Emphasizes = stresses/highlights the importance of something (يُبرز).',ar:'يُبرز — يُشدد على أهمية شيء'},
-
-{u:'5-8',t:'def',q:'The ancient civilization created a ........ system for watering crops. The missing word is ...',
- opts:['legal','maritime','irrigation','security'],ans:2,
- exp:'Irrigation = a system for supplying water to agricultural land (نظام الري).',ar:'نظام الري — نظام لتوفير الماء للأراضي الزراعية'},
-
-{u:'9-12',t:'def',q:'Writing poetry helps express one\'s deepest ........ The missing word is ...',
- opts:['theories','emotions','facts','arguments'],ans:1,
- exp:'Emotions = strong feelings like love, fear, joy (عواطف/مشاعر).',ar:'عواطف/مشاعر — مشاعر قوية كالحب والخوف'},
-
-{u:'1-4',t:'def',q:'The new medicine showed ........ results in treating the disease. The missing word is ...',
- opts:['hazardous','profound','fragile','chaotic'],ans:1,
- exp:'Profound = deep and significant (بالغ/عميق).',ar:'بالغ/عميق — ذو أثر عميق'},
-
-{u:'5-8',t:'syn',q:'The athlete\'s ........ allowed her to overcome challenges. The word means persistence. Choose synonym:',
- opts:['weakness','resilience','carelessness','confusion'],ans:1,
- exp:'Resilience/perseverance = ability to recover from difficulties (المرونة).',ar:'المرونة — القدرة على التعافي من الصعوبات'},
-
-{u:'9-12',t:'def',q:'The ........ of black holes continues to fascinate scientists. The missing word is ...',
- opts:['color','singularity','diameter','weight'],ans:1,
- exp:'Singularity = the infinitely dense center point of a black hole (نقطة التفرد).',ar:'نقطة التفرد — المركز اللانهائي الكثافة للثقب الأسود'},
-
-{u:'1-4',t:'def',q:'The pilot managed to ........ the problem with the engine. The missing word is ...',
- opts:['maximize','troubleshoot','implement','disrupt'],ans:1,
- exp:'Troubleshoot = to find and fix problems systematically (يكشف الخطأ ويصلحه).',ar:'يكشف الخطأ ويصلحه — يُشخّص ويُعالج مشكلة'},
-
-{u:'5-8',t:'def',q:'She packed her ........ bag with essentials for the plane. The missing word is ...',
- opts:['checked','carry-on','large','travel'],ans:1,
- exp:'Carry-on = a small bag taken onboard the plane (حقيبة يد).',ar:'حقيبة يد — حقيبة صغيرة تُؤخذ داخل الطائرة'},
-
-{u:'9-12',t:'def',q:'The teacher showed great ........ to struggling students. The missing word is ...',
- opts:['strictness','generosity','indifference','authority'],ans:1,
- exp:'Generosity = willingness to give and help others (كرم).',ar:'كرم — الاستعداد للعطاء ومساعدة الآخرين'},
+const LT=['A','B','C','D'];
+const SECS=[
+{s:0,e:49,n:'الجزء 1: أسئلة النماذج الاسترشادية (Unit 1-6)'},
+{s:50,e:152,n:'الجزء 2: أسئلة كتاب المدرسة SB (Unit 1-6)'},
+{s:153,e:203,n:'الجزء 3: أسئلة المصطلحات والمرادفات (Unit 1-6)'},
+{s:204,e:223,n:'الجزء 4: أسئلة النماذج الاسترشادية (Unit 7-12)'},
+{s:224,e:302,n:'الجزء 5: أسئلة كتاب المدرسة SB (Unit 7-12)'}
+];
+/* === بنك الأسئلة الكامل === */
+const Q=[
+/*الجزء1: النماذج الاسترشادية U1-6 ص10-14*/
+{pg:10,q:'Educational projects often support ....... groups who lack equal opportunities.',o:['popular','central','powerful','marginalized'],c:3,e:'Marginalized=مهمَّش، المجموعات المُقصاة التي لا تحظى بفرص متساوية.'},
+{pg:10,q:'The sky was ......... , so we could not see the sun.',o:['overcast','bright','sunny','vague'],c:0,e:'Overcast=مغيم، يفسّر عدم رؤية الشمس. Bright وsunny عكس المعنى.'},
+{pg:10,q:'The baby began to ........ loudly when it was hungry.',o:['whisper','moan','laugh','clap'],c:1,e:'Moan=يتأوّه/ينتحب، صوت طفل جائع. Whisper=همس، clap=تصفيق.'},
+{pg:10,q:'"Implications" here means ...........',o:['sources','effects','hints','customs'],c:2,e:'Implications=تلميحات/إشارات ضمنية. أقربها hints.'},
+{pg:10,q:'When we went out, it was ........... cats and dogs.',o:['watching','dropping','playing','raining'],c:3,e:'Raining cats and dogs=تعبير اصطلاحي يعني تمطر بغزارة.'},
+{pg:10,q:'Our scheme would guarantee fast and accurate ........... of the project.',o:['implementation','explanation','determination','collaboration'],c:0,e:'Implementation=تنفيذ. التنفيذ السريع والدقيق للمشروع.'},
+{pg:10,q:'Severe climate changes have had ........... effects on coastal areas.',o:['trivial','superficial','tolerable','profound'],c:3,e:'Profound=عميقة/شديدة. الباقي عكس المعنى.'},
+{pg:10,q:'After skipping work, Hatem had to ........... when his boss found out.',o:['think outside the box','turn a blind eye','face the music','climb the career ladder'],c:2,e:'Face the music=يواجه العواقب. مناسب لمن تغيّب عن العمل.'},
+{pg:11,q:'New factories are modernized to ........... productivity.',o:['implement','immerse','surround','enhance'],c:3,e:'Enhance=يعزّز/يحسّن. تحسين الإنتاجية.'},
+{pg:11,q:'When the injured arrived, the doctors ........... .',o:['sprang into action','laid the groundwork','soaked to the skin','came to a standstill'],c:0,e:'Sprang into action=انطلقوا للعمل فوراً. ما يفعله الأطباء.'},
+{pg:11,q:'Scientists explained the strange natural ........... to the public.',o:['expedition','problem','phenomenon','project'],c:2,e:'Phenomenon=ظاهرة طبيعية. تُستخدم للأحداث الطبيعية الغريبة.'},
+{pg:11,q:'Many ........... products, such as cleaning items, are more expensive.',o:['outdoor','office','travel','household'],c:3,e:'Household=منزلي. منتجات التنظيف من المنتجات المنزلية.'},
+{pg:11,q:'The team had to ........... of workload after two members resigned.',o:['hand over','bear the brunt','take a break','make excuses'],c:1,e:'Bear the brunt=يتحمل العبء الأكبر. عند استقالة أعضاء.'},
+{pg:11,q:'Our mission is to ........... forward research that benefits the community.',o:['look','pull','drive','slow'],c:2,e:'Drive forward=يدفع للأمام. تحفيز البحث. لا نقول look/pull forward.'},
+{pg:11,q:'After the good news, she began to ........... , overwhelmed by joy.',o:['weep with relief','laugh with anger','run with fear','speak with doubt'],c:0,e:'Weep with relief=تبكي من الفرح والارتياح.'},
+{pg:11,q:'You can always ........... on your friends in times of need.',o:['rely','keep','focus','go'],c:0,e:'Rely on=يعتمد على. تعبير ثابت.'},
+{pg:11,q:'Scientists worked to ........... the experiment\'s accuracy.',o:['enhance','delay','reduce','polish'],c:0,e:'Enhance=يحسّن. تحسين دقة التجربة.'},
+{pg:11,q:'Camels have special ........... to survive without water.',o:['foods','habitats','adaptations','shelters'],c:2,e:'Adaptations=تكيّفات بيولوجية. تمكّن الجمل من البقاء.'},
+{pg:11,q:'Before choosing a major, Mariam took time to ........... on her interests.',o:['draw','reflect','debate','argue'],c:1,e:'Reflect on=تتأمل في. التأمل قبل قرار مهم.'},
+{pg:12,q:'"Amphibious vehicle" — the underlined word is a/an .....',o:['proper noun','main verb','adjective','adverb'],c:2,e:'Amphibious=صفة (adjective) تصف vehicle=مركبة برمائية.'},
+{pg:12,q:'The team had to ........... of the irate complaints.',o:['ignore the calls','bear the brunt','cause the problem','fix everything'],c:1,e:'Bear the brunt=يتحمل العبء الأكبر. تحمّل غضب الشكاوى.'},
+{pg:12,q:'Synonym of "chaos" is ...........',o:['settlement','clumsiness','dedication','disruption'],c:3,e:'Chaos=فوضى=disruption=اضطراب. Settlement=استقرار (عكس).'},
+{pg:12,q:'The vertebrates\' ........... system recognizes foreign bodies.',o:['digestive','urinary','immune','nervous'],c:2,e:'Immune system=الجهاز المناعي. مسؤول عن التعرف على الأجسام الغريبة.'},
+{pg:12,q:'A stitch in time saves ...........',o:['line','nine','fine','mine'],c:1,e:'مثل إنجليزية ثابتة: A stitch in time saves nine. التدخل المبكر يوفر جهد.'},
+{pg:12,q:'Their lawyer needs ........... evidence for legal action.',o:['editable','tangible','replicable','predictable'],c:1,e:'Tangible=ملموس. الدليل الملموس ضروري قانونياً.'},
+{pg:12,q:'The chicks are ........... from their eggs now.',o:['hatching','catching','watching','matching'],c:0,e:'Hatching=يفقس. الصيغة المستمرة للفقس الجاري.'},
+{pg:12,q:'Antonym of "marginalized" is ...........',o:['disregarded','focused','demoted','automated'],c:1,e:'Marginalized=مهمَّش. ضدّها focused=موضع تركيز.'},
+{pg:13,q:'I\'ve got myself ........... in unrelated problems.',o:['dedicated','steamed','entangled','rescued'],c:2,e:'Entangled=متورّط. تورطت في مشاكل لا علاقة لي بها.'},
+{pg:13,q:'Synonym of "implement" is',o:['enforce','neglect','highlight','carry on'],c:3,e:'Implement=يطبّق. وفقاً للملف: carry on=ينفّذ.'},
+{pg:13,q:'Don\'t ........... the difficulty of this exam.',o:['understand','underline','underestimate','undertake'],c:2,e:'Underestimate=يقلل من شأن. لا تقلل من صعوبة الامتحان.'},
+{pg:13,q:'To troubleshoot means to ...........',o:['hinder','diagnose','maximize','transfer'],c:1,e:'Troubleshoot=يشخّص الأعطال. أقربها diagnose.'},
+{pg:13,q:'Our manager takes the ........... to solve problems.',o:['initiative','primitive','depreciation','evacuation'],c:0,e:'Take the initiative=يأخذ المبادرة. تعبير ثابت.'},
+{pg:13,q:'Visitors were surrounded by ........... children.',o:['amphibious','scorching','artificial','curious'],c:3,e:'Curious=فضوليين. الأطفال الفضوليون يحيطون بالزوار.'},
+{pg:13,q:'Fatma described the moment as ........... — so embarrassing.',o:['mortifying','enjoyable','relaxing','amusing'],c:0,e:'Mortifying=مُحرج للغاية. مناسب للموقف المحرج.'},
+{pg:13,q:'A smart entrepreneur should ........... in innovations.',o:['invest','thrive','detect','perform'],c:0,e:'Invest in=يستثمر في. استثمار في الابتكارات.'},
+{pg:13,q:'A balanced diet is very ........... for our health.',o:['beneficial','benefit','beneficence','benefitted'],c:0,e:'Beneficial=صفة تعني مفيد. نحتاج صفة بعد very.'},
+{pg:13,q:'Grandfather\'s opinions are always wise and ...........',o:['insightful','trivial','shallow','power'],c:0,e:'Insightful=ثاقب الرأي/عميق الفهم. يناسب حكم الجد.'},
+{pg:13,q:'A balanced diet is very ........... for our health. (مكرر)',o:['beneficial','benefit','beneficence','benefitted'],c:0,e:'نفس السؤال: Beneficial=صفة=مفيد.'},
+{pg:14,q:'The teacher had to ........... to his mistake.',o:['wipe with relief','come to a standstill','bear the brunt','turn a blind eye'],c:3,e:'Turn a blind eye=يتجاهل عمداً. تجاهلت الخطأ لإعطائه فرصة.'},
+{pg:14,q:'A couple should ........... together to build a happy family.',o:['hit the town','go through thick and thin','stay ahead of the curve','take the heat'],c:1,e:'Go through thick and thin=يمرون بالصعب والسهل معاً.'},
+{pg:14,q:'Both sides agreed to ........... a compromise.',o:['reach','get','find','take'],c:0,e:'Reach a compromise=التوصل إلى تسوية. تعبير ثابت.'},
+{pg:14,q:'It\'s important to ........... friendships even when busy.',o:['create','improv','maintain','protest'],c:2,e:'Maintain=يحافظ على. المحافظة على الصداقات.'},
+{pg:14,q:'Falling in the street was the most ........... situation.',o:['lively','mortifying','surprising','cheerful'],c:1,e:'Mortifying=مُحرج للغاية. السقوط في الشارع محرج.'},
+{pg:14,q:'She left because the work was too ........... ; same tasks daily.',o:['repetitive','haunting','heartbreaking','sophisticated'],c:0,e:'Repetitive=تكراري. نفس المهام كل يوم.'},
+{pg:14,q:'Belief that your ideas are ........... may foster arrogance.',o:['flawless','imitative','customary','clumsy'],c:0,e:'Flawless=خالٍ من العيوب. الإيمان بأن أفكارك مثالية=غرور.'},
+{pg:14,q:'The old car is still ........... a fortune.',o:['worth','meaningful','useful','favoured'],c:0,e:'Worth a fortune=يُقدَّر بثروة. تعبير ثابت.'},
+{pg:14,q:'We must boost digital ........... among graduates.',o:['intention','literacy','transport','animation'],c:1,e:'Digital literacy=المعرفة الرقمية. مهارة أساسية للخريجين.'},
+{pg:14,q:'The task was too ........... but we were happy to perform it.',o:['fantastic','overwhelming','compromising','interactive'],c:1,e:'Overwhelming=مُربِك/فوق الطاقة. لكنهم سعداء رغم ذلك.'},
+{pg:14,q:'Antonym of "embracing" is ...........',o:['defining','diagnosing','rejecting','supporting'],c:2,e:'Embracing=يتبنّى/يقبل. ضدّها rejecting=يرفض.'},
+{pg:14,q:'"Packed" is synonymous with ...........',o:['wrapped','framed','vacant','congested'],c:3,e:'Packed=مزدحم=congested. Vacant=فارغ (عكس).'},
+/*الجزء2: كتاب المدرسة U1-6 ص14-20*/
+{pg:14,q:'Synonym of "vulnerable" is ...........',o:['exiled','extracted','exempted','exposed'],c:3,e:'Vulnerable=معرّض للخطر=exposed=معرّض. Exempted=معفى (عكس).'},
+{pg:14,q:'Leaving children unattended is a/an ........... experience.',o:['furious','hazardous','overwhelming','autonomous'],c:1,e:'Hazardous=خطير. ترك الأطفال بدون رقابة خطير.'},
+{pg:14,q:'The nurse gave the correct ........... to relieve pain.',o:['meditation','administration','medication','resuscitation'],c:2,e:'Medication=دواء. الممرضة تعطي الدواء لتخفيف الألم.'},
+{pg:14,q:'"Indifferent" means ...........',o:['distinguished','irrelevant','neglectful','mindful'],c:2,e:'Indifferent=غير مبالٍ=neglectful=مهمل. Mindful=منتبه (عكس).'},
+{pg:14,q:'A sudden ........... broke out in the market.',o:['chaos','shift','care','procedure'],c:0,e:'Chaos=فوضى. تحدث عندما يركض الناس عشوائياً.'},
+{pg:15,q:'The loud ........... from the security alarm disturbed everyone.',o:['beep','buzz','voice','groan'],c:0,e:'Beep=صوت قصير حاد. صوت الإنذار المعتاد.'},
+{pg:15,q:'A sudden ........... of excitement as winners were announced.',o:['groan','beep','pulse','buzz'],c:3,e:'Buzz of excitement=همهمة الحماس. تعبير شائع.'},
+{pg:15,q:'The rescue team helped the accident ........... .',o:['lifeguards','victims','witnesses','professionals'],c:1,e:'Victims=ضحايا. فريق الإنقاذ يساعد الضحايا.'},
+{pg:15,q:'The nurse pressed on the patient\'s ........... to check pain.',o:['shift','chest','breath','disorder'],c:1,e:'Chest=الصدر. الضغط على الصدر لفحص الألم.'},
+{pg:15,q:'The school year always ........... with an opening ceremony.',o:['kick off','put off','give off','get off'],c:0,e:'Kick off=يبدأ. يبدأ بحفل افتتاحي. Put off=يؤجل (عكس).'},
+{pg:15,q:'The lifeguard checked the man\'s ........... before first aid.',o:['pulse','prescription','heat','vibration'],c:0,e:'Pulse=النبض. أول خطوة في الإسعافات الأولية.'},
+{pg:15,q:'The child had ........... a coin. The team jumped into action.',o:['collapsed','swallowed','stitched','snitched'],c:1,e:'Swallowed=ابتلع. ابتلاع عملة=موقف خطير.'},
+{pg:15,q:'The child ........... her mother\'s hand crossing the road.',o:['grabbed','administered','arose','regained'],c:0,e:'Grabbed=أمسك بـ. أمسك بيد أمه بإحكام.'},
+{pg:15,q:'The hospital received patients after the ........... .',o:['emergency','category','allergy','facility'],c:3,e:'وفقاً لملف الإجابات: (d) facility. يشير لمنشأة معينة.'},
+{pg:15,q:'She broke her ........... while skiing.',o:['collarbone','lever','household','artifact'],c:0,e:'Collarbone=عظمة الترقوة. إصابة شائعة في التزلج.'},
+{pg:15,q:'Sarah\'s task is ........... medication to patients.',o:['grabbing','arising','administering','regaining'],c:2,e:'Administering medication=إعطاء الدواء. مهمة الممرضة.'},
+{pg:16,q:'Seeing children suffer is truly ...........',o:['breathtaking','heartbreaking','sophisticated','automated'],c:1,e:'Heartbreaking=محطّم للقلب. رؤية أطفال يتألمون.'},
+{pg:16,q:'Start ........... if the person is not breathing.',o:['CPU','HR','X-ray','CPR'],c:3,e:'CPR=الإنعاش القلبي الرئوي. ضروري عند توقف التنفس.'},
+{pg:16,q:'Nurses work in an 8-hour ........... .',o:['chaos','shift','care','procedure'],c:1,e:'Shift=وردية. الممرضات يعملن في ورديات.'},
+{pg:16,q:'Pay close ........... to the teacher\'s instructions.',o:['intention','attention','migration','urgency'],c:1,e:'Pay attention=ينتبه. تعبير ثابت.'},
+{pg:16,q:'The museum has a ........... security system.',o:['primitive','outdated','helpless','sophisticated'],c:3,e:'Sophisticated=متطور. المتحف يحتاج نظام متطور. Primitive=بدائي (عكس).'},
+{pg:16,q:'She lost ........... during surgery but regained it.',o:['impression','compression','compassion','consciousness'],c:3,e:'Consciousness=وعي. فقدت الوعي ثم استعادته.'},
+{pg:16,q:'The old bridge might ........... if not repaired.',o:['collapse','groan','migrate','shift'],c:0,e:'Collapse=ينهار. الجسر القديم قد ينهار.'},
+{pg:16,q:'Finish the report with ....... because the client was waiting.',o:['equity','inaccuracy','matter','urgency'],c:3,e:'Urgency=استعجال. إنهاء التقرير باستعجال.'},
+{pg:16,q:'Cotton ........... a machine to separate fibers from seeds.',o:['harvest','weave','gin','cultivate'],c:2,e:'Cotton gin=آلة القطن. اخترعت لفصل الألياف عن البذور.'},
+{pg:16,q:'The Ming ........... ruled China for centuries.',o:['dynasty','equity','immunity','legacy'],c:0,e:'Dynasty=سلالة حاكمة. سلالة مينغ حكمت الصين.'},
+{pg:17,q:'Roads and bridges are part of a country\'s ........... .',o:['infrastructure','consciousness','landscape','equity'],c:0,e:'Infrastructure=بنية تحتية. الطرق والجسور جزء منها.'},
+{pg:17,q:'Workers used a ........... to lift the heavy stone.',o:['liver','lever','wedge','stitch'],c:1,e:'Lever=رافعة. أداة ميكانيكية لرفع الأثقال.'},
+{pg:17,q:'We called a/an ........... to repair the printer.',o:['electrician','technician','engineer','supervisor'],c:1,e:'Technician=فني. لإصلاح الطابعة.'},
+{pg:17,q:'The IT team tries to ........... the network problem.',o:['complicate','answer','troublesome','troubleshoot'],c:3,e:'Troubleshoot=يشخّص الأعطال. وظيفة فريق IT.'},
+{pg:17,q:'The computer won\'t work without correct ........... .',o:['cookies','divers','drivers','versions'],c:1,e:'وفقاً لملف الإجابات: (b). رغم أن drivers الأكثر منطقية.'},
+{pg:17,q:'Soap and vinegar are common ........... products.',o:['cultural','automated','agricultural','household'],c:3,e:'Household products=منتجات منزلية.'},
+{pg:17,q:'The company installed an ........... packing system.',o:['manual','animated','automated','traditional'],c:2,e:'Automated=آلي. يعمل بدون تدخل بشري. Manual=يدوي (عكس).'},
+{pg:17,q:'Cotton gins and steam engines ........... agriculture.',o:['revolutionized','caused','devastated','vanished'],c:0,e:'Revolutionized=أحدثت ثورة في. غيّرت الزراعة جذرياً.'},
+{pg:17,q:'Egypt continues to ........... modern technology.',o:['do','adapt','adopt','adept'],c:1,e:'وفقاً لملف الإجابات: (b) adapt.'},
+{pg:18,q:'Modern washing machines are household ........... .',o:['tools','appliances','equipment','devises'],c:1,e:'Household appliances=أجهزة منزلية.'},
+{pg:18,q:'Appliances save time and make ........... easier.',o:['homework','chores','lessons','exams'],c:1,e:'Chores=أعمال منزلية. الأجهزة تسهّلها.'},
+{pg:18,q:'Government ........... and private partnerships drive projects.',o:['partnership','introductory','initiative','troubleshoot'],c:2,e:'Government initiative=مبادرة حكومية.'},
+{pg:18,q:'Climate justice is about ........... , responsibility, and voice.',o:['inequality','equity','quality','quantity'],c:3,e:'وفقاً لملف الإجابات: (d) quantity.'},
+{pg:18,q:'After power cut, machines came to a complete ...........',o:['movement','standstill','flow','speed'],c:1,e:'Came to a standstill=توقفت تماماً.'},
+{pg:18,q:'GPS helps drivers stay on the right ........... .',o:['trick','pack','track','balance'],c:2,e:'Stay on the right track=على المسار الصحيح. تعبير ثابت.'},
+{pg:18,q:'The program supports ........... communities.',o:['marginalized','minoritized','authorized','characterized'],c:0,e:'Marginalized communities=مجتمعات مهمَّشة.'},
+{pg:18,q:'Climate change may cause ........... of millions.',o:['immigration','event','migration','forecast'],c:2,e:'Migration=هجرة/نزوح. نزوح الملايين بسبب المناخ.'},
+{pg:18,q:'Software needs updating to the latest ...........',o:['cookie','diver','driver','version'],c:3,e:'Version=إصدار. التحديث لأحدث إصدار.'},
+{pg:19,q:'The ........... predicted thunderstorms.',o:['archaeologist','biologist','economist','meteorologist'],c:3,e:'Meteorologist=عالم أرصاد. من يتوقع العواصف.'},
+{pg:19,q:'The athlete has the ........... to become champion.',o:['patent','probable','potential','equality'],c:2,e:'Potential=إمكانية كامنة. لديه القدرة.'},
+{pg:19,q:'The company plans an ........... of its offices.',o:['complaint','explanation','exclusion','expansion'],c:3,e:'Expansion=توسيع. توسيع المكاتب.'},
+{pg:19,q:'The country experienced a deadly ........... for two weeks.',o:['breeze','good night','wave surfing','heat wave'],c:3,e:'Heat wave=موجة حرارة. Breeze=نسيم (عكس).'},
+{pg:19,q:'Climate change is a issue of global justice.',o:['deeply','profound','greatly','sincerely'],c:1,e:'Profound=عميقة. قضية عميقة.'},
+{pg:19,q:'Scientists look for ........... evidence before accepting theories.',o:['tangible','tragic','unspecific','unreal'],c:3,e:'وفقاً لملف الإجابات: (d) unreal.'},
+{pg:19,q:'Floods and hurricanes are examples of ........... weather.',o:['excess','extreme','ordinary','intensely'],c:1,e:'Extreme weather=طقس متطرف.'},
+{pg:19,q:'The red light ........... that the machine isn\'t working.',o:['damage','indicates','announces','reply'],c:1,e:'Indicates=يشير/يدل. الضوء الأحمر يشير للعطل.'},
+{pg:19,q:'Planting trees helps ........... air pollution effects.',o:['relate','enhance','mitigate','develope'],c:2,e:'Mitigate=يخفّف. تخفيف آثار التلوث.'},
+{pg:19,q:'The scientist explained a strange natural ........... .',o:['phenomenon','phenomena','phenomenal','phenomenally'],c:0,e:'Phenomenon=ظاهرة (مفرد). "a" تدل على المفرد.'},
+{pg:20,q:'Building the bridge was a large-........... project.',o:['scale','scene','skip','skull'],c:0,e:'Large-scale=ضخم/على نطاق واسع.'},
+{pg:20,q:'The storm was ........... by thunder and lightning.',o:['added','accompanied','removed','avoided'],c:1,e:'Accompanied by=مصحوباً بـ. العاصفة مصحوبة برعد.'},
+{pg:20,q:'According to the five-day ........... , temperatures will be high.',o:['broadcast','forecast','outcast','podcast'],c:1,e:'Forecast=توقعات جوية.'},
+{pg:20,q:'It\'s absolutely ........... today — don\'t forget sunscreen.',o:['chilly','breaking','cooling','scorching'],c:3,e:'Scorching=حارق. Chilly=بارد (عكس).'},
+{pg:20,q:'Many ........... are developing new transportation.',o:['Villages','Megacities','Streets','Routes'],c:1,e:'Megacities=مدن ضخمة. تطور أنظمة نقل.'},
+{pg:20,q:'The successful ........... of the policy improved protection.',o:['representation','implementation','sophistication','intonation'],c:1,e:'Implementation=تنفيذ. التنفيذ الناجح حسّن الحماية.'},
+{pg:20,q:'The ........... sun forced travelers to rest.',o:['baking','breaking','banking','booking'],c:0,e:'Baking sun=شمس حارقة. baking هنا=شديد الحرارة.'},
+{pg:20,q:'Be careful; the glass vase is ........... .',o:['magic','fragile','graceful','gentle'],c:1,e:'Fragile=هشّ. المزهريات الزجاجية هشة.'},
+{pg:20,q:'Plants will ........... with enough sunlight and water.',o:['thrive','collaborate','struggle','explore'],c:0,e:'Thrive=تزدهر. النباتات تزدهر بالشمس والماء.'},
+{pg:20,q:'Cairo is known for its ........... nightlife.',o:['weeknight','vibrant','workshops','dedicated'],c:1,e:'Vibrant=نابض بالحياة. حياتها الليلية النابضة.'},
+{pg:20,q:'The painting was full of ........... colors.',o:['vital','vivid','vulnerable','valuable'],c:1,e:'Vivid=زاهية/حيوية. ألوان زاهية.'},
+{pg:20,q:'The sun ........... the fence a pale gray.',o:['surfaced','promoted','involved','bleached'],c:3,e:'Bleached=بيّض. الشمس بيّضت السياج.'},
+{pg:20,q:'The view was so ........... that everyone took photos.',o:['mortifying','innovative','repetitive','breathtaking'],c:3,e:'Breathtaking=آخذ للأنفاس. منظر مذهل.'},
+{pg:21,q:'Coastal ........... is destroying the beaches.',o:['conservation','splendor','reputation','erosion'],c:3,e:'Erosion=تآكل. Conservation=حفظ (عكس).'},
+{pg:21,q:'The melody was so ........... it stayed in my mind.',o:['vibrant','haunting','curious','capture'],c:1,e:'Haunting=مُلِحّة. لحنت لاحقة الذهن.'},
+{pg:21,q:'They had to ........... to carry the heavy box.',o:['declare','fragile','struggle','agitate'],c:2,e:'Struggle=يكافح. الكفاح لحمل الصندوق الثقيل.'},
+{pg:21,q:'The noise will ........... the meeting.',o:['entangle','ease','distribute','disrupt'],c:3,e:'Disrupt=يُعطّل. الضوضاء تُعطّل الاجتماع.'},
+{pg:21,q:'She is ........... to helping the poor.',o:['dedicated','repetitive','vivid','breathtaking'],c:0,e:'Dedicated to=مكرّسة لـ.'},
+{pg:21,q:'Her presentation was absolutely ........... .',o:['flawless','unconvincing','exaggerate','valueless'],c:0,e:'Flawless=خالية من العيوب. أداء مثالي.'},
+{pg:21,q:'The company has a strong ........... for quality.',o:['reputation','repetition','deception','complication'],c:0,e:'Reputation=سمعة. سمعة قوية في الجودة.'},
+{pg:21,q:'Don\'t ........... her abilities; she is talented.',o:['undertake','underline','underestimate','undergo'],c:2,e:'Underestimate=يقلل من شأن.'},
+{pg:21,q:'Baby turtles ........... from their eggs toward the sea.',o:['ensure','hatch','spill','hide'],c:1,e:'Hatch=يفقس. السلاحف تفقس وتتجه للبحر.'},
+{pg:21,q:'The job was so ........... — same task hundreds of times.',o:['repetitive','administrative','creative','innovative'],c:0,e:'Repetitive=تكراري. نفس المهمة مئات المرات.'},
+{pg:22,q:'The movie\'s special effects were ........... .',o:['mind-blowing','glow-producing','non-invasive','high-pitched'],c:0,e:'Mind-blowing=مذهلة. مؤثرات مذهلة.'},
+{pg:22,q:'Our city is very ........... with many cultures.',o:['curious','hazard','diverse','complicated'],c:2,e:'Diverse=متنوع. سكان من ثقافات متعددة.'},
+{pg:22,q:'Problems occur in ........... areas due to pollution.',o:['industry','contamination','industrialized','industrialize'],c:2,e:'Industrialized=مُصنَّعة. المناطق الصناعية.'},
+{pg:22,q:'Technology has become very ........... and replaced jobs.',o:['persuaded','advanced','traditional','enhanced'],c:1,e:'Advanced=متقدمة. التكنولوجيا المتقدمة.'},
+{pg:22,q:'Machines couldn\'t ........... children\'s expressions.',o:['attract','captivate','capture','paint'],c:2,e:'Capture=تلتقط. لم تستطع التقاط تعبيرات الوجوه.'},
+{pg:22,q:'Dr. Sami was ........... about Amina\'s stories.',o:['contagious','furious','curious','envious'],c:2,e:'Curious=فضولي. فضولي لمعرفة سر القصص.'},
+{pg:22,q:'The new hospital is still under ........... .',o:['construction','material','projection','destruction'],c:0,e:'Under construction=قيد الإنشاء.'},
+{pg:22,q:'He was completely ........... of the danger.',o:['unaware','glamorous','helpless','cruelty'],c:0,e:'Unaware of=غير مدرك لـ.'},
+{pg:22,q:'The boy dropped the plate because he was ...........',o:['clumsy','broadened','relaxed','glamorous'],c:0,e:'Clumsy=أخرق. أوقع الطبق بسبب الخُراقة.'},
+{pg:23,q:'Yara got a well-deserved ........... to team leader.',o:['disaster','promotion','ignorance','glamour'],c:1,e:'Promotion=ترقية. ترقية مستحقة.'},
+{pg:23,q:'Meeting people is part of ........... at university.',o:['personalizing','maintaining','socializing','releasing'],c:2,e:'Socializing=تواصل اجتماعي. جزء من الحياة الجامعية.'},
+{pg:23,q:'The flood was a terrible ........... for the village.',o:['promotion','glamor','confidence','disaster'],c:3,e:'Disaster=كارثة. الفيضان كان كارثة.'},
+{pg:23,q:'The actress looked absolutely ........... in her gown.',o:['confidence','affection','glamorous','unaware'],c:2,e:'Glamorous=جذّابة/فاتنة. بدت جذابة في فستانها.'},
+{pg:23,q:'Wearing mismatched socks was quite ...........',o:['embarrass','embarrassed','embarrassing','embarrassment'],c:2,e:'Embarrassing=مُحرج. صفة تصف الموقف.'},
+{pg:23,q:'Strong friendships lower rates of ........... .',o:['strength','depression','connection','harmony'],c:1,e:'Depression=اكتئاب. الصداقات تقلل الاكتئاب.'},
+{pg:23,q:'The opposite of our dull ........... gatherings.',o:['weekend','weeknight','week-long','weekday'],c:1,e:'Weeknight=ليلة أسبوع. التجمعات المعتادة مملة.'},
+{pg:23,q:'Others find it ........... to choose from many options.',o:['dull','weak','fading','overwhelming'],c:3,e:'Overwhelming=مُربِك. كثرة الخيارات مُربكة.'},
+{pg:23,q:'Before exams, students feel ........... .',o:['socializing','anxiety','expression','dependence'],c:1,e:'Anxiety=قلق. الشعور بالقلق قبل الامتحان.'},
+{pg:23,q:'She was only interested ........... in our problems.',o:['superficially','significantly','socially','mentally'],c:0,e:'Superficially=سطحياً. اهتمامها كان سطحياً.'},
+{pg:23,q:'The lecture was so ........... students nearly slept.',o:['glamorous','dull','mortifying','cruel'],c:1,e:'Dull=ممل. محاضرة مملة.'},
+{pg:24,q:'Doctors recommend exercise to ........... good health.',o:['detain','trap','maintain','accept'],c:2,e:'Maintain=يحافظ على. التمارين تحافظ على الصحة.'},
+{pg:24,q:'Let\'s ........... at the new mall after class.',o:['work out','find out','knock out','hang out'],c:3,e:'Hang out=يقضون وقتاً ممتعاً.'},
+{pg:24,q:'People struggle in their ........... schedules.',o:['empty','quiet','deserted','packed'],c:3,e:'Packed=مزدحم. جدول مزدحم.'},
+{pg:24,q:'It\'s a ........... recipe; I\'ve never tried it.',o:['brand-new','second-hand','outdated','used'],c:0,e:'Brand-new=جديد تماماً.'},
+{pg:24,q:'Pass me the ........... ; I need salt for my fries.',o:['sugar bowl','pepper mill','salt shaker','coffee cup'],c:2,e:'Salt shaker=ملحّة. أداة لتوزيع الملح.'},
+/*الجزء3: المصطلحات والمرادفات U1-6 ص20-23*/
+{pg:20,q:'Communities ........... the brunt of consequences.',o:['marginalize','bear','suffer','collect'],c:1,e:'Bear the brunt=يتحمل العبء الأكبر. تعبير ثابت.'},
+{pg:20,q:'He was full ........... ahead in developing his invention.',o:['steam','spade','speed','esteem'],c:0,e:'Full steam ahead=بكل قوة للأمام. تعبير ثابت.'},
+{pg:20,q:'The captain had to take ........... from the media.',o:['the brunt','the music','the burden','the heat'],c:3,e:'Take the heat=يتحمل الانتقادات.'},
+{pg:20,q:'When I saw blood, my face turned ...........',o:['pale as a ghost','spring into action','very energetic','soaked to the skin'],c:0,e:'Pale as a ghost=شاحب كالشبح. رد فعل لرؤية الدم.'},
+{pg:20,q:'The company is ........... for expanding internationally.',o:['raining cats and dogs','charging full steam','laying the groundwork','going banana'],c:2,e:'Laying the groundwork=يضع الأساسات. تحضير للتوسع.'},
+{pg:20,q:'The manager ........... after huge financial losses.',o:['spill the beans','break the ice','fix the burden','face the music'],c:3,e:'Face the music=يواجه العواقب.'},
+{pg:21,q:'Streets flooded after it was ........... all night.',o:['jumped into action','pale as a ghost','soaked to the skin','raining cats and dogs'],c:3,e:'Raining cats and dogs=تمطر بغزارة.'},
+{pg:21,q:'Without preparation, students were ........... .',o:['in the blink of an eye','in deep water','in a nutshell','in the spotlight'],c:1,e:'In deep water=في ورطة. الطلاب غير المستعدين.'},
+{pg:21,q:'Synonym of "mitigate" is ...........',o:['finish','invest','lessen','endanger'],c:2,e:'Mitigate=يخفّف=lessen. Endanger=يعرّض للخطر (عكس).'},
+{pg:21,q:'Companies must ........... in emerging technologies.',o:['Cry over spilled milk','fall behind the times','beat around the bush','stay ahead of the curve'],c:3,e:'Stay ahead of the curve=يبقى متقدماً.'},
+{pg:21,q:'Thanks to vaccines, some diseases are a ...........',o:['stitch in time saves nine','thing of the past','pain in the neck','storm in a teacup'],c:1,e:'Thing of the past=شيء من الماضي.'},
+{pg:21,q:'We need to ........... and come up with new ideas.',o:['climb the career ladder','think outside the box','let the cat out of the bag','cost an arm and a leg'],c:1,e:'Think outside the box=يفكر بإبداع.'},
+{pg:21,q:'Synonym of "efficiency" is ...........',o:['productivity','toughness','electricity','ease'],c:0,e:'Efficiency=كفاءة=productivity=إنتاجية.'},
+{pg:21,q:'Nations should ........... the burden of climate transition.',o:['face','take','shoulder','bear'],c:2,e:'Shoulder the burden=يتحمل العبء. shoulder كفعل.'},
+{pg:22,q:'After her bonus, she decided to ........... with friends.',o:['hit the sack','hit the town','hit the books','hit the ceiling'],c:1,e:'Hit the town=يخرج للاستمتاع في المدينة.'},
+{pg:22,q:'Synonym of "migration" is ...........',o:['relocation','settlement','justice','acceleration'],c:0,e:'Migration=هجرة=relocation=إعادة توطين.'},
+{pg:22,q:'Synonym of "rewarding" is ...........',o:['hateful','unpleasant','satisfying','wasteful'],c:2,e:'Rewarding=مجزٍ=satisfying=مُرضٍ.'},
+{pg:22,q:'Synonym of "tangible" is ...........',o:['abstract','physical','intangible','theoretical'],c:1,e:'Tangible=ملموس=physical=مادي. Abstract=عكس.'},
+{pg:22,q:'Doctors ........... patient charts for records.',o:['ensured','choked','reviewed','documented'],c:2,e:'Reviewed=راجع. مراجعة الملفات للسجلات.'},
+{pg:22,q:'She finally ........... consciousness.',o:['raised','restrained','regained','administered'],c:2,e:'Regained consciousness=استعادت الوعي. تعبير طبي.'},
+{pg:22,q:'Synonym of "sophisticated" is ...........',o:['advanced','tolerant','simple','humble'],c:0,e:'Sophisticated=متطور=advanced=متقدم.'},
+{pg:22,q:'Synonym of "equity" is ...........',o:['bias','imbalance','inequity','fairness'],c:3,e:'Equity=عدالة=fairness=إنصاف.'},
+{pg:22,q:'Synonym of "profound" is ...........',o:['deep','superficial','shallow','simple'],c:0,e:'Profound=عميق=deep=عميق.'},
+{pg:22,q:'Protestors attempted to ........... control of the square.',o:['lose','miss','gain','join'],c:2,e:'Gain control=يكتسب السيطرة.'},
+{pg:22,q:'The CEO rules ........... the company.',o:['on','off','up','over'],c:3,e:'Rule over=يحكم. تعبير ثابت.'},
+{pg:23,q:'If we turn ........... to the damage, we\'ll be in trouble.',o:['red eye','blind eye','blue eye','closed eye'],c:1,e:'Turn a blind eye=يتجاهل. تعبير ثابت.'},
+{pg:23,q:'"Automated" is antonym of ........... .',o:['manual','mechanical','digital','robotic'],c:0,e:'Automated=آلي. ضدّها manual=يدوي.'},
+{pg:23,q:'She managed to ........... and become team leader.',o:['avoid responsibility','skip the process','hide from work','climb the career ladder'],c:3,e:'Climb the career ladder=يتدرج في السلم الوظيفي.'},
+{pg:23,q:'It poured ........... rain while walking home.',o:['at','in','for','with'],c:3,e:'Pour with rain=تمطر بغزارة. تعبير بريطاني.'},
+{pg:23,q:'She knows how to ........... difficult customers.',o:['miss','deal','handle','ruin'],c:2,e:'Handle=يتعامل مع. تتعامل باحترافية.'},
+{pg:23,q:'Synonym for "groundwork" is ...........',o:['option','basis','obligation','fountain'],c:1,e:'Groundwork=أساسات=basis=أساس.'},
+{pg:23,q:'Synonym for "revolutionize" is ...........',o:['stabilized','transformed','breezed','fixed'],c:1,e:'Revolutionize=يُحدث ثورة=transformed=حوّل.'},
+{pg:23,q:'Synonyms of "precautions" are ...........',o:['measures','risks','hazards','hardships'],c:0,e:'Precautions=احتياطات=measures=إجراءات.'},
+{pg:23,q:'Antonym of "breathtaking" is ...........',o:['insignificant','spectacular','stunning','hazardous'],c:0,e:'Breathtaking=آخذ للأنفاس. ضدّها insignificant=غير ملفت.'},
+{pg:23,q:'Synonym of "fragile" is ........... .',o:['durable','valueless','delicate','organized'],c:2,e:'Fragile=هشّ=delicate=رقيق. Durable=عكس.'},
+{pg:23,q:'Antonym of "vivid" is ........... .',o:['bright','dull','brilliant','precise'],c:1,e:'Vivid=زاهي. ضدّها dull=باهت.'},
+{pg:23,q:'Antonym of "thrive" is ...........',o:['flourish','twist','deteriorate','prosper'],c:2,e:'Thrive=يزدهر. ضدّها deteriorate=يتدهور.'},
+{pg:23,q:'Opposite of "flawless" is ........... .',o:['ideal','perfect','faulty','correct'],c:2,e:'Flawless=خالٍ من العيوب. ضدّها faulty=معيب.'},
+{pg:24,q:'Synonyms of "overwhelming" are ...........',o:['slight','weak','intense','manageable'],c:2,e:'Overwhelming=مُربِك=intense=شديد. Manageable=عكس.'},
+{pg:24,q:'Synonyms of "disaster" are ...........',o:['blessing','success','calamity','isolation'],c:2,e:'Disaster=كارثة=calamity=مصيبة.'},
+{pg:24,q:'Synonyms of "clumsiness" are ...........',o:['skill','dexterity','grace','awkwardness'],c:3,e:'Clumsiness=خُراقة=awkwardness=عدم مهارة.'},
+{pg:24,q:'Synonyms of "compromise" are ...........',o:['disagreement','negotiation','dispute','recreation'],c:1,e:'Compromise=تسوية=negotiation=مفاوضة.'},
+{pg:24,q:'Synonym of "mortifying" is ........... .',o:['embarrassing','honorable','unashamed','isolating'],c:0,e:'Mortifying=مُحرج للغاية=embarrassing=مُحرج.'},
+{pg:24,q:'The government ........... the necessary precautions.',o:['received','gave','took','made'],c:2,e:'Take precautions=يتخذ احتياطات. تعبير ثابت.'},
+{pg:24,q:'The organization ........... a campaign for awareness.',o:['plays','runs','takes','makes'],c:1,e:'Run a campaign=يدير حملة. تعبير ثابت.'},
+{pg:24,q:'The manager is responsible ........... supervising.',o:['to','in','with','for'],c:3,e:'Responsible for=مسؤول عن. تعبير ثابت.'},
+{pg:24,q:'A business must ........... new technologies.',o:['charge','embrace','play','lay'],c:1,e:'Embrace=يتبنّى. تبنّي التكنولوجيا الجديدة.'},
+{pg:24,q:'Experts ........... the need for immediate action.',o:['emphasize','emphasis','emphatic','emphatically'],c:0,e:'نحتاج فعل emphasize=يُركّز. الباقي اسم أو صفة.'},
+{pg:24,q:'The company provides employees training programs ........... improve skills.',o:['for','with','to','from'],c:1,e:'Provide someone with something=يزوّد شخصاً بشيء.'},
+{pg:24,q:'He stared ........... the computer screen.',o:['to','about','for','at'],c:3,e:'Stare at=يحدّق في. تعبير ثابت مع at.'},
+{pg:24,q:'She tried to keep ........... the latest trends.',o:['out of','in with','up with','up'],c:2,e:'Keep up with=يواكب. تعبير ثابت.'},
+/*الجزء4: النماذج الاسترشادية U7-12 ص30-32*/
+{pg:30,q:'It\'s good to ........... the flight time before the airport.',o:['maintain','check','socialize','strengthen'],c:1,e:'Check=يتحقق. التحقق من موعد الرحلة.'},
+{pg:30,q:'The restaurant is less crowded on a ........... .',o:['holiday','festival','celebration','weeknight'],c:3,e:'Weeknight=ليلة أسبوع. أقل ازدحاماً من weekend.'},
+{pg:30,q:'After the flood, villagers showed great ........... .',o:['weakness','sadness','resilience','anger'],c:2,e:'Resilience=مرونة/صمود. أظهروا مرونة بإعادة البناء.'},
+{pg:30,q:'Aswan has a strong ........... for being clean and safe.',o:['celebration','reputation','decoration','invitation'],c:1,e:'Reputation=سمعة. أسوان لها سمعة قوية.'},
+{pg:30,q:'The previous ........... in Japan was famous for art.',o:['dynasty','country','state','continent'],c:0,e:'Dynasty=سلالة حاكمة. السلالة اليابانية اشتهرت بالفن.'},
+{pg:30,q:'I got a stitch in my side = I felt a ...........',o:['line of sewing','sudden pain','type of fabric','small scar'],c:1,e:'A stitch in my side=ألم حاد في الجنب. ليس غرزة خياطة.'},
+{pg:30,q:'There are ........... on importing and exporting goods.',o:['prescriptions','directions','restrictions','distractions'],c:2,e:'Restrictions=قيود/تقييدات. قيود على الاستيراد والتصدير.'},
+{pg:30,q:'To reach the island, you must ........... through reefs.',o:['navigate','mediate','generate','elevate'],c:2,e:'وفقاً لملف الإجابات: (c) generate. رغم أن navigate أكثر منطقية.'},
+{pg:30,q:'The ........... of the Nile with the Mediterranean created the Delta.',o:['conference','diligence','influence','confluence'],c:3,e:'Confluence=التقاء أنهار. التقاء النيل بالبحر المتوسط.'},
+{pg:30,q:'After drought, they had no ........... of crops but a shortage.',o:['surplus','limitation','scarcity','abundance'],c:3,e:'وفقاً لملف الإجابات: (d) abundance=وفرة. عكس shortage.'},
+{pg:31,q:'Antonym of "emphasize" is ...........',o:['understate','assure','disregard','underestimate'],c:0,e:'Emphasize=يُبرز. ضدّها understate=يُقلل من شأن.'},
+{pg:31,q:'Cars ........... harmful emissions that pollute air.',o:['produce','introduce','deduce','misuse'],c:0,e:'Produce=تُنتج. السيارات تُنتج انبعاثات ضارة.'},
+{pg:31,q:'The government will meet the ........... of rising Nile water.',o:['challengeable','challenging','challenged','challenges'],c:3,e:'Challenges=تحديات (اسم جمع). نحتاج اسم بعد the.'},
+{pg:31,q:'Ancient Egyptians were masters before the modern ........... .',o:['season','century','decade','era'],c:3,e:'Era=حقبة/عصر. قبل العصر الحديث.'},
+{pg:31,q:'Before the play, actors met for a/an ........... .',o:['audition','celebration','discussion','rehearsal'],c:3,e:'Rehearsal=بروفة. التدريب قبل العرض النهائي.'},
+{pg:31,q:'Each student had to ........... a point in the debate.',o:['score','suggest','argue','say'],c:2,e:'Argue a point=يناقش نقطة. في المناقشة.'},
+{pg:31,q:'She offered a sincere ........... on the presentation.',o:['complement','compliment','commitment','comment'],c:1,e:'Compliment=مديح (مع i في المنتصف). Complement=تكملة.'},
+{pg:31,q:'Antonym of "condemn" is ...........',o:['praise','blame','attack','doom'],c:0,e:'Condemn=يُدين. ضدّها praise=يمدح.'},
+{pg:31,q:'The wrangling does not ........... well for the future.',o:['go','bode','hand','play'],c:1,e:'Bode well=يبشّر بخير. الخلافات لا تبشّر بخير.'},
+{pg:32,q:'Despite efforts, it suffered another ....... .',o:['defeat','hard breaking','heartbreaking','debate'],c:0,e:'Defeat=هزيمة. عانى من هزيمة أخرى.'},
+/*الجزء5: كتاب المدرسة U7-12 ص32-36*/
+{pg:32,q:'A passport is a ....... to enter new countries.',o:['trapdoor','gateway','shadow','restriction'],c:1,e:'Gateway=بوابة/مدخل. جواز السفر بوابة لدخول دول.'},
+{pg:32,q:'To board a flight, show your ........... .',o:['terminal','boarding pass','departure lounge','gate'],c:1,e:'Boarding pass=بطاقة صعود. ضرورية للصعود على الرحلة.'},
+{pg:32,q:'Travelers with money fly in ........... .',o:['mystery','luxury','gateway','foundation'],c:1,e:'Luxury=فخامة/درجة أولى. المسافرون الأثرياء.'},
+{pg:32,q:'Egypt is located ........... between Africa and Asia.',o:['strategically','invisibly','mysteriously','cosmically'],c:0,e:'Strategically=استراتيجياً. مصر في موقع استراتيجي.'},
+{pg:32,q:'Too many ........... on innovation can harm good work.',o:['bustles','foundations','curiosities','restrictions'],c:3,e:'Restrictions=قيود. كثرة القيود تضر بالعمل.'},
+{pg:32,q:'The city square is full of noise and ........... .',o:['bustle','boundary','scholar','theory'],c:0,e:'Bustle=صخب/حركة نشطة. ميدان المدينة صاخب.'},
+{pg:32,q:'His ........... after hearing the bad news.',o:['heart sank','head hurt','eyes sparkled','feet danced'],c:0,e:'His heart sank=خاب أمله/انكسر قلبه. رد فعل للخبر السيء.'},
+{pg:32,q:'The Pyramids stand as a ........... of engineering skill.',o:['soil','luxury','foundation','monument'],c:3,e:'Monument=معلم/نصب تذكاري. الأهرامات نصب تذكاري.'},
+{pg:32,q:'Employees scan ID at the security ........... .',o:['check paint','checkpoint','checker','shaker'],c:1,e:'Checkpoint=نقطة تفتيش. مسح الهوية عند التفتيش.'},
+{pg:33,q:'The market was ........... with shoppers.',o:['bustling','boiling','peeling','implying'],c:0,e:'Bustling=مزدحم بالنشاط. السوق مليء بالمتسوقين.'},
+{pg:33,q:'He struck ........... a conversation with a stranger.',o:['up','at','in','with'],c:0,e:'Strike up a conversation=يبدأ محادثة. تعبير ثابت مع up.'},
+{pg:33,q:'After breaking the vase, Tamer was ........... .',o:['out of the water','testing the water','going with the flow','in hot water'],c:3,e:'In hot water=في ورطة. كسر المزهرية الغالية=ورطة.'},
+{pg:33,q:'Weather changed plans, but we decided to ........... .',o:['go with the flow','be in hot water','fly on the wall','update us'],c:0,e:'Go with the flow=يتكيف مع الوضع/يمرّن.'},
+{pg:33,q:'Ancient civilizations built canals for ........... .',o:['curiosity','mystery','education','irrigation'],c:3,e:'Irrigation=ري. القنوات لري المحاصيل.'},
+{pg:33,q:'They found a quiet corner in the departure ........... .',o:['longue','league','delight','lounge'],c:3,e:'Departure lounge=صالة المغادرة. مكان الانتظار في المطار.'},
+{pg:33,q:'We had time to ....... a quick coffee from the machine.',o:['gap','grip','grab','grape'],c:2,e:'Grab=يأخذ بسرعة. أخذ قهوة سريعة.'},
+{pg:33,q:'Flight 237 should proceed to gate 12 in the ........... .',o:['tactical','terminal','timing','attribute'],c:1,e:'Terminal=مبنى الركاب/صالة. البوابة 12 في المبنى الدولي.'},
+{pg:33,q:'Antonym of "valid" is ........... .',o:['legal','acceptable','correct','expired'],c:3,e:'Valid=ساري/صالح. ضدّها expired=منتهي الصلاحية.'},
+{pg:33,q:'Antonym of "struck up" is ........... .',o:['started','exposed','ended','ignored'],c:2,e:'Struck up=بدأ. ضدّها ended=أنهى.'},
+{pg:33,q:'Ancient ........... built monuments to watch stars.',o:['astronomers','scribes','soldiers','directors'],c:0,e:'Astronomers=فلكيون. بنوا معالم لرصد النجوم.'},
+{pg:33,q:'The professor\'s ........... attracted students worldwide.',o:['reputation','horizons','escape','boundary'],c:0,e:'Reputation=سمعة. سمعة أستاذ تجذب الطلاب.'},
+{pg:33,q:'Discovering new worlds is part of human ........... .',o:['mystery','curiosity','dimension','luxury'],c:1,e:'Curiosity=فضول. اكتشاف العالمات جزء من الفضول البشري.'},
+{pg:33,q:'Some feel ........... in big crowds.',o:['suck','struck','stuck','smuggled'],c:2,e:'Stuck=عالق. الشعور بالانحشار في الزحام.'},
+{pg:33,q:'Italy is a ........... , surrounded by sea on three sides.',o:['dimension','peninsula','foundation','gateway'],c:1,e:'Peninsula=شبه جزيرة. إيطاليا محاطة بالبحر من 3 جهات.'},
+{pg:33,q:'In Mesopotamia, ........... recorded info on clay tablets.',o:['scribes','astronomers','scholars','travelers'],c:0,e:'Scribes=كتبة. سجّلوا المعلومات على ألواح طينية.'},
+{pg:33,q:'Trade routes formed at the ........... of two rivers.',o:['influence','confluence','affluence','effluence'],c:1,e:'Confluence=التقاء أنهار. طرق التجارة عند التقاء النهرين.'},
+{pg:33,q:'Water and rich ........... are essential for farming.',o:['horizons','shadows','soil','dimensions'],c:2,e:'Soil=تربة. التربة الخصبة والماء أساس الزراعة.'},
+{pg:33,q:'Without ........... , objects would float into space.',o:['curiosity','gravity','submission','exploration'],c:1,e:'Gravity=جاذبية. بدونها ستطفو الأشياء في الفضاء.'},
+{pg:33,q:'Temple-like structures called ........... in Mesopotamia.',o:['gateways','ziggurats','horizons','bustles'],c:1,e:'Ziggurats=زقورات. المعابد الهرمية في بلاد الرافدين.'},
+{pg:33,q:'A ........... studies deeply in a particular field.',o:['bustler','scholar','shadow','luxury'],c:1,e:'Scholar=عالِم/باحث. يدرس بعمق في مجال معين.'},
+{pg:33,q:'The land near the Nile was very ........... .',o:['lengthy','fertile','mighty','fragile'],c:1,e:'Fertile=خصبة. أرض النيل خصبة تنمو فيها المحاصيل.'},
+{pg:33,q:'The Amazon is the "lungs of the Earth" due to its ........... location.',o:['abundant','strategic','distant','royal'],c:1,e:'وفقاً لملف الإجابات: (b) strategic=استراتيجي.'},
+{pg:34,q:'The school was built on a strong stone ........... .',o:['architecture','invasion','foundation','population'],c:2,e:'Foundation=أساس. بُنيت على أساس قوي من الحجر.'},
+{pg:34,q:'Trade routes at the ...... of two major rivers.',o:['influence','confluence','affluence','effluence'],c:1,e:'Confluence=التقاء. طرق التجارة عند التقاء النهرين.'},
+{pg:34,q:'The scientist decided to ........... an experiment.',o:['run','make','ignore','conduct'],c:3,e:'Conduct an experiment=يُجري تجربة. تعبير ثابت.'},
+{pg:34,q:'The architect gave the exact ........... of the bridge.',o:['dimensions','horizons','innovations','restrictions'],c:0,e:'Dimensions=أبعاد. الأبعاد الدقيقة للجسر.'},
+{pg:34,q:'The gas was ........... under high pressure.',o:['compressed','escaped','irrigated','constructed'],c:0,e:'Compressed=مضغوط. الغاز مضغوط تحت ضغط عالٍ.'},
+{pg:34,q:'Our Solar System is part of a spiral ........... .',o:['galaxy','globe','planet','cosmos'],c:0,e:'Galaxy=مجرة. نظامنا الشمسي جزء من مجرة حلزونية.'},
+{pg:34,q:'The ....... contains billions of stars and galaxies.',o:['plant','planet','universe','earth'],c:2,e:'Universe=الكون. يحتوي مليارات النجوم والمجرات.'},
+{pg:34,q:'She spoke ....... , without hesitating.',o:['unhesitatingly','isolating','grateful','thoughtful'],c:0,e:'Unhesitatingly=بدون تردد. تحدثت بثقة.'},
+{pg:34,q:'His kind words were truly ....... .',o:['terrifying','rejecting','touching','rude'],c:2,e:'Touching=مؤثر/ملامس للمشاعر. كلماته الطيبة كانت مؤثرة.'},
+{pg:34,q:'At the center of a black hole lies a ....... .',o:['singularity','boundary','opportunity','conception'],c:0,e:'Singularity=تفرد. نقطة في مركز الثقب الأسود.'},
+{pg:34,q:'A black hole\'s pull defines its ....... in space.',o:['aspect','concept','boundary','claim'],c:2,e:'Boundary=حد/حدود. حدود الثقب الأسود التي لا يُرجع منها.'},
+{pg:34,q:'His ....... made him thank his hosts many times.',o:['strength','politeness','rejection','prose'],c:1,e:'Politeness=لطف/تهذيب. اللطف جعله يشكر مضيفيه.'},
+{pg:34,q:'A black hole\'s ....... horizon is the point of no return.',o:['event','distant','cultural','end'],c:0,e:'Event horizon=أفق الحدث. نقطة لا رجعة منها في الثقب الأسود.'},
+{pg:34,q:'Poets use "..........." instead of "universe" for existence.',o:['galaxy','global','planet','cosmos'],c:3,e:'Cosmos=كوكب/كون. يستخدمها الشعراء بمعنى الكون.'},
+{pg:34,q:'People in ........... societies focus on group harmony.',o:['collectivist','individualistic','hospitable','terrified'],c:0,e:'Collectivist=جماعية. المجتمعات الجماعية تركز على انسجام المجموعة.'},
+{pg:34,q:'Good ........... helps workers improve performance.',o:['hospitality','daffodils','wisdom','feedback'],c:3,e:'Feedback=تغذية راجعة. تساعد العمال على التحسن.'},
+{pg:34,q:'Offering food and welcome to guests shows ........... .',o:['cruelty','hospitality','tone','prose'],c:1,e:'Hospitality=ضيافة. تقديم الطعام والترحيب=ضيافة.'},
+{pg:34,q:'A student may start as an apprentice before a full ........... .',o:['career','breeze','compliment','rejection'],c:0,e:'Career=مسيرة مهنية. يتدرب قبل بدء المسيرة كاملة.'},
+{pg:34,q:'Many spend hours ........... through social media.',o:['inspiring','scrolling','rehearsing','complimenting'],c:1,e:'Scrolling=يتصفح بالتمرير. التمرير في وسائل التواصل.'},
+{pg:34,q:'A school ........... helps students with problems.',o:['counselor','patron','apprentice','individualist'],c:0,e:'Counselor=موجّه/مرشد. يساعد الطلاب في مشاكلهم.'},
+{pg:34,q:'His speech was a ....... reaction to the award.',o:['collective','thoughtful','spontaneous','hospitable'],c:2,e:'Spontaneous=عفوي. لم يُخطط للخطاب، كان عفوياً.'},
+{pg:34,q:'His ....... made him thank his hosts many times.',o:['generosity','politeness','spontaneity','hesitation'],c:1,e:'Politeness=لطف. اللطف جعله يشكر مضيفيه.'},
+{pg:34,q:'She answered ....... , unsure if correct.',o:['meaningfully','unhesitatingly','endlessly','hesitatingly'],c:3,e:'Hesitatingly=بتردد. أجابت بتردد لأنها غير متأكدة.'},
+{pg:35,q:'Old photographs bring back happy ........... .',o:['memories','rejection','prose','hospitality'],c:0,e:'Memories=ذكريات. الصور القديمة تعيد الذكريات السعيدة.'},
+{pg:35,q:'Water will ........... smoothly down the river.',o:['flow','escape','discipline','surprise'],c:0,e:'Flow=يجري. الماء يجري بسلاسة في النهر.'},
+{pg:35,q:'She felt sad after a job ........... .',o:['gesture','prose','rejection','compliment'],c:2,e:'Rejection=رفض. الرفض في طلب العمل محزن.'},
+{pg:35,q:'The speaker\'s ........... of voice was calm.',o:['tone','feedback','compliment','environment'],c:0,e:'Tone=نبرة. نبرة صوته كانت هادئة.'},
+{pg:35,q:'The poem had a lively ........... that people enjoyed.',o:['career','rhythm','reputation','prose'],c:1,e:'Rhythm=إيقاع. القصيدة لها إيقاع حيوي ممتع.'},
+{pg:35,q:'He has a ........... smile on his face.',o:['cheerful','terrified','touched','spontaneous'],c:0,e:'Cheerful=مبهج. ابتسامة مبهجة.'},
+{pg:35,q:'Through stories, the hero gained the ....... for his quest.',o:['rhythm','memory','wisdom','isolation'],c:2,e:'Wisdom=حكمة. اكتسب الحكمة من حكايات الشيخ.'},
+{pg:35,q:'Bright yellow ........... grow in spring.',o:['gestures','apprentices','daffodils','tones'],c:2,e:'Daffodils=نرجس أصفر. يُزهر في الربيع.'},
+{pg:35,q:'Poetry, drama and legends are forms of ....... .',o:['literature','profession','inspiration','audience'],c:0,e:'Literature=أدب. الشعر والدراما والأساطير أشكال أدبية.'},
+{pg:35,q:'Unlike poetry, ........... follows natural speech.',o:['drama','verse','stanza','prose'],c:3,e:'Prose=نثر. يتبع أنماط الكلام الطبيعية عكس الشعر.'},
+{pg:35,q:'It\'s a work of ........... , but characters feel real.',o:['non-fiction','fiction','classics','drama'],c:1,e:'Fiction=خيال/رواية. عمل خيالي لكن الشخصيات واقعية.'},
+{pg:35,q:'Poets use ........... to create vivid pictures.',o:['feedback','imagery','discipline','magic'],c:1,e:'Imagery=صور خيالية. الشعراء يصنعون صوراً ذهنية حية.'},
+{pg:35,q:'The new project\'s ........... is to help rural farmers.',o:['lever','scope','equity','buzz'],c:1,e:'Scope=نطاق/مدى. نطاق المشروع هو مساعدة المزارعين.'},
+{pg:35,q:'Synonym of "confluence" is ........... .',o:['boundary','complex','junction','gate'],c:2,e:'Confluence=التقاء=junction=مفترق طرق.'},
+{pg:35,q:'Hossam went to the hospital to ....... his uncle.',o:['check on','invest in','wait in','look up'],c:0,e:'Check on=يفحص حال/يزور. يزور عمه في المستشفى.'},
+{pg:35,q:'Antonym of "invisible" is ........... .',o:['unseen','seen','compressed','usual'],c:1,e:'Invisible=غير مرئي. ضدّها seen=مرئي.'},
+{pg:35,q:'Synonym of "boundary" is ........... .',o:['galaxy','shadow','gateway','limit'],c:3,e:'Boundary=حد=limit=حدود.'},
+{pg:35,q:'Synonym of "escape" is ........... .',o:['navigate','flee','stick','feed'],c:1,e:'Escape=يهرب=flee=يهرب/يفر.'},
+{pg:35,q:'Rotten food will ........... a terrible smell.',o:['give up','give off','give in','give back'],c:1,e:'Give off=يصدر. الطعام الفاسد يصدر رائحة كريهة.'},
+{pg:36,q:'I\'m worried we might ........... money during the trip.',o:['run out','run out of','keep from','keep away from'],c:1,e:'Run out of=ينفد من. قد ينفد المال خلال الرحلة.'},
+{pg:36,q:'Antonym of "fertile" is ........... .',o:['organic','good','barren','high'],c:2,e:'Fertile=خصبة. ضدّها barren=قاحلة.'},
+{pg:36,q:'Antonym of "patronize" is ........... .',o:['respect','look down on','condescend to','ignore'],c:0,e:'Patronize=يتعالى على. ضدّها respect=يحترم.'},
+{pg:36,q:'Synonym of "spontaneous" is ........... .',o:['calculated','deliberate','impulsive','intended'],c:2,e:'Spontaneous=عفوي=impulsive=انفعالي/تلقائي.'}
 ];
 
-// ===== EXTRA QUESTIONS — Complete Coverage of الدليل الشامل =====
-const EXTRA = [
-// UNITS 1-4 MISSING WORDS
-{u:'1-4',t:'def',q:'The nurse used a <span class="kw">stethoscope</span> to check the patient. "Stethoscope" means ...',
- opts:['blood pressure device','instrument to hear heartbeat','thermometer','syringe'],ans:1,
- exp:'Stethoscope = medical instrument used to listen to heart/lung sounds (سماعة الطبيب).',ar:'سماعة الطبيب — أداة طبية للاستماع إلى الأصوات الداخلية'},
-
-{u:'1-4',t:'def',q:'The patient showed a <span class="kw">symptom</span> of fever. "Symptom" means ...',
- opts:['cure','sign/indication of illness','treatment','diagnosis'],ans:1,
- exp:'Symptom = a sign that shows you have an illness (عَرَض/دليل مرضي).',ar:'عَرَض — علامة تدل على وجود مرض'},
-
-{u:'1-4',t:'def',q:'The hospital maintains a <span class="kw">sterile</span> environment. "Sterile" means ...',
- opts:['noisy','completely clean/germ-free','crowded','modern'],ans:1,
- exp:'Sterile = completely free from bacteria (معقّم/خالٍ من الجراثيم).',ar:'معقّم — خالٍ تماماً من البكتيريا والجراثيم'},
-
-{u:'1-4',t:'ant',q:'The glass vase was very <span class="kw">fragile</span>. Antonym of "fragile" is ...',
- opts:['delicate','sturdy','breakable','thin'],ans:1,
- exp:'Fragile = easily broken. Antonym: sturdy / robust (متين).',ar:'هش — المتضاد: sturdy = متين/قوي'},
-
-{u:'1-4',t:'def',q:'She decided to <span class="kw">swallow</span> the medicine quickly. "Swallow" means ...',
- opts:['chew','throw','take down the throat','crush'],ans:2,
- exp:'Swallow = to cause food or liquid to go down your throat (يبتلع).',ar:'يبتلع — يُنزل الطعام أو السائل عبر الحلق'},
-
-{u:'1-4',t:'syn',q:'The worker showed great <span class="kw">dedication</span>. Synonym of "dedicated" is ...',
- opts:['lazy','committed','careless','distracted'],ans:1,
- exp:'Dedicated = committed to a task or purpose (مخلص/مُكرّس).',ar:'مخلص/مُكرّس — مُلتزم بمهمة أو غرض'},
-
-{u:'1-4',t:'def',q:'The situation required <span class="kw">urgency</span>. "Urgency" means ...',
- opts:['patience','calmness','the need for immediate action','planning'],ans:2,
- exp:'Urgency = the need for immediate action (إلحاح/حالة طارئة).',ar:'إلحاح — الحاجة للتصرف الفوري'},
-
-{u:'1-4',t:'ant',q:'The results were very <span class="kw">optimistic</span>. Antonym is ...',
- opts:['hopeful','pessimistic','positive','encouraging'],ans:1,
- exp:'Optimistic = expecting good outcomes. Antonym: pessimistic (متشائم).',ar:'متفائل — المتضاد: pessimistic = متشائم'},
-
-{u:'1-4',t:'def',q:'The factory released <span class="kw">steam</span> during production. "Steam" means ...',
- opts:['smoke','hot water vapor','fire','gas'],ans:1,
- exp:'Steam = water in the form of gas/vapor, produced by heating (بخار).',ar:'بخار — الماء في صورة غازية عند التسخين'},
-
-{u:'1-4',t:'syn',q:'She had a <span class="kw">vivid</span> imagination. Synonym of "vivid" is ...',
- opts:['dull','limited','bright and clear','vague'],ans:2,
- exp:'Vivid = producing strong, clear images; bright. Synonym: clear / bright (واضح/زاهٍ).',ar:'واضح/زاهٍ — مرادفه: bright = مشرق/واضح'},
-
-{u:'1-4',t:'def',q:'She is a <span class="kw">victim</span> of bullying. "Victim" means ...',
- opts:['criminal','person harmed by others','witness','attacker'],ans:1,
- exp:'Victim = a person harmed or affected by someone/something bad (ضحية).',ar:'ضحية — شخص يتضرر من شخص أو حدث'},
-
-{u:'1-4',t:'def',q:'The information is no longer <span class="kw">valid</span>. "Valid" means ...',
- opts:['old','acceptable/legally in force','interesting','common'],ans:1,
- exp:'Valid = acceptable, officially recognized, in effect (صالح/ساري).',ar:'صالح/ساري — مقبول ومعترف به رسمياً'},
-
-{u:'1-4',t:'syn',q:'The discovery was very <span class="kw">valuable</span>. Synonym is ...',
- opts:['cheap','worthless','precious/important','ordinary'],ans:2,
- exp:'Valuable = worth a lot of money or importance. Synonym: precious (قيّم).',ar:'قيّم — مرادفه: precious = ثمين/ذو قيمة'},
-
-{u:'1-4',t:'def',q:'The doctor issued a <span class="kw">prescription</span>. "Prescription" means ...',
- opts:['diagnosis report','written order for medicine','operation order','test result'],ans:1,
- exp:'Prescription = a written order from a doctor for medicine (وصفة طبية).',ar:'وصفة طبية — أمر مكتوب من الطبيب للدواء'},
-
-{u:'1-4',t:'def',q:'The doctor tried to <span class="kw">detect</span> the problem early. "Detect" means ...',
- opts:['treat','ignore','discover/notice','prevent'],ans:2,
- exp:'Detect = to discover or notice something (يكتشف/يرصد).',ar:'يكتشف — يلاحظ أو يجد شيئاً'},
-
-{u:'1-4',t:'syn',q:'The patient was asked to <span class="kw">swallow</span> the pill. Synonym is ...',
- opts:['chew','ingest','spit','dissolve'],ans:1,
- exp:'Swallow = to take in through the mouth and throat. Synonym: ingest (يبتلع).',ar:'يبتلع — مرادفه: ingest = يُدخل إلى الجسم'},
-
-{u:'1-4',t:'def',q:'Climate <span class="kw">migration</span> is increasing globally. "Migration" means ...',
- opts:['pollution','movement of people from one place to another','climate change','natural disaster'],ans:1,
- exp:'Migration = movement from one place to settle in another (هجرة).',ar:'هجرة — التنقل من مكان للإقامة في مكان آخر'},
-
-{u:'1-4',t:'syn',q:'The air was <span class="kw">contaminated</span> by pollution. Synonym of "contaminated" is ...',
- opts:['clean','polluted','fresh','pure'],ans:1,
- exp:'Contaminated = made dirty or harmful. Synonym: polluted (ملوَّث).',ar:'ملوَّث — مرادفه: polluted = ملوَّث'},
-
-{u:'1-4',t:'def',q:'The rescue team performed <span class="kw">CPR</span> on the patient. "CPR" means ...',
- opts:['a surgery','cardiopulmonary resuscitation (الإنعاش القلبي)','a type of medication','blood test'],ans:1,
- exp:'CPR = Cardiopulmonary Resuscitation — emergency procedure to restart the heart (الإنعاش القلبي الرئوي).',ar:'الإنعاش القلبي الرئوي — إجراء طارئ لإعادة تشغيل القلب'},
-
-{u:'1-4',t:'ant',q:'The two teams were very <span class="kw">coordinated</span>. Antonym is ...',
- opts:['organized','disorganized/uncoordinated','efficient','productive'],ans:1,
- exp:'Coordinated = working together effectively. Antonym: disorganized (غير منسَّق).',ar:'منسَّق — المتضاد: disorganized = غير منظم'},
-
-{u:'1-4',t:'def',q:'She had to <span class="kw">bear</span> the responsibility alone. "Bear" means ...',
- opts:['reject','share','carry/endure','avoid'],ans:2,
- exp:'Bear = to carry or endure something difficult (يتحمّل).',ar:'يتحمّل — يحمل أو يصبر على شيء صعب'},
-
-{u:'1-4',t:'def',q:'Scientists study the <span class="kw">consciousness</span> of the human mind. "Consciousness" means ...',
- opts:['subconscious','the state of being aware and awake','memory','intelligence'],ans:1,
- exp:'Consciousness = the state of being conscious/aware (الوعي/الإدراك).',ar:'الوعي/الإدراك — حالة التيقظ والإدراك'},
-
-{u:'1-4',t:'syn',q:'The project showed great <span class="kw">scope</span>. Synonym is ...',
- opts:['limitation','range/extent','focus','depth'],ans:1,
- exp:'Scope = the range or extent covered. Synonym: range (نطاق/مجال).',ar:'نطاق — مرادفه: range = مدى/نطاق'},
-
-{u:'1-4',t:'def',q:'The country faced a <span class="kw">groan</span> of economic problems. "Groan" (v) means ...',
- opts:['laugh quietly','make a deep sound of pain','shout loudly','whisper'],ans:1,
- exp:'Groan = to make a deep sound expressing pain or unhappiness (يئن/يتذمر).',ar:'يئن — يُصدر صوتاً عميقاً من الألم أو الضيق'},
-
-{u:'1-4',t:'def',q:'She <span class="kw">whispered</span> the answer to her friend. "Whisper" means ...',
- opts:['shout','speak very softly','sing','laugh'],ans:1,
- exp:'Whisper = to speak very softly (يهمس).',ar:'يهمس — يتحدث بصوت خافت جداً'},
-
-// UNITS 5-8 MISSING
-{u:'5-8',t:'def',q:'She has a <span class="kw">mindset</span> for success. "Mindset" means ...',
- opts:['skill','way of thinking','attitude toward others','talent'],ans:1,
- exp:'Mindset = a particular way of thinking (طريقة التفكير).',ar:'طريقة التفكير — أسلوب ونهج معين في التفكير'},
-
-{u:'5-8',t:'syn',q:'The athlete showed great <span class="kw">persistence</span>. Synonym is ...',
- opts:['laziness','determination','talent','luck'],ans:1,
- exp:'Persistence = continuing despite difficulties. Synonym: determination (مثابرة).',ar:'مثابرة — مرادفه: determination = عزم وإصرار'},
-
-{u:'5-8',t:'def',q:'The weather made him feel <span class="kw">misfortune</span>. "Misfortune" means ...',
- opts:['happiness','luck','bad luck/unfortunate event','opportunity'],ans:2,
- exp:'Misfortune = bad luck or an unfortunate event (سوء حظ).',ar:'سوء حظ — حدث سيئ أو حظ عاثر'},
-
-{u:'5-8',t:'syn',q:'She was a <span class="kw">mentor</span> to young students. Synonym is ...',
- opts:['rival','experienced guide/advisor','student','colleague'],ans:1,
- exp:'Mentor = an experienced person who gives guidance. Synonym: advisor/guide (مُرشِد).',ar:'مُرشِد — مرادفه: advisor = مستشار/موجّه'},
-
-{u:'5-8',t:'def',q:'They faced many <span class="kw">obstacles</span> during the journey. "Obstacle" means ...',
- opts:['opportunity','barrier/difficulty','advantage','support'],ans:1,
- exp:'Obstacle = something that blocks progress (عقبة/حاجز).',ar:'عقبة — شيء يعيق التقدم'},
-
-{u:'5-8',t:'ant',q:'The fabric was very <span class="kw">substantial</span>. Antonym is ...',
- opts:['large','flimsy/trivial','strong','heavy'],ans:1,
- exp:'Substantial = large and important. Antonym: trivial / flimsy (تافه/بسيط).',ar:'كبير/جوهري — المتضاد: trivial = تافه/بسيط'},
-
-{u:'5-8',t:'def',q:'The project aimed to be <span class="kw">sustainable</span>. "Sustainable" means ...',
- opts:['temporary','able to continue long-term without harming resources','expensive','modern'],ans:1,
- exp:'Sustainable = able to continue without causing damage to the environment (مستدام).',ar:'مستدام — قادر على الاستمرار دون الإضرار بالموارد'},
-
-{u:'5-8',t:'def',q:'She got a <span class="kw">scholarship</span> to study abroad. "Scholarship" means ...',
- opts:['visa','financial grant for education','passport','loan'],ans:1,
- exp:'Scholarship = a financial award given to a student to support their studies (منحة دراسية).',ar:'منحة دراسية — مساعدة مالية لدعم الدراسة'},
-
-{u:'5-8',t:'def',q:'The flood caused a <span class="kw">disaster</span>. "Disaster" means ...',
- opts:['success','celebration','terrible event causing great damage','storm'],ans:2,
- exp:'Disaster = a very bad event that causes great damage (كارثة).',ar:'كارثة — حدث سيئ جداً يسبب أضراراً كبيرة'},
-
-{u:'5-8',t:'ant',q:'The lecture was very <span class="kw">dull</span>. Antonym is ...',
- opts:['boring','interesting/exciting','tiring','long'],ans:1,
- exp:'Dull = not interesting. Antonym: interesting / exciting (مثير/ممتع).',ar:'ممل — المتضاد: interesting = مثير للاهتمام'},
-
-{u:'5-8',t:'syn',q:'She felt a great sense of <span class="kw">warmth</span>. Synonym is ...',
- opts:['coldness','friendliness/affection','hatred','distance'],ans:1,
- exp:'Warmth = friendliness and affection. Synonym: friendliness (دفء/مودة).',ar:'دفء — مرادفه: friendliness = ودّية/مودة'},
-
-{u:'5-8',t:'def',q:'She found paradise in the countryside. "<span class="kw">Paradise</span>" means ...',
- opts:['city','a very beautiful perfect place','a small town','a forest'],ans:1,
- exp:'Paradise = a place or state of perfect happiness (جنة/فردوس).',ar:'جنة/فردوس — مكان أو حالة من السعادة المثالية'},
-
-{u:'5-8',t:'def',q:'The old village had strict <span class="kw">restrictions</span>. "Restrictions" means ...',
- opts:['freedoms','rules that limit what you can do','permissions','opportunities'],ans:1,
- exp:'Restrictions = rules or limits that control what people can do (قيود).',ar:'قيود — قواعد تحدّ مما يمكن للناس القيام به'},
-
-{u:'5-8',t:'def',q:'She <span class="kw">imitated</span> the teacher perfectly. "Imitate" means ...',
- opts:['admire','copy/mimic','improve','disagree with'],ans:1,
- exp:'Imitate = to copy someone\'s actions or voice (يُقلِّد).',ar:'يُقلِّد — ينسخ أفعال أو طريقة شخص آخر'},
-
-{u:'5-8',t:'syn',q:'Her words showed great <span class="kw">determination</span>. Synonym is ...',
- opts:['confusion','resolve/willpower','weakness','hesitation'],ans:1,
- exp:'Determination = firmness of purpose. Synonym: resolve / willpower (عزم/إصرار).',ar:'عزم/إصرار — مرادفه: resolve = تصميم'},
-
-{u:'5-8',t:'def',q:'The city shows great cultural <span class="kw">transformation</span>. "Transformation" means ...',
- opts:['tradition','complete change','restoration','history'],ans:1,
- exp:'Transformation = a complete change (تحوّل/تغيير جذري).',ar:'تحوّل — تغيير كامل وجذري'},
-
-{u:'5-8',t:'def',q:'The doctor <span class="kw">observed</span> the patient\'s condition. "Observation" means ...',
- opts:['treatment','watching carefully','diagnosis','operation'],ans:1,
- exp:'Observation = the action of carefully watching/monitoring (مراقبة/ملاحظة).',ar:'مراقبة/ملاحظة — الرصد الدقيق والمتابعة'},
-
-{u:'5-8',t:'syn',q:'She managed to <span class="kw">overcome</span> her fears. Synonym is ...',
- opts:['surrender to','conquer/defeat','ignore','escape'],ans:1,
- exp:'Overcome = to succeed in dealing with a problem. Synonym: conquer (يتغلّب على).',ar:'يتغلّب على — مرادفه: conquer = يقهر/يتجاوز'},
-
-{u:'5-8',t:'def',q:'She checked in her <span class="kw">luggage</span> at the airport. "Luggage" means ...',
- opts:['documents','suitcases and bags for travel','boarding pass','ticket'],ans:1,
- exp:'Luggage = bags and suitcases used for travel (حقائب السفر).',ar:'حقائب السفر — الشنط والأمتعة المستخدمة في السفر'},
-
-{u:'5-8',t:'def',q:'The <span class="kw">flexibility</span> of the system helped adapt quickly. "Flexibility" means ...',
- opts:['rigidity','ability to change and adapt','speed','complexity'],ans:1,
- exp:'Flexibility = ability to change or adapt easily (المرونة).',ar:'المرونة — القدرة على التغيير والتكيف بسهولة'},
-
-{u:'5-8',t:'syn',q:'He showed great <span class="kw">accuracy</span> in the report. Synonym is ...',
- opts:['carelessness','precision/exactness','speed','creativity'],ans:1,
- exp:'Accuracy = the quality of being correct. Synonym: precision (دقة).',ar:'دقة — مرادفه: precision = دقة متناهية'},
-
-{u:'5-8',t:'def',q:'The project <span class="kw">strengthened</span> the relationship. "Strengthen" means ...',
- opts:['weaken','make stronger','break','delay'],ans:1,
- exp:'Strengthen = to make stronger (يُقوّي/يُعزّز).',ar:'يُقوّي/يُعزّز — يجعل أقوى'},
-
-{u:'5-8',t:'def',q:'She had a <span class="kw">well-being</span> check at the clinic. "Well-being" means ...',
- opts:['sickness','state of good health and happiness','medication','treatment'],ans:1,
- exp:'Well-being = the state of being comfortable, healthy, and happy (رفاهية/صحة جيدة).',ar:'رفاهية/صحة جيدة — حالة الراحة والصحة والسعادة'},
-
-{u:'5-8',t:'def',q:'The <span class="kw">terminal</span> was crowded with passengers. "Terminal" means ...',
- opts:['runway','airport departure/arrival building','security gate','baggage claim'],ans:1,
- exp:'Terminal = the building at an airport used by passengers (صالة المطار).',ar:'صالة المطار — المبنى الرئيسي في المطار للمسافرين'},
-
-{u:'5-8',t:'ant',q:'He always <span class="kw">worsened</span> the situation. Antonym of "worsen" is ...',
- opts:['improve','damage','destroy','repeat'],ans:0,
- exp:'Worsen = to become or make worse. Antonym: improve / better (يُحسّن).',ar:'يتفاقم — المتضاد: improve = يتحسن'},
-
-{u:'5-8',t:'def',q:'The student applied for a <span class="kw">boarding pass</span>. "Boarding pass" means ...',
- opts:['entry visa','document to board a flight','passport','hotel key'],ans:1,
- exp:'Boarding pass = the document that allows you to board an airplane (بطاقة صعود الطائرة).',ar:'بطاقة صعود الطائرة — وثيقة للصعود على متن الطائرة'},
-
-// UNITS 9-12 MISSING
-{u:'9-12',t:'def',q:'She <span class="kw">expressed</span> her feelings clearly. "Express" means ...',
- opts:['hide','communicate/show your feelings','ignore','control'],ans:1,
- exp:'Express = to say or show what you think or feel (يُعبّر عن).',ar:'يُعبّر عن — يُظهر أو يتحدث عن مشاعره وأفكاره'},
-
-{u:'9-12',t:'def',q:'The poem had a beautiful <span class="kw">rhythm</span>. "Rhythm" means ...',
- opts:['color','a regular pattern of sounds/beats','meaning','length'],ans:1,
- exp:'Rhythm = a regular repeated pattern of sounds or beats (إيقاع).',ar:'إيقاع — نمط منتظم متكرر من الأصوات'},
-
-{u:'9-12',t:'def',q:'The detective found the <span class="kw">trapdoor</span> hidden under the rug. "Trapdoor" means ...',
- opts:['secret document','hidden door in floor/ceiling','underground room','secret room'],ans:1,
- exp:'Trapdoor = a small hidden door in a floor or ceiling (باب سري/خفي).',ar:'باب سري/خفي — باب صغير مخفي في الأرض أو السقف'},
-
-{u:'9-12',t:'ant',q:'The result was very <span class="kw">unexpected</span>. Antonym is ...',
- opts:['surprising','anticipated/expected','shocking','strange'],ans:1,
- exp:'Unexpected = not expected. Antonym: anticipated / expected (متوقَّع).',ar:'غير متوقَّع — المتضاد: expected = متوقَّع'},
-
-{u:'9-12',t:'def',q:'The artist was <span class="kw">unique</span> in her style. "Unique" means ...',
- opts:['common','one of a kind/unlike anything else','ordinary','popular'],ans:1,
- exp:'Unique = being the only one of its kind; having no equal (فريد).',ar:'فريد — الوحيد من نوعه / لا مثيل له'},
-
-{u:'9-12',t:'def',q:'She overcame her <span class="kw">misconception</span> about the topic. "Misconception" means ...',
- opts:['correct belief','false or mistaken idea','strong opinion','knowledge gap'],ans:1,
- exp:'Misconception = a wrong idea or belief (اعتقاد خاطئ).',ar:'اعتقاد خاطئ — فكرة أو معتقد غير صحيح'},
-
-{u:'9-12',t:'syn',q:'The actor was very <span class="kw">spontaneous</span> on stage. Synonym is ...',
- opts:['rehearsed','natural/unplanned','careful','calculated'],ans:1,
- exp:'Spontaneous = done without planning. Synonym: natural / impulsive (عفوي/تلقائي).',ar:'عفوي — مرادفه: natural = طبيعي بدون تخطيط'},
-
-{u:'9-12',t:'def',q:'He looked at her with <span class="kw">thoughtful</span> eyes. "Thoughtful" means ...',
- opts:['careless','considerate/caring about others','selfish','curious'],ans:1,
- exp:'Thoughtful = showing consideration for others (مهتمّ بالآخرين).',ar:'مهتمّ بالآخرين — يُظهر الاعتبار للآخرين'},
-
-{u:'9-12',t:'def',q:'The music helped memories <span class="kw">flow</span> back. "Flow" means ...',
- opts:['stop','move smoothly and continuously','appear suddenly','fade'],ans:1,
- exp:'Flow = to move smoothly and continuously (يتدفق/انسياب).',ar:'يتدفق — يتحرك بسلاسة واستمرار'},
-
-{u:'9-12',t:'syn',q:'She spoke <span class="kw">meaningfully</span>. Synonym of "meaningfully" is ...',
- opts:['quietly','with deep significance','quickly','randomly'],ans:1,
- exp:'Meaningfully = in a way that has deep meaning. Synonym: significantly (بشكل هادف).',ar:'بشكل هادف — مرادفه: significantly = بشكل ذي معنى عميق'},
-
-{u:'9-12',t:'def',q:'The actors had a final <span class="kw">rehearsal</span> before the show. "Rehearsal" means ...',
- opts:['performance','practice session before the real event','review','evaluation'],ans:1,
- exp:'Rehearsal = a practice session in preparation for a public performance (بروفة/تمرين).',ar:'بروفة/تمرين — جلسة تدريب للتحضير للعرض الحقيقي'},
-
-{u:'9-12',t:'syn',q:'She felt a sudden <span class="kw">fear</span>. Synonym is ...',
- opts:['confidence','dread/terror','excitement','surprise'],ans:1,
- exp:'Fear = an unpleasant feeling caused by danger. Synonym: dread / terror (خوف).',ar:'خوف — مرادفه: dread = رعب/خشية'},
-
-{u:'9-12',t:'def',q:'His ideas about space were full of <span class="kw">misconceptions</span>. "Misconception" means ...',
- opts:['discoveries','wrong beliefs','correct theories','questions'],ans:1,
- exp:'Misconception = a wrong or mistaken belief about something (اعتقاد خاطئ).',ar:'اعتقاد خاطئ — معتقد غير صحيح'},
-
-{u:'9-12',t:'def',q:'He showed great <span class="kw">curiosity</span> about the universe. "Curiosity" means ...',
- opts:['fear','strong desire to know and learn','ability','skill'],ans:1,
- exp:'Curiosity = strong desire to know or learn something (الفضول).',ar:'الفضول — رغبة قوية في المعرفة والتعلم'},
-
-{u:'9-12',t:'syn',q:'The philosopher shared his <span class="kw">wisdom</span>. Synonym is ...',
- opts:['ignorance','good judgment/insight','knowledge alone','intelligence'],ans:1,
- exp:'Wisdom = good judgment from experience. Synonym: insight / sagacity (حكمة).',ar:'حكمة — مرادفه: insight = بصيرة/إدراك عميق'},
-
-{u:'9-12',t:'def',q:'The story created vivid <span class="kw">imagery</span>. "Imagery" means ...',
- opts:['photographs','descriptive language creating mental pictures','sound effects','music'],ans:1,
- exp:'Imagery = visually descriptive language used to create pictures in the mind (تصوير بلاغي).',ar:'تصوير بلاغي — لغة وصفية تخلق صوراً في الذهن'},
-
-{u:'9-12',t:'def',q:'The poet described the <span class="kw">daffodils</span>. "Daffodils" are ...',
- opts:['mountains','birds','yellow spring flowers','stars'],ans:2,
- exp:'Daffodils = yellow flowers that bloom in spring (زهور النرجس).',ar:'زهور النرجس — زهور صفراء تتفتح في الربيع'},
-
-{u:'9-12',t:'def',q:'The story explores the <span class="kw">boundary</span> between reality and fiction. "Boundary" means ...',
- opts:['connection','a dividing line or limit','opening','path'],ans:1,
- exp:'Boundary = a line that marks the limits of an area (حدّ/فاصل).',ar:'حدّ/فاصل — خط يحدد نهاية منطقة'},
-
-{u:'9-12',t:'syn',q:'He showed deep <span class="kw">gratitude</span>. Synonym of "grateful" is ...',
- opts:['unthankful','thankful/appreciative','indifferent','rude'],ans:1,
- exp:'Grateful = feeling or showing thanks. Synonym: thankful / appreciative (ممتنّ).',ar:'ممتنّ — مرادفه: thankful = شاكر'},
-
-{u:'9-12',t:'def',q:'The author\'s style was <span class="kw">mysterious</span>. "Mysterious" means ...',
- opts:['clear','strange and difficult to explain','boring','simple'],ans:1,
- exp:'Mysterious = strange and difficult to understand (غامض).',ar:'غامض — غريب ويصعب تفسيره'},
-
-{u:'9-12',t:'def',q:'He read a fascinating <span class="kw">prose</span> passage. "Prose" means ...',
- opts:['poetry','ordinary written language (not poetry)','fiction','dialogue'],ans:1,
- exp:'Prose = ordinary written language without poetic structure (نثر).',ar:'نثر — الكتابة العادية (ليست شعراً)'},
-
-{u:'9-12',t:'def',q:'She tried to <span class="kw">recreate</span> the original painting. "Recreate" means ...',
- opts:['destroy','create again/reproduce','improve','analyze'],ans:1,
- exp:'Recreate = to create something again; to reproduce (يُعيد إنشاء).',ar:'يُعيد إنشاء — يخلق شيئاً من جديد'},
-
-{u:'9-12',t:'def',q:'The breeze was soft and pleasant. "<span class="kw">Breeze</span>" means ...',
- opts:['strong storm','gentle wind','heavy rain','warm air'],ans:1,
- exp:'Breeze = a gentle, light wind (نسيم).',ar:'نسيم — ريح خفيفة ولطيفة'},
-
-{u:'9-12',t:'def',q:'The actor took a deep breath to <span class="kw">overcome</span> his stage fright. "Overcome" means ...',
- opts:['increase','successfully deal with','avoid','delay'],ans:1,
- exp:'Overcome = to successfully deal with a problem (يتغلّب على).',ar:'يتغلّب على — يواجه مشكلة بنجاح'},
-
-{u:'9-12',t:'def',q:'The counselor helped students with their problems. "<span class="kw">Counselor</span>" means ...',
- opts:['teacher','a person who gives advice/guidance','doctor','tutor'],ans:1,
- exp:'Counselor = a person who gives advice and guidance (مُستشار).',ar:'مُستشار — شخص يُقدّم النصيحة والإرشاد'},
-
-{u:'9-12',t:'syn',q:'He compared the two poems. Synonym of "<span class="kw">comparison</span>" is ...',
- opts:['difference','contrast/evaluation of similarities','summary','analysis'],ans:1,
- exp:'Comparison = examining similarities and differences. Synonym: contrast (مقارنة).',ar:'مقارنة — مرادفه: contrast = موازنة/تباين'},
-
-{u:'9-12',t:'def',q:'The star cast a <span class="kw">shadow</span> on the wall. "Shadow" means ...',
- opts:['light','a dark area caused by blocking light','reflection','glow'],ans:1,
- exp:'Shadow = a dark area made when something blocks light (ظلّ).',ar:'ظلّ — منطقة مظلمة تتشكّل عندما يحجب شيء الضوء'},
-
-{u:'9-12',t:'def',q:'He always gave <span class="kw">compliments</span> to others. "Compliment" means ...',
- opts:['criticism','an expression of praise','advice','complaint'],ans:1,
- exp:'Compliment = an expression of praise or admiration (مدح/إطراء).',ar:'مدح/إطراء — تعبير عن الإعجاب والثناء'},
-
-{u:'9-12',t:'def',q:'Stars are millions of light-years away in the <span class="kw">cosmos</span>. "Cosmos" means ...',
- opts:['ocean','the universe/space','galaxy alone','solar system'],ans:1,
- exp:'Cosmos = the universe as a whole (الكون).',ar:'الكون — الكون بأكمله'},
-
-{u:'9-12',t:'def',q:'The tree has deep <span class="kw">roots</span> in the ground. "Root" means ...',
- opts:['branches','the underground part of a plant','leaves','trunk'],ans:1,
- exp:'Root = the underground part of a plant; also means origin (جذور/أصل).',ar:'جذور/أصل — الجزء السفلي للنبات تحت الأرض'},
-
-// IDIOMS SECTION
-{u:'1-4',t:'def',q:'If someone says "break the ice", they mean ...',
- opts:['break a glass','start conversation in an awkward situation','make someone cold','stop talking'],ans:1,
- exp:'"Break the ice" = to do something to relieve tension or start a conversation (يكسر الحواجز).',ar:'يكسر الحواجز — يبدأ حوار في موقف متوتر أو غير مريح'},
-
-{u:'5-8',t:'def',q:'If someone says "in hot water", they mean ...',
- opts:['taking a bath','in serious trouble','swimming','feeling warm'],ans:1,
- exp:'"In hot water" = in a difficult or troubling situation (في مشكلة/ورطة).',ar:'في مشكلة/ورطة — في موقف صعب أو متاعب'},
-
-{u:'9-12',t:'def',q:'If someone says "out of the blue", they mean ...',
- opts:['from the sky','suddenly and unexpectedly','from the sea','in the morning'],ans:1,
- exp:'"Out of the blue" = suddenly, without warning (فجأة/دون توقّع).',ar:'فجأة — بشكل مفاجئ وغير متوقع'},
-
-{u:'1-4',t:'def',q:'If someone "turns a blind eye", they ...',
- opts:['become blind','deliberately ignore something they should address','look the other way','solve a problem'],ans:1,
- exp:'"Turn a blind eye" = to deliberately ignore something wrong (يتجاهل شيئاً عمداً).',ar:'يتجاهل عمداً — يتعمّد تجاهل شيء يجب أن يعالجه'},
-
-{u:'5-8',t:'def',q:'If someone says "no pain, no gain", they mean ...',
- opts:['avoid pain','you cannot achieve success without effort or hard work','rest is important','take it easy'],ans:1,
- exp:'"No pain, no gain" = you must work hard to achieve results (لا نجاح بدون مجهود).',ar:'لا نجاح بدون مجهود — لا يمكن تحقيق النجاح بدون جهد وعمل'},
-
-{u:'9-12',t:'def',q:'If someone says "think outside the box", they mean ...',
- opts:['think literally about a box','think creatively and innovatively','organize your thoughts','follow rules strictly'],ans:1,
- exp:'"Think outside the box" = to think creatively beyond conventional ideas (يفكر بطريقة مبتكرة).',ar:'يفكر بطريقة مبتكرة — يفكر بأسلوب إبداعي خارج عن المألوف'},
-
-{u:'5-8',t:'def',q:'If someone is "over the moon", they are ...',
- opts:['in space','extremely happy','feeling sad','very tired'],ans:1,
- exp:'"Over the moon" = extremely happy and delighted (سعيد جداً).',ar:'سعيد جداً — في غاية الفرح والسعادة'},
-
-{u:'1-4',t:'def',q:'If someone says "bite the bullet", they ...',
- opts:['eat something hard','endure a difficult situation bravely','run away','give up'],ans:1,
- exp:'"Bite the bullet" = to endure a painful or difficult situation bravely (يتحمّل موقفاً صعباً بشجاعة).',ar:'يتحمّل بشجاعة — يصبر على موقف صعب أو مؤلم بشجاعة'},
-
-{u:'9-12',t:'def',q:'If someone "spills the beans", they ...',
- opts:['cook food','reveal a secret','make a mess','waste time'],ans:1,
- exp:'"Spill the beans" = to reveal secret information (يُفشي السرّ/يكشف الحقيقة).',ar:'يُفشي السرّ — يكشف معلومات سرية'},
-
-{u:'5-8',t:'def',q:'If someone says "go the extra mile", they mean ...',
- opts:['travel far','make more effort than required','work slowly','rest more'],ans:1,
- exp:'"Go the extra mile" = to make more effort than is necessary (يبذل جهداً إضافياً).',ar:'يبذل جهداً إضافياً — يبذل أكثر مما هو مطلوب'},
-
-{u:'9-12',t:'def',q:'If someone "burns the midnight oil", they ...',
- opts:['cook at night','work or study very late','light candles','sleep early'],ans:1,
- exp:'"Burn the midnight oil" = to work or study late into the night (يسهر للعمل أو المذاكرة).',ar:'يسهر للمذاكرة — يعمل أو يدرس حتى وقت متأخر من الليل'},
-
-{u:'1-4',t:'def',q:'If someone "goes with the flow", they ...',
- opts:['swim in water','adapt to the situation without resistance','lead others','make strict plans'],ans:1,
- exp:'"Go with the flow" = to adapt to the situation without resisting (يتكيّف مع الموقف).',ar:'يتكيّف مع الموقف — ينسجم مع الوضع بدون مقاومة'},
-
-{u:'5-8',t:'def',q:'If something "comes to an end", it ...',
- opts:['starts','continues','finishes/stops','improves'],ans:2,
- exp:'"Come to an end" = to finish or stop (ينتهي).',ar:'ينتهي — يصل إلى نهايته'},
-
-{u:'9-12',t:'def',q:'If someone "stays ahead of the curve", they ...',
- opts:['draw curves','remain more advanced/knowledgeable than others','follow trends','avoid competition'],ans:1,
- exp:'"Stay ahead of the curve" = to remain more advanced or knowledgeable than others (يظلّ متقدماً/يسبق الآخرين).',ar:'يسبق الآخرين — يظلّ أكثر تقدماً ومعرفة من غيره'},
-
-{u:'1-4',t:'def',q:'If someone says "A stitch in time saves nine", they mean ...',
- opts:['sewing is important','fixing a problem early prevents bigger problems later','time management is key','patience is a virtue'],ans:1,
- exp:'"A stitch in time saves nine" = dealing with a problem early prevents it from getting worse (الوقاية خير من العلاج).',ar:'الوقاية خير من العلاج — التصرف في الوقت المناسب يوفّر الجهد'},
-];
-
-// دمج البنك القديم مع الأسئلة الجديدة
-const FULL_BANK = [...BANK, ...EXTRA];
-
-// استبدال BANK بـ FULL_BANK في الكود
-const _BANK = FULL_BANK;
-// =====================================================================
-// LOCAL STORAGE — حفظ الإجابات تلقائياً
-// =====================================================================
-const SAVE_KEY = 'samyschool_vocab_state';
-
-function saveState(){
-  try{
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      answers,
-      submitted,
-      activeFilter,
-      savedAt: Date.now()
-    }));
-  }catch(e){}
-}
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(SAVE_KEY);
-    if(!raw) return false;
-    const s = JSON.parse(raw);
-    // نحوّل المفاتيح لأرقام (localStorage بيحولها لـ string)
-    answers = {};
-    Object.keys(s.answers||{}).forEach(k => { answers[parseInt(k)] = s.answers[k]; });
-    submitted = s.submitted || false;
-    activeFilter = s.activeFilter || 'all';
-    return true;
-  }catch(e){ return false; }
-}
-
-function clearState(){
-  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
-}
-
-// =====================================================================
-// RENDER ENGINE
-// =====================================================================
-let answers = {};
-let submitted = false;
-let activeFilter = 'all';
-
-function filterQ(type, btn){
-  activeFilter = type;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderQuestions();
-  saveState();
-}
-
-function getFiltered(){
-  return _BANK.filter(q => {
-    if(activeFilter==='all') return true;
-    if(activeFilter==='syn') return q.t==='syn';
-    if(activeFilter==='ant') return q.t==='ant';
-    if(activeFilter==='def') return q.t==='def';
-    if(activeFilter==='1-4') return q.u==='1-4';
-    if(activeFilter==='5-8') return q.u==='5-8';
-    if(activeFilter==='9-12') return q.u==='9-12';
-    return true;
-  });
-}
-
-function renderQuestions(){
-  const filtered = getFiltered();
-  document.getElementById('s-total').textContent = filtered.length;
-  document.getElementById('h-badge').textContent = filtered.length + ' Questions';
-
-  // تحديث أزرار الفلتر
-  document.querySelectorAll('.filter-btn').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('onclick')?.includes(`'${activeFilter}'`));
-  });
-
-  const c = document.getElementById('questions-container');
-  c.innerHTML = filtered.map((q,i) => {
-    const globalIdx = _BANK.indexOf(q);
-    const typeLabel = q.t==='syn'?'SYNONYM':q.t==='ant'?'ANTONYM':'MEANING';
-    const unitLabel = q.u==='1-4'?'Units 1–4':q.u==='5-8'?'Units 5–8':'Units 9–12';
-    const userAns = answers[globalIdx];
-    const isAnswered = userAns !== undefined;
-    const isCorrect = isAnswered && userAns === q.ans;
-
-    return `<div class="qcard ${isAnswered?'answered':''}" id="qcard-${globalIdx}" data-idx="${globalIdx}">
-      <div class="qcard-top">
-        <div>
-          <div class="qnum">Q${i+1} · ${typeLabel} · ${unitLabel}${isAnswered && !submitted ? (isCorrect?'':' · ') : ''}</div>
-        </div>
-      </div>
-      <div class="qtext">${q.q}</div>
-      <div class="opts" style="margin-top:14px;">
-        ${q.opts.map((o,oi)=>{
-          let cls = 'opt';
-          if(submitted){
-            cls += ' locked';
-            if(oi===q.ans) cls += ' correct';
-            else if(userAns===oi) cls += ' wrong';
-          } else if(userAns===oi){
-            cls += ' selected';
-          }
-          return `<div class="${cls}" id="opt-${globalIdx}-${oi}" ${!submitted?`onclick="selectOpt(${globalIdx},${oi})"`:''}><span class="opt-lbl">${String.fromCharCode(65+oi)}</span><span class="opt-txt">${o}</span></div>`;
-        }).join('')}
-      </div>
-      <div class="explanation ${submitted?'show':''}" id="exp-${globalIdx}">
-        <div class="exp-lbl">📖 EXPLANATION</div>
-        <div class="exp-txt">${q.exp}</div>
-        <div class="exp-ar">${q.ar}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  // لو مسلّم، أظهر نتيجة بدون إعادة حساب
-  if(submitted) restoreSubmittedUI();
-
-  // Scroll للسؤال الأخير المجاب لو مش مسلّم
-  if(!submitted){
-    const filtered2 = getFiltered();
-    let lastAnsweredQ = -1;
-    filtered2.forEach((q,i)=>{
-      if(answers[_BANK.indexOf(q)] !== undefined) lastAnsweredQ = i;
-    });
-    if(lastAnsweredQ >= 0){
-      setTimeout(()=>{
-        const idx = _BANK.indexOf(filtered2[lastAnsweredQ]);
-        const el = document.getElementById('qcard-'+idx);
-        if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
-      }, 200);
-    }
-  }
-
-  updateStats();
-}
-
-function selectOpt(idx, oi){
-  if(submitted) return;
-  answers[idx] = oi;
-  // تحديث عرض الأوبشن
-  document.querySelectorAll(`[id^="opt-${idx}-"]`).forEach(el=>{
-    el.classList.remove('selected');
-  });
-  document.getElementById(`opt-${idx}-${oi}`).classList.add('selected');
-  document.getElementById(`qcard-${idx}`).classList.add('answered');
-  saveState(); // حفظ تلقائي
-  updateStats();
-}
-
-function updateStats(){
-  const filtered = getFiltered();
-  const answered = filtered.filter(q=>answers[_BANK.indexOf(q)] !== undefined).length;
-  const total = filtered.length;
-  document.getElementById('s-answered').textContent = answered;
-  document.getElementById('prog-fill').style.width = (answered/total*100)+'%';
-  document.getElementById('prog-txt').textContent = `${answered} / ${total}`;
-
-  if(submitted){
-    let correct = 0;
-    filtered.forEach(q=>{
-      const idx = _BANK.indexOf(q);
-      if(answers[idx] === q.ans) correct++;
-    });
-    const pct = Math.round(correct/total*100);
-    document.getElementById('s-correct').textContent = correct;
-    document.getElementById('s-pct').textContent = pct+'%';
-    document.getElementById('float-score').style.display='block';
-    document.getElementById('fs-txt').textContent = correct+'/'+total;
-  }
-}
-
-function restoreSubmittedUI(){
-  // إعادة عرض نتيجة التسليم من الإجابات المحفوظة
-  const filtered = getFiltered();
-  let correct=0, wrong=0, skip=0;
-  filtered.forEach(q=>{
-    const idx = _BANK.indexOf(q);
-    const userAns = answers[idx];
-    if(userAns === undefined) skip++;
-    else if(userAns === q.ans) correct++;
-    else wrong++;
-  });
-  const total = filtered.length;
-  const answered = correct + wrong;
-  const pct = Math.round(correct/total*100);
-
-  document.getElementById('btn-submit').disabled = true;
-  document.getElementById('btn-submit').textContent = '✅ تم التسليم — شوف الإجابات تحت';
-  document.getElementById('res-score').textContent = `${correct}/${total}`;
-  document.getElementById('rb-correct').textContent = correct;
-  document.getElementById('rb-wrong').textContent = wrong;
-  document.getElementById('rb-skip').textContent = skip;
-
-  let grade, color;
-  if(pct>=90){grade='ممتاز 🌟';color='var(--green)';}
-  else if(pct>=75){grade='جيد جداً ✅';color='var(--blue)';}
-  else if(pct>=60){grade='جيد 👍';color='var(--gold)';}
-  else if(pct>=50){grade='مقبول';color='var(--gold)';}
-  else{grade='يحتاج مراجعة ⚠️';color='var(--red)';}
-
-  document.getElementById('res-grade').textContent = grade;
-  document.getElementById('res-grade').style.color = color;
-  document.getElementById('res-sub').textContent = `أجبت على ${answered} سؤال من ${total} — درجتك ${pct}%`;
-  document.getElementById('result-box').classList.add('show');
-}
-
-function submitAll(){
-  if(submitted) return;
-  const filtered = getFiltered();
-  const answered = filtered.filter(q=>answers[_BANK.indexOf(q)]!==undefined).length;
-  const total = filtered.length;
-
-  if(answered < total * 0.5){
-    if(!confirm(`لسه ما أجبتش على ${total-answered} سؤال. تأكيد التسليم؟`)) return;
-  }
-
-  submitted = true;
-  saveState(); // حفظ حالة التسليم
-  renderQuestions(); // إعادة رسم مع الألوان والتفاسير
-  document.getElementById('result-box').scrollIntoView({behavior:'smooth'});
-  updateStats();
-}
-
-function retryAll(){
-  if(!confirm('هتبدأ من الأول؟ كل إجاباتك هتتمسح.')) return;
-  answers = {};
-  submitted = false;
-  activeFilter = 'all';
-  clearState(); // مسح الحفظ
-  document.getElementById('btn-submit').disabled = false;
-  document.getElementById('btn-submit').textContent = '📋 تسليم الامتحان — شوف نتيجتك مع التفسير';
-  document.getElementById('result-box').classList.remove('show');
-  document.getElementById('float-score').style.display='none';
-  document.getElementById('s-correct').textContent='0';
-  document.getElementById('s-pct').textContent='0%';
-  document.getElementById('s-answered').textContent='0';
-  renderQuestions();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// =====================================================================
-// INIT — تحميل الحالة المحفوظة عند فتح الصفحة
-// =====================================================================
-(function init(){
-  const hasSaved = loadState();
-  if(hasSaved){
-    // إضافة بانر يُعلم الطالب إنه استأنف
-    const hero = document.querySelector('.hero');
-    if(hero && (Object.keys(answers).length > 0)){
-      const banner = document.createElement('div');
-      banner.style.cssText = `background:rgba(30,144,255,.1);border:1px solid rgba(30,144,255,.3);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;`;
-      const answeredCount = Object.keys(answers).length;
-      banner.innerHTML = `
-        <div style="font-size:13px;color:var(--t2);">
-          <span style="color:var(--blue);font-weight:700;">📌 استأنفت من حيث وقفت</span><br>
-          <span style="font-size:12px;">عندك ${answeredCount} إجابة محفوظة على الجهاز ده</span>
-        </div>
-        <button onclick="retryAll()" style="background:transparent;border:1.5px solid var(--red);color:var(--red);padding:8px 16px;border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">🔄 ابدأ من الأول</button>
-      `;
-      hero.insertBefore(banner, hero.querySelector('.filter-row'));
-    }
-  }
-  renderQuestions();
-})();
+let ci=0,ans={},po=false;
+const $M=document.getElementById('MC'),$sC=document.getElementById('sC'),$sW=document.getElementById('sW'),$sT=document.getElementById('sT'),$pT=document.getElementById('pTx'),$pF=document.getElementById('pFl'),$bP=document.getElementById('bP'),$bN=document.getElementById('bN'),$ov=document.getElementById('ov'),$nP=document.getElementById('nP'),$nG=document.getElementById('nG'),$cO=document.getElementById('cO'),$sBg=document.getElementById('sBg'),$sNm=document.getElementById('sNm');
+function ld(){try{const s=localStorage.getItem('samy_full_v1');if(s){const d=JSON.parse(s);if(d&&d.a){ans=d.a;ci=d.i!=null&&d.i<Q.length?d.i:0;}}}catch(e){}}
+function sv(){try{localStorage.setItem('samy_full_v1',JSON.stringify({a:ans,i:ci}));}catch(e){}}
+function gs(){let c=0,w=0,t=0;Q.forEach((_,i)=>{const k='q'+i;if(k in ans){t++;if(ans[k]===Q[i].c)c++;else w++;}});return{c,w,t};}
+function ui(){const{c,w,t}=gs();$sC.textContent=c;$sW.textContent=w;$sT.textContent=t;$pT.textContent=t+' من '+Q.length;$pF.style.width=(Q.length?(t/Q.length)*100:0)+'%';$bP.disabled=ci<=0;$bN.disabled=ci>=Q.length-1;
+for(const s of SECS){if(ci>=s.s&&ci<=s.e){$sBg.textContent=s.n.split(':')[0];$sNm.textContent=s.n;break;}}
+rNG();}
+function rQ(){const q=Q[ci],k='q'+ci,a=k in ans,si=a?ans[k]:-1,ok=a&&si===q.c;
+let oh='';for(let i=0;i<q.o.length;i++){let cl='op',ic='';if(a){cl+=' lk';if(i===q.c){cl+=' ok';ic='<span class="oic">&#10003;</span>';}else if(i===si){cl+=' no';ic='<span class="oic">&#10007;</span>';}else cl+=' dm';}
+oh+=`<div class="${cl}" data-i="${i}" role="button" tabindex="0"><div class="ol">${LT[i]}</div><div class="otx">${q.o[i]}</div>${ic}</div>`;}
+let eh='';if(a){const ec=ok?'ec':'ew',bc=ok?'bc':'bw',bt=ok?'&#10003; إجابة صحيحة':'&#10007; إجابة خاطئة';let ca='';if(!ok)ca=`<div class="eca">الإجابة الصحيحة: ${LT[q.c]}) ${q.o[q.c]}</div>`;eh=`<div class="eb sh ${ec}"><div class="ebg ${bc}">${bt}</div><div class="etx">${q.e}</div>${ca}</div>`;}
+let cp='';const{c,w,t}=gs();if(t===Q.length){const p=Math.round((c/Q.length)*100);cp=`<div class="cpb"><h3>&#127942; تمت الإجابة على جميع الأسئلة!</h3><p>نتيجتك النهائية: ${c} صحيح من ${Q.length} (${p}%) — ${w} إجابة خاطئة</p><p style="margin-top:8px;font-size:.85rem;color:var(--tl)">بالتوفيق في الامتحان إن شاء الله!</p></div>`;}
+ $M.innerHTML=`<article class="qc"><div class="qh"><div class="qn">السؤال ${ci+1}</div><div class="pr">صفحة <span class="pgb">${q.pg}</span></div></div><div class="qb"><div class="qt">${q.q}</div><div class="og">${oh}</div></div>${eh}</article>${cp}`;
+if(!a){$M.querySelectorAll('.op').forEach(el=>{el.addEventListener('click',()=>hA(+el.dataset.i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hA(+el.dataset.i);}});});}
+ui();window.scrollTo({top:0,behavior:'smooth'});}
+function hA(i){const k='q'+ci;if(k in ans)return;ans[k]=i;sv();rQ();}
+function nav(d){const n=ci+d;if(n<0||n>=Q.length)return;ci=n;sv();rQ();}
+function goT(i){if(i<0||i>=Q.length)return;ci=i;sv();rQ();if(po)tgP();}
+function rNG(){let h='';for(let i=0;i<Q.length;i++){const k='q'+i;let cl='nc';if(i===ci)cl+=' cu';if(k in ans)cl+=(ans[k]===Q[i].c)?' cc':' cw';h+=`<div class="${cl}" data-i="${i}" role="button" tabindex="0">${i+1}</div>`;}
+ $nG.innerHTML=h;$nG.querySelectorAll('.nc').forEach(el=>{el.addEventListener('click',()=>goT(+el.dataset.i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goT(+el.dataset.i);}});});}
+function tgP(){po=!po;$nP.classList.toggle('op',po);$ov.classList.toggle('sh',po);if(po)rNG();}
+ $cO.querySelector('.cby').addEventListener('click',()=>{ans={};ci=0;sv();$cO.classList.remove('sh');if(po)tgP();rQ();});
+ $cO.querySelector('.cbn').addEventListener('click',()=>$cO.classList.remove('sh'));
+ $bP.addEventListener('click',()=>nav(-1));$bN.addEventListener('click',()=>nav(1));document.getElementById('bG').addEventListener('click',tgP);$ov.addEventListener('click',tgP);document.getElementById('pCl').addEventListener('click',tgP);document.getElementById('bR').addEventListener('click',()=>$cO.classList.add('sh'));
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+if(e.key==='ArrowLeft'){e.preventDefault();nav(1);}else if(e.key==='ArrowRight'){e.preventDefault();nav(-1);}else if(e.key==='g'||e.key==='G'){e.preventDefault();tgP();}else if(e.key==='Escape'){if($cO.classList.contains('sh'))$cO.classList.remove('sh');else if(po)tgP();}else if(['1','2','3','4'].includes(e.key)){const i=+e.key-1;const q=Q[ci];if(q&&i<q.o.length&&!('q'+ci in ans)){e.preventDefault();hA(i);}}});
+ld();rQ();
 </script>
 </body>
 </html>

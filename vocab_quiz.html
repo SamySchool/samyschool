@@ -964,6 +964,436 @@ const BANK = [
  exp:'Generosity = willingness to give and help others (كرم).',ar:'كرم — الاستعداد للعطاء ومساعدة الآخرين'},
 ];
 
+// ===== EXTRA QUESTIONS — Complete Coverage of الدليل الشامل =====
+const EXTRA = [
+// UNITS 1-4 MISSING WORDS
+{u:'1-4',t:'def',q:'The nurse used a <span class="kw">stethoscope</span> to check the patient. "Stethoscope" means ...',
+ opts:['blood pressure device','instrument to hear heartbeat','thermometer','syringe'],ans:1,
+ exp:'Stethoscope = medical instrument used to listen to heart/lung sounds (سماعة الطبيب).',ar:'سماعة الطبيب — أداة طبية للاستماع إلى الأصوات الداخلية'},
+
+{u:'1-4',t:'def',q:'The patient showed a <span class="kw">symptom</span> of fever. "Symptom" means ...',
+ opts:['cure','sign/indication of illness','treatment','diagnosis'],ans:1,
+ exp:'Symptom = a sign that shows you have an illness (عَرَض/دليل مرضي).',ar:'عَرَض — علامة تدل على وجود مرض'},
+
+{u:'1-4',t:'def',q:'The hospital maintains a <span class="kw">sterile</span> environment. "Sterile" means ...',
+ opts:['noisy','completely clean/germ-free','crowded','modern'],ans:1,
+ exp:'Sterile = completely free from bacteria (معقّم/خالٍ من الجراثيم).',ar:'معقّم — خالٍ تماماً من البكتيريا والجراثيم'},
+
+{u:'1-4',t:'ant',q:'The glass vase was very <span class="kw">fragile</span>. Antonym of "fragile" is ...',
+ opts:['delicate','sturdy','breakable','thin'],ans:1,
+ exp:'Fragile = easily broken. Antonym: sturdy / robust (متين).',ar:'هش — المتضاد: sturdy = متين/قوي'},
+
+{u:'1-4',t:'def',q:'She decided to <span class="kw">swallow</span> the medicine quickly. "Swallow" means ...',
+ opts:['chew','throw','take down the throat','crush'],ans:2,
+ exp:'Swallow = to cause food or liquid to go down your throat (يبتلع).',ar:'يبتلع — يُنزل الطعام أو السائل عبر الحلق'},
+
+{u:'1-4',t:'syn',q:'The worker showed great <span class="kw">dedication</span>. Synonym of "dedicated" is ...',
+ opts:['lazy','committed','careless','distracted'],ans:1,
+ exp:'Dedicated = committed to a task or purpose (مخلص/مُكرّس).',ar:'مخلص/مُكرّس — مُلتزم بمهمة أو غرض'},
+
+{u:'1-4',t:'def',q:'The situation required <span class="kw">urgency</span>. "Urgency" means ...',
+ opts:['patience','calmness','the need for immediate action','planning'],ans:2,
+ exp:'Urgency = the need for immediate action (إلحاح/حالة طارئة).',ar:'إلحاح — الحاجة للتصرف الفوري'},
+
+{u:'1-4',t:'ant',q:'The results were very <span class="kw">optimistic</span>. Antonym is ...',
+ opts:['hopeful','pessimistic','positive','encouraging'],ans:1,
+ exp:'Optimistic = expecting good outcomes. Antonym: pessimistic (متشائم).',ar:'متفائل — المتضاد: pessimistic = متشائم'},
+
+{u:'1-4',t:'def',q:'The factory released <span class="kw">steam</span> during production. "Steam" means ...',
+ opts:['smoke','hot water vapor','fire','gas'],ans:1,
+ exp:'Steam = water in the form of gas/vapor, produced by heating (بخار).',ar:'بخار — الماء في صورة غازية عند التسخين'},
+
+{u:'1-4',t:'syn',q:'She had a <span class="kw">vivid</span> imagination. Synonym of "vivid" is ...',
+ opts:['dull','limited','bright and clear','vague'],ans:2,
+ exp:'Vivid = producing strong, clear images; bright. Synonym: clear / bright (واضح/زاهٍ).',ar:'واضح/زاهٍ — مرادفه: bright = مشرق/واضح'},
+
+{u:'1-4',t:'def',q:'She is a <span class="kw">victim</span> of bullying. "Victim" means ...',
+ opts:['criminal','person harmed by others','witness','attacker'],ans:1,
+ exp:'Victim = a person harmed or affected by someone/something bad (ضحية).',ar:'ضحية — شخص يتضرر من شخص أو حدث'},
+
+{u:'1-4',t:'def',q:'The information is no longer <span class="kw">valid</span>. "Valid" means ...',
+ opts:['old','acceptable/legally in force','interesting','common'],ans:1,
+ exp:'Valid = acceptable, officially recognized, in effect (صالح/ساري).',ar:'صالح/ساري — مقبول ومعترف به رسمياً'},
+
+{u:'1-4',t:'syn',q:'The discovery was very <span class="kw">valuable</span>. Synonym is ...',
+ opts:['cheap','worthless','precious/important','ordinary'],ans:2,
+ exp:'Valuable = worth a lot of money or importance. Synonym: precious (قيّم).',ar:'قيّم — مرادفه: precious = ثمين/ذو قيمة'},
+
+{u:'1-4',t:'def',q:'The doctor issued a <span class="kw">prescription</span>. "Prescription" means ...',
+ opts:['diagnosis report','written order for medicine','operation order','test result'],ans:1,
+ exp:'Prescription = a written order from a doctor for medicine (وصفة طبية).',ar:'وصفة طبية — أمر مكتوب من الطبيب للدواء'},
+
+{u:'1-4',t:'def',q:'The doctor tried to <span class="kw">detect</span> the problem early. "Detect" means ...',
+ opts:['treat','ignore','discover/notice','prevent'],ans:2,
+ exp:'Detect = to discover or notice something (يكتشف/يرصد).',ar:'يكتشف — يلاحظ أو يجد شيئاً'},
+
+{u:'1-4',t:'syn',q:'The patient was asked to <span class="kw">swallow</span> the pill. Synonym is ...',
+ opts:['chew','ingest','spit','dissolve'],ans:1,
+ exp:'Swallow = to take in through the mouth and throat. Synonym: ingest (يبتلع).',ar:'يبتلع — مرادفه: ingest = يُدخل إلى الجسم'},
+
+{u:'1-4',t:'def',q:'Climate <span class="kw">migration</span> is increasing globally. "Migration" means ...',
+ opts:['pollution','movement of people from one place to another','climate change','natural disaster'],ans:1,
+ exp:'Migration = movement from one place to settle in another (هجرة).',ar:'هجرة — التنقل من مكان للإقامة في مكان آخر'},
+
+{u:'1-4',t:'syn',q:'The air was <span class="kw">contaminated</span> by pollution. Synonym of "contaminated" is ...',
+ opts:['clean','polluted','fresh','pure'],ans:1,
+ exp:'Contaminated = made dirty or harmful. Synonym: polluted (ملوَّث).',ar:'ملوَّث — مرادفه: polluted = ملوَّث'},
+
+{u:'1-4',t:'def',q:'The rescue team performed <span class="kw">CPR</span> on the patient. "CPR" means ...',
+ opts:['a surgery','cardiopulmonary resuscitation (الإنعاش القلبي)','a type of medication','blood test'],ans:1,
+ exp:'CPR = Cardiopulmonary Resuscitation — emergency procedure to restart the heart (الإنعاش القلبي الرئوي).',ar:'الإنعاش القلبي الرئوي — إجراء طارئ لإعادة تشغيل القلب'},
+
+{u:'1-4',t:'ant',q:'The two teams were very <span class="kw">coordinated</span>. Antonym is ...',
+ opts:['organized','disorganized/uncoordinated','efficient','productive'],ans:1,
+ exp:'Coordinated = working together effectively. Antonym: disorganized (غير منسَّق).',ar:'منسَّق — المتضاد: disorganized = غير منظم'},
+
+{u:'1-4',t:'def',q:'She had to <span class="kw">bear</span> the responsibility alone. "Bear" means ...',
+ opts:['reject','share','carry/endure','avoid'],ans:2,
+ exp:'Bear = to carry or endure something difficult (يتحمّل).',ar:'يتحمّل — يحمل أو يصبر على شيء صعب'},
+
+{u:'1-4',t:'def',q:'Scientists study the <span class="kw">consciousness</span> of the human mind. "Consciousness" means ...',
+ opts:['subconscious','the state of being aware and awake','memory','intelligence'],ans:1,
+ exp:'Consciousness = the state of being conscious/aware (الوعي/الإدراك).',ar:'الوعي/الإدراك — حالة التيقظ والإدراك'},
+
+{u:'1-4',t:'syn',q:'The project showed great <span class="kw">scope</span>. Synonym is ...',
+ opts:['limitation','range/extent','focus','depth'],ans:1,
+ exp:'Scope = the range or extent covered. Synonym: range (نطاق/مجال).',ar:'نطاق — مرادفه: range = مدى/نطاق'},
+
+{u:'1-4',t:'def',q:'The country faced a <span class="kw">groan</span> of economic problems. "Groan" (v) means ...',
+ opts:['laugh quietly','make a deep sound of pain','shout loudly','whisper'],ans:1,
+ exp:'Groan = to make a deep sound expressing pain or unhappiness (يئن/يتذمر).',ar:'يئن — يُصدر صوتاً عميقاً من الألم أو الضيق'},
+
+{u:'1-4',t:'def',q:'She <span class="kw">whispered</span> the answer to her friend. "Whisper" means ...',
+ opts:['shout','speak very softly','sing','laugh'],ans:1,
+ exp:'Whisper = to speak very softly (يهمس).',ar:'يهمس — يتحدث بصوت خافت جداً'},
+
+// UNITS 5-8 MISSING
+{u:'5-8',t:'def',q:'She has a <span class="kw">mindset</span> for success. "Mindset" means ...',
+ opts:['skill','way of thinking','attitude toward others','talent'],ans:1,
+ exp:'Mindset = a particular way of thinking (طريقة التفكير).',ar:'طريقة التفكير — أسلوب ونهج معين في التفكير'},
+
+{u:'5-8',t:'syn',q:'The athlete showed great <span class="kw">persistence</span>. Synonym is ...',
+ opts:['laziness','determination','talent','luck'],ans:1,
+ exp:'Persistence = continuing despite difficulties. Synonym: determination (مثابرة).',ar:'مثابرة — مرادفه: determination = عزم وإصرار'},
+
+{u:'5-8',t:'def',q:'The weather made him feel <span class="kw">misfortune</span>. "Misfortune" means ...',
+ opts:['happiness','luck','bad luck/unfortunate event','opportunity'],ans:2,
+ exp:'Misfortune = bad luck or an unfortunate event (سوء حظ).',ar:'سوء حظ — حدث سيئ أو حظ عاثر'},
+
+{u:'5-8',t:'syn',q:'She was a <span class="kw">mentor</span> to young students. Synonym is ...',
+ opts:['rival','experienced guide/advisor','student','colleague'],ans:1,
+ exp:'Mentor = an experienced person who gives guidance. Synonym: advisor/guide (مُرشِد).',ar:'مُرشِد — مرادفه: advisor = مستشار/موجّه'},
+
+{u:'5-8',t:'def',q:'They faced many <span class="kw">obstacles</span> during the journey. "Obstacle" means ...',
+ opts:['opportunity','barrier/difficulty','advantage','support'],ans:1,
+ exp:'Obstacle = something that blocks progress (عقبة/حاجز).',ar:'عقبة — شيء يعيق التقدم'},
+
+{u:'5-8',t:'ant',q:'The fabric was very <span class="kw">substantial</span>. Antonym is ...',
+ opts:['large','flimsy/trivial','strong','heavy'],ans:1,
+ exp:'Substantial = large and important. Antonym: trivial / flimsy (تافه/بسيط).',ar:'كبير/جوهري — المتضاد: trivial = تافه/بسيط'},
+
+{u:'5-8',t:'def',q:'The project aimed to be <span class="kw">sustainable</span>. "Sustainable" means ...',
+ opts:['temporary','able to continue long-term without harming resources','expensive','modern'],ans:1,
+ exp:'Sustainable = able to continue without causing damage to the environment (مستدام).',ar:'مستدام — قادر على الاستمرار دون الإضرار بالموارد'},
+
+{u:'5-8',t:'def',q:'She got a <span class="kw">scholarship</span> to study abroad. "Scholarship" means ...',
+ opts:['visa','financial grant for education','passport','loan'],ans:1,
+ exp:'Scholarship = a financial award given to a student to support their studies (منحة دراسية).',ar:'منحة دراسية — مساعدة مالية لدعم الدراسة'},
+
+{u:'5-8',t:'def',q:'The flood caused a <span class="kw">disaster</span>. "Disaster" means ...',
+ opts:['success','celebration','terrible event causing great damage','storm'],ans:2,
+ exp:'Disaster = a very bad event that causes great damage (كارثة).',ar:'كارثة — حدث سيئ جداً يسبب أضراراً كبيرة'},
+
+{u:'5-8',t:'ant',q:'The lecture was very <span class="kw">dull</span>. Antonym is ...',
+ opts:['boring','interesting/exciting','tiring','long'],ans:1,
+ exp:'Dull = not interesting. Antonym: interesting / exciting (مثير/ممتع).',ar:'ممل — المتضاد: interesting = مثير للاهتمام'},
+
+{u:'5-8',t:'syn',q:'She felt a great sense of <span class="kw">warmth</span>. Synonym is ...',
+ opts:['coldness','friendliness/affection','hatred','distance'],ans:1,
+ exp:'Warmth = friendliness and affection. Synonym: friendliness (دفء/مودة).',ar:'دفء — مرادفه: friendliness = ودّية/مودة'},
+
+{u:'5-8',t:'def',q:'She found paradise in the countryside. "<span class="kw">Paradise</span>" means ...',
+ opts:['city','a very beautiful perfect place','a small town','a forest'],ans:1,
+ exp:'Paradise = a place or state of perfect happiness (جنة/فردوس).',ar:'جنة/فردوس — مكان أو حالة من السعادة المثالية'},
+
+{u:'5-8',t:'def',q:'The old village had strict <span class="kw">restrictions</span>. "Restrictions" means ...',
+ opts:['freedoms','rules that limit what you can do','permissions','opportunities'],ans:1,
+ exp:'Restrictions = rules or limits that control what people can do (قيود).',ar:'قيود — قواعد تحدّ مما يمكن للناس القيام به'},
+
+{u:'5-8',t:'def',q:'She <span class="kw">imitated</span> the teacher perfectly. "Imitate" means ...',
+ opts:['admire','copy/mimic','improve','disagree with'],ans:1,
+ exp:'Imitate = to copy someone\'s actions or voice (يُقلِّد).',ar:'يُقلِّد — ينسخ أفعال أو طريقة شخص آخر'},
+
+{u:'5-8',t:'syn',q:'Her words showed great <span class="kw">determination</span>. Synonym is ...',
+ opts:['confusion','resolve/willpower','weakness','hesitation'],ans:1,
+ exp:'Determination = firmness of purpose. Synonym: resolve / willpower (عزم/إصرار).',ar:'عزم/إصرار — مرادفه: resolve = تصميم'},
+
+{u:'5-8',t:'def',q:'The city shows great cultural <span class="kw">transformation</span>. "Transformation" means ...',
+ opts:['tradition','complete change','restoration','history'],ans:1,
+ exp:'Transformation = a complete change (تحوّل/تغيير جذري).',ar:'تحوّل — تغيير كامل وجذري'},
+
+{u:'5-8',t:'def',q:'The doctor <span class="kw">observed</span> the patient\'s condition. "Observation" means ...',
+ opts:['treatment','watching carefully','diagnosis','operation'],ans:1,
+ exp:'Observation = the action of carefully watching/monitoring (مراقبة/ملاحظة).',ar:'مراقبة/ملاحظة — الرصد الدقيق والمتابعة'},
+
+{u:'5-8',t:'syn',q:'She managed to <span class="kw">overcome</span> her fears. Synonym is ...',
+ opts:['surrender to','conquer/defeat','ignore','escape'],ans:1,
+ exp:'Overcome = to succeed in dealing with a problem. Synonym: conquer (يتغلّب على).',ar:'يتغلّب على — مرادفه: conquer = يقهر/يتجاوز'},
+
+{u:'5-8',t:'def',q:'She checked in her <span class="kw">luggage</span> at the airport. "Luggage" means ...',
+ opts:['documents','suitcases and bags for travel','boarding pass','ticket'],ans:1,
+ exp:'Luggage = bags and suitcases used for travel (حقائب السفر).',ar:'حقائب السفر — الشنط والأمتعة المستخدمة في السفر'},
+
+{u:'5-8',t:'def',q:'The <span class="kw">flexibility</span> of the system helped adapt quickly. "Flexibility" means ...',
+ opts:['rigidity','ability to change and adapt','speed','complexity'],ans:1,
+ exp:'Flexibility = ability to change or adapt easily (المرونة).',ar:'المرونة — القدرة على التغيير والتكيف بسهولة'},
+
+{u:'5-8',t:'syn',q:'He showed great <span class="kw">accuracy</span> in the report. Synonym is ...',
+ opts:['carelessness','precision/exactness','speed','creativity'],ans:1,
+ exp:'Accuracy = the quality of being correct. Synonym: precision (دقة).',ar:'دقة — مرادفه: precision = دقة متناهية'},
+
+{u:'5-8',t:'def',q:'The project <span class="kw">strengthened</span> the relationship. "Strengthen" means ...',
+ opts:['weaken','make stronger','break','delay'],ans:1,
+ exp:'Strengthen = to make stronger (يُقوّي/يُعزّز).',ar:'يُقوّي/يُعزّز — يجعل أقوى'},
+
+{u:'5-8',t:'def',q:'She had a <span class="kw">well-being</span> check at the clinic. "Well-being" means ...',
+ opts:['sickness','state of good health and happiness','medication','treatment'],ans:1,
+ exp:'Well-being = the state of being comfortable, healthy, and happy (رفاهية/صحة جيدة).',ar:'رفاهية/صحة جيدة — حالة الراحة والصحة والسعادة'},
+
+{u:'5-8',t:'def',q:'The <span class="kw">terminal</span> was crowded with passengers. "Terminal" means ...',
+ opts:['runway','airport departure/arrival building','security gate','baggage claim'],ans:1,
+ exp:'Terminal = the building at an airport used by passengers (صالة المطار).',ar:'صالة المطار — المبنى الرئيسي في المطار للمسافرين'},
+
+{u:'5-8',t:'ant',q:'He always <span class="kw">worsened</span> the situation. Antonym of "worsen" is ...',
+ opts:['improve','damage','destroy','repeat'],ans:0,
+ exp:'Worsen = to become or make worse. Antonym: improve / better (يُحسّن).',ar:'يتفاقم — المتضاد: improve = يتحسن'},
+
+{u:'5-8',t:'def',q:'The student applied for a <span class="kw">boarding pass</span>. "Boarding pass" means ...',
+ opts:['entry visa','document to board a flight','passport','hotel key'],ans:1,
+ exp:'Boarding pass = the document that allows you to board an airplane (بطاقة صعود الطائرة).',ar:'بطاقة صعود الطائرة — وثيقة للصعود على متن الطائرة'},
+
+// UNITS 9-12 MISSING
+{u:'9-12',t:'def',q:'She <span class="kw">expressed</span> her feelings clearly. "Express" means ...',
+ opts:['hide','communicate/show your feelings','ignore','control'],ans:1,
+ exp:'Express = to say or show what you think or feel (يُعبّر عن).',ar:'يُعبّر عن — يُظهر أو يتحدث عن مشاعره وأفكاره'},
+
+{u:'9-12',t:'def',q:'The poem had a beautiful <span class="kw">rhythm</span>. "Rhythm" means ...',
+ opts:['color','a regular pattern of sounds/beats','meaning','length'],ans:1,
+ exp:'Rhythm = a regular repeated pattern of sounds or beats (إيقاع).',ar:'إيقاع — نمط منتظم متكرر من الأصوات'},
+
+{u:'9-12',t:'def',q:'The detective found the <span class="kw">trapdoor</span> hidden under the rug. "Trapdoor" means ...',
+ opts:['secret document','hidden door in floor/ceiling','underground room','secret room'],ans:1,
+ exp:'Trapdoor = a small hidden door in a floor or ceiling (باب سري/خفي).',ar:'باب سري/خفي — باب صغير مخفي في الأرض أو السقف'},
+
+{u:'9-12',t:'ant',q:'The result was very <span class="kw">unexpected</span>. Antonym is ...',
+ opts:['surprising','anticipated/expected','shocking','strange'],ans:1,
+ exp:'Unexpected = not expected. Antonym: anticipated / expected (متوقَّع).',ar:'غير متوقَّع — المتضاد: expected = متوقَّع'},
+
+{u:'9-12',t:'def',q:'The artist was <span class="kw">unique</span> in her style. "Unique" means ...',
+ opts:['common','one of a kind/unlike anything else','ordinary','popular'],ans:1,
+ exp:'Unique = being the only one of its kind; having no equal (فريد).',ar:'فريد — الوحيد من نوعه / لا مثيل له'},
+
+{u:'9-12',t:'def',q:'She overcame her <span class="kw">misconception</span> about the topic. "Misconception" means ...',
+ opts:['correct belief','false or mistaken idea','strong opinion','knowledge gap'],ans:1,
+ exp:'Misconception = a wrong idea or belief (اعتقاد خاطئ).',ar:'اعتقاد خاطئ — فكرة أو معتقد غير صحيح'},
+
+{u:'9-12',t:'syn',q:'The actor was very <span class="kw">spontaneous</span> on stage. Synonym is ...',
+ opts:['rehearsed','natural/unplanned','careful','calculated'],ans:1,
+ exp:'Spontaneous = done without planning. Synonym: natural / impulsive (عفوي/تلقائي).',ar:'عفوي — مرادفه: natural = طبيعي بدون تخطيط'},
+
+{u:'9-12',t:'def',q:'He looked at her with <span class="kw">thoughtful</span> eyes. "Thoughtful" means ...',
+ opts:['careless','considerate/caring about others','selfish','curious'],ans:1,
+ exp:'Thoughtful = showing consideration for others (مهتمّ بالآخرين).',ar:'مهتمّ بالآخرين — يُظهر الاعتبار للآخرين'},
+
+{u:'9-12',t:'def',q:'The music helped memories <span class="kw">flow</span> back. "Flow" means ...',
+ opts:['stop','move smoothly and continuously','appear suddenly','fade'],ans:1,
+ exp:'Flow = to move smoothly and continuously (يتدفق/انسياب).',ar:'يتدفق — يتحرك بسلاسة واستمرار'},
+
+{u:'9-12',t:'syn',q:'She spoke <span class="kw">meaningfully</span>. Synonym of "meaningfully" is ...',
+ opts:['quietly','with deep significance','quickly','randomly'],ans:1,
+ exp:'Meaningfully = in a way that has deep meaning. Synonym: significantly (بشكل هادف).',ar:'بشكل هادف — مرادفه: significantly = بشكل ذي معنى عميق'},
+
+{u:'9-12',t:'def',q:'The actors had a final <span class="kw">rehearsal</span> before the show. "Rehearsal" means ...',
+ opts:['performance','practice session before the real event','review','evaluation'],ans:1,
+ exp:'Rehearsal = a practice session in preparation for a public performance (بروفة/تمرين).',ar:'بروفة/تمرين — جلسة تدريب للتحضير للعرض الحقيقي'},
+
+{u:'9-12',t:'syn',q:'She felt a sudden <span class="kw">fear</span>. Synonym is ...',
+ opts:['confidence','dread/terror','excitement','surprise'],ans:1,
+ exp:'Fear = an unpleasant feeling caused by danger. Synonym: dread / terror (خوف).',ar:'خوف — مرادفه: dread = رعب/خشية'},
+
+{u:'9-12',t:'def',q:'His ideas about space were full of <span class="kw">misconceptions</span>. "Misconception" means ...',
+ opts:['discoveries','wrong beliefs','correct theories','questions'],ans:1,
+ exp:'Misconception = a wrong or mistaken belief about something (اعتقاد خاطئ).',ar:'اعتقاد خاطئ — معتقد غير صحيح'},
+
+{u:'9-12',t:'def',q:'He showed great <span class="kw">curiosity</span> about the universe. "Curiosity" means ...',
+ opts:['fear','strong desire to know and learn','ability','skill'],ans:1,
+ exp:'Curiosity = strong desire to know or learn something (الفضول).',ar:'الفضول — رغبة قوية في المعرفة والتعلم'},
+
+{u:'9-12',t:'syn',q:'The philosopher shared his <span class="kw">wisdom</span>. Synonym is ...',
+ opts:['ignorance','good judgment/insight','knowledge alone','intelligence'],ans:1,
+ exp:'Wisdom = good judgment from experience. Synonym: insight / sagacity (حكمة).',ar:'حكمة — مرادفه: insight = بصيرة/إدراك عميق'},
+
+{u:'9-12',t:'def',q:'The story created vivid <span class="kw">imagery</span>. "Imagery" means ...',
+ opts:['photographs','descriptive language creating mental pictures','sound effects','music'],ans:1,
+ exp:'Imagery = visually descriptive language used to create pictures in the mind (تصوير بلاغي).',ar:'تصوير بلاغي — لغة وصفية تخلق صوراً في الذهن'},
+
+{u:'9-12',t:'def',q:'The poet described the <span class="kw">daffodils</span>. "Daffodils" are ...',
+ opts:['mountains','birds','yellow spring flowers','stars'],ans:2,
+ exp:'Daffodils = yellow flowers that bloom in spring (زهور النرجس).',ar:'زهور النرجس — زهور صفراء تتفتح في الربيع'},
+
+{u:'9-12',t:'def',q:'The story explores the <span class="kw">boundary</span> between reality and fiction. "Boundary" means ...',
+ opts:['connection','a dividing line or limit','opening','path'],ans:1,
+ exp:'Boundary = a line that marks the limits of an area (حدّ/فاصل).',ar:'حدّ/فاصل — خط يحدد نهاية منطقة'},
+
+{u:'9-12',t:'syn',q:'He showed deep <span class="kw">gratitude</span>. Synonym of "grateful" is ...',
+ opts:['unthankful','thankful/appreciative','indifferent','rude'],ans:1,
+ exp:'Grateful = feeling or showing thanks. Synonym: thankful / appreciative (ممتنّ).',ar:'ممتنّ — مرادفه: thankful = شاكر'},
+
+{u:'9-12',t:'def',q:'The author\'s style was <span class="kw">mysterious</span>. "Mysterious" means ...',
+ opts:['clear','strange and difficult to explain','boring','simple'],ans:1,
+ exp:'Mysterious = strange and difficult to understand (غامض).',ar:'غامض — غريب ويصعب تفسيره'},
+
+{u:'9-12',t:'def',q:'He read a fascinating <span class="kw">prose</span> passage. "Prose" means ...',
+ opts:['poetry','ordinary written language (not poetry)','fiction','dialogue'],ans:1,
+ exp:'Prose = ordinary written language without poetic structure (نثر).',ar:'نثر — الكتابة العادية (ليست شعراً)'},
+
+{u:'9-12',t:'def',q:'She tried to <span class="kw">recreate</span> the original painting. "Recreate" means ...',
+ opts:['destroy','create again/reproduce','improve','analyze'],ans:1,
+ exp:'Recreate = to create something again; to reproduce (يُعيد إنشاء).',ar:'يُعيد إنشاء — يخلق شيئاً من جديد'},
+
+{u:'9-12',t:'def',q:'The breeze was soft and pleasant. "<span class="kw">Breeze</span>" means ...',
+ opts:['strong storm','gentle wind','heavy rain','warm air'],ans:1,
+ exp:'Breeze = a gentle, light wind (نسيم).',ar:'نسيم — ريح خفيفة ولطيفة'},
+
+{u:'9-12',t:'def',q:'The actor took a deep breath to <span class="kw">overcome</span> his stage fright. "Overcome" means ...',
+ opts:['increase','successfully deal with','avoid','delay'],ans:1,
+ exp:'Overcome = to successfully deal with a problem (يتغلّب على).',ar:'يتغلّب على — يواجه مشكلة بنجاح'},
+
+{u:'9-12',t:'def',q:'The counselor helped students with their problems. "<span class="kw">Counselor</span>" means ...',
+ opts:['teacher','a person who gives advice/guidance','doctor','tutor'],ans:1,
+ exp:'Counselor = a person who gives advice and guidance (مُستشار).',ar:'مُستشار — شخص يُقدّم النصيحة والإرشاد'},
+
+{u:'9-12',t:'syn',q:'He compared the two poems. Synonym of "<span class="kw">comparison</span>" is ...',
+ opts:['difference','contrast/evaluation of similarities','summary','analysis'],ans:1,
+ exp:'Comparison = examining similarities and differences. Synonym: contrast (مقارنة).',ar:'مقارنة — مرادفه: contrast = موازنة/تباين'},
+
+{u:'9-12',t:'def',q:'The star cast a <span class="kw">shadow</span> on the wall. "Shadow" means ...',
+ opts:['light','a dark area caused by blocking light','reflection','glow'],ans:1,
+ exp:'Shadow = a dark area made when something blocks light (ظلّ).',ar:'ظلّ — منطقة مظلمة تتشكّل عندما يحجب شيء الضوء'},
+
+{u:'9-12',t:'def',q:'He always gave <span class="kw">compliments</span> to others. "Compliment" means ...',
+ opts:['criticism','an expression of praise','advice','complaint'],ans:1,
+ exp:'Compliment = an expression of praise or admiration (مدح/إطراء).',ar:'مدح/إطراء — تعبير عن الإعجاب والثناء'},
+
+{u:'9-12',t:'def',q:'Stars are millions of light-years away in the <span class="kw">cosmos</span>. "Cosmos" means ...',
+ opts:['ocean','the universe/space','galaxy alone','solar system'],ans:1,
+ exp:'Cosmos = the universe as a whole (الكون).',ar:'الكون — الكون بأكمله'},
+
+{u:'9-12',t:'def',q:'The tree has deep <span class="kw">roots</span> in the ground. "Root" means ...',
+ opts:['branches','the underground part of a plant','leaves','trunk'],ans:1,
+ exp:'Root = the underground part of a plant; also means origin (جذور/أصل).',ar:'جذور/أصل — الجزء السفلي للنبات تحت الأرض'},
+
+// IDIOMS SECTION
+{u:'1-4',t:'def',q:'If someone says "break the ice", they mean ...',
+ opts:['break a glass','start conversation in an awkward situation','make someone cold','stop talking'],ans:1,
+ exp:'"Break the ice" = to do something to relieve tension or start a conversation (يكسر الحواجز).',ar:'يكسر الحواجز — يبدأ حوار في موقف متوتر أو غير مريح'},
+
+{u:'5-8',t:'def',q:'If someone says "in hot water", they mean ...',
+ opts:['taking a bath','in serious trouble','swimming','feeling warm'],ans:1,
+ exp:'"In hot water" = in a difficult or troubling situation (في مشكلة/ورطة).',ar:'في مشكلة/ورطة — في موقف صعب أو متاعب'},
+
+{u:'9-12',t:'def',q:'If someone says "out of the blue", they mean ...',
+ opts:['from the sky','suddenly and unexpectedly','from the sea','in the morning'],ans:1,
+ exp:'"Out of the blue" = suddenly, without warning (فجأة/دون توقّع).',ar:'فجأة — بشكل مفاجئ وغير متوقع'},
+
+{u:'1-4',t:'def',q:'If someone "turns a blind eye", they ...',
+ opts:['become blind','deliberately ignore something they should address','look the other way','solve a problem'],ans:1,
+ exp:'"Turn a blind eye" = to deliberately ignore something wrong (يتجاهل شيئاً عمداً).',ar:'يتجاهل عمداً — يتعمّد تجاهل شيء يجب أن يعالجه'},
+
+{u:'5-8',t:'def',q:'If someone says "no pain, no gain", they mean ...',
+ opts:['avoid pain','you cannot achieve success without effort or hard work','rest is important','take it easy'],ans:1,
+ exp:'"No pain, no gain" = you must work hard to achieve results (لا نجاح بدون مجهود).',ar:'لا نجاح بدون مجهود — لا يمكن تحقيق النجاح بدون جهد وعمل'},
+
+{u:'9-12',t:'def',q:'If someone says "think outside the box", they mean ...',
+ opts:['think literally about a box','think creatively and innovatively','organize your thoughts','follow rules strictly'],ans:1,
+ exp:'"Think outside the box" = to think creatively beyond conventional ideas (يفكر بطريقة مبتكرة).',ar:'يفكر بطريقة مبتكرة — يفكر بأسلوب إبداعي خارج عن المألوف'},
+
+{u:'5-8',t:'def',q:'If someone is "over the moon", they are ...',
+ opts:['in space','extremely happy','feeling sad','very tired'],ans:1,
+ exp:'"Over the moon" = extremely happy and delighted (سعيد جداً).',ar:'سعيد جداً — في غاية الفرح والسعادة'},
+
+{u:'1-4',t:'def',q:'If someone says "bite the bullet", they ...',
+ opts:['eat something hard','endure a difficult situation bravely','run away','give up'],ans:1,
+ exp:'"Bite the bullet" = to endure a painful or difficult situation bravely (يتحمّل موقفاً صعباً بشجاعة).',ar:'يتحمّل بشجاعة — يصبر على موقف صعب أو مؤلم بشجاعة'},
+
+{u:'9-12',t:'def',q:'If someone "spills the beans", they ...',
+ opts:['cook food','reveal a secret','make a mess','waste time'],ans:1,
+ exp:'"Spill the beans" = to reveal secret information (يُفشي السرّ/يكشف الحقيقة).',ar:'يُفشي السرّ — يكشف معلومات سرية'},
+
+{u:'5-8',t:'def',q:'If someone says "go the extra mile", they mean ...',
+ opts:['travel far','make more effort than required','work slowly','rest more'],ans:1,
+ exp:'"Go the extra mile" = to make more effort than is necessary (يبذل جهداً إضافياً).',ar:'يبذل جهداً إضافياً — يبذل أكثر مما هو مطلوب'},
+
+{u:'9-12',t:'def',q:'If someone "burns the midnight oil", they ...',
+ opts:['cook at night','work or study very late','light candles','sleep early'],ans:1,
+ exp:'"Burn the midnight oil" = to work or study late into the night (يسهر للعمل أو المذاكرة).',ar:'يسهر للمذاكرة — يعمل أو يدرس حتى وقت متأخر من الليل'},
+
+{u:'1-4',t:'def',q:'If someone "goes with the flow", they ...',
+ opts:['swim in water','adapt to the situation without resistance','lead others','make strict plans'],ans:1,
+ exp:'"Go with the flow" = to adapt to the situation without resisting (يتكيّف مع الموقف).',ar:'يتكيّف مع الموقف — ينسجم مع الوضع بدون مقاومة'},
+
+{u:'5-8',t:'def',q:'If something "comes to an end", it ...',
+ opts:['starts','continues','finishes/stops','improves'],ans:2,
+ exp:'"Come to an end" = to finish or stop (ينتهي).',ar:'ينتهي — يصل إلى نهايته'},
+
+{u:'9-12',t:'def',q:'If someone "stays ahead of the curve", they ...',
+ opts:['draw curves','remain more advanced/knowledgeable than others','follow trends','avoid competition'],ans:1,
+ exp:'"Stay ahead of the curve" = to remain more advanced or knowledgeable than others (يظلّ متقدماً/يسبق الآخرين).',ar:'يسبق الآخرين — يظلّ أكثر تقدماً ومعرفة من غيره'},
+
+{u:'1-4',t:'def',q:'If someone says "A stitch in time saves nine", they mean ...',
+ opts:['sewing is important','fixing a problem early prevents bigger problems later','time management is key','patience is a virtue'],ans:1,
+ exp:'"A stitch in time saves nine" = dealing with a problem early prevents it from getting worse (الوقاية خير من العلاج).',ar:'الوقاية خير من العلاج — التصرف في الوقت المناسب يوفّر الجهد'},
+];
+
+// دمج البنك القديم مع الأسئلة الجديدة
+const FULL_BANK = [...BANK, ...EXTRA];
+
+// استبدال BANK بـ FULL_BANK في الكود
+const _BANK = FULL_BANK;
+// =====================================================================
+// LOCAL STORAGE — حفظ الإجابات تلقائياً
+// =====================================================================
+const SAVE_KEY = 'samyschool_vocab_state';
+
+function saveState(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      answers,
+      submitted,
+      activeFilter,
+      savedAt: Date.now()
+    }));
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return false;
+    const s = JSON.parse(raw);
+    // نحوّل المفاتيح لأرقام (localStorage بيحولها لـ string)
+    answers = {};
+    Object.keys(s.answers||{}).forEach(k => { answers[parseInt(k)] = s.answers[k]; });
+    submitted = s.submitted || false;
+    activeFilter = s.activeFilter || 'all';
+    return true;
+  }catch(e){ return false; }
+}
+
+function clearState(){
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+}
+
 // =====================================================================
 // RENDER ENGINE
 // =====================================================================
@@ -971,17 +1401,16 @@ let answers = {};
 let submitted = false;
 let activeFilter = 'all';
 
-const LOGO = 'logo.png';
-
 function filterQ(type, btn){
   activeFilter = type;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderQuestions();
+  saveState();
 }
 
 function getFiltered(){
-  return BANK.filter(q => {
+  return _BANK.filter(q => {
     if(activeFilter==='all') return true;
     if(activeFilter==='syn') return q.t==='syn';
     if(activeFilter==='ant') return q.t==='ant';
@@ -997,51 +1426,87 @@ function renderQuestions(){
   const filtered = getFiltered();
   document.getElementById('s-total').textContent = filtered.length;
   document.getElementById('h-badge').textContent = filtered.length + ' Questions';
+
+  // تحديث أزرار الفلتر
+  document.querySelectorAll('.filter-btn').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('onclick')?.includes(`'${activeFilter}'`));
+  });
+
   const c = document.getElementById('questions-container');
   c.innerHTML = filtered.map((q,i) => {
-    const globalIdx = BANK.indexOf(q);
+    const globalIdx = _BANK.indexOf(q);
     const typeLabel = q.t==='syn'?'SYNONYM':q.t==='ant'?'ANTONYM':'MEANING';
     const unitLabel = q.u==='1-4'?'Units 1–4':q.u==='5-8'?'Units 5–8':'Units 9–12';
-    return `<div class="qcard" id="qcard-${globalIdx}" data-idx="${globalIdx}">
+    const userAns = answers[globalIdx];
+    const isAnswered = userAns !== undefined;
+    const isCorrect = isAnswered && userAns === q.ans;
+
+    return `<div class="qcard ${isAnswered?'answered':''}" id="qcard-${globalIdx}" data-idx="${globalIdx}">
       <div class="qcard-top">
         <div>
-          <div class="qnum">Q${i+1} · ${typeLabel} · ${unitLabel}</div>
+          <div class="qnum">Q${i+1} · ${typeLabel} · ${unitLabel}${isAnswered && !submitted ? (isCorrect?'':' · ') : ''}</div>
         </div>
       </div>
       <div class="qtext">${q.q}</div>
       <div class="opts" style="margin-top:14px;">
-        ${q.opts.map((o,oi)=>`
-          <div class="opt" id="opt-${globalIdx}-${oi}" onclick="selectOpt(${globalIdx},${oi})">
-            <span class="opt-lbl">${String.fromCharCode(65+oi)}</span>
-            <span class="opt-txt">${o}</span>
-          </div>
-        `).join('')}
+        ${q.opts.map((o,oi)=>{
+          let cls = 'opt';
+          if(submitted){
+            cls += ' locked';
+            if(oi===q.ans) cls += ' correct';
+            else if(userAns===oi) cls += ' wrong';
+          } else if(userAns===oi){
+            cls += ' selected';
+          }
+          return `<div class="${cls}" id="opt-${globalIdx}-${oi}" ${!submitted?`onclick="selectOpt(${globalIdx},${oi})"`:''}><span class="opt-lbl">${String.fromCharCode(65+oi)}</span><span class="opt-txt">${o}</span></div>`;
+        }).join('')}
       </div>
-      <div class="explanation" id="exp-${globalIdx}">
+      <div class="explanation ${submitted?'show':''}" id="exp-${globalIdx}">
         <div class="exp-lbl">📖 EXPLANATION</div>
         <div class="exp-txt">${q.exp}</div>
         <div class="exp-ar">${q.ar}</div>
       </div>
     </div>`;
   }).join('');
+
+  // لو مسلّم، أظهر نتيجة بدون إعادة حساب
+  if(submitted) restoreSubmittedUI();
+
+  // Scroll للسؤال الأخير المجاب لو مش مسلّم
+  if(!submitted){
+    const filtered2 = getFiltered();
+    let lastAnsweredQ = -1;
+    filtered2.forEach((q,i)=>{
+      if(answers[_BANK.indexOf(q)] !== undefined) lastAnsweredQ = i;
+    });
+    if(lastAnsweredQ >= 0){
+      setTimeout(()=>{
+        const idx = _BANK.indexOf(filtered2[lastAnsweredQ]);
+        const el = document.getElementById('qcard-'+idx);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+      }, 200);
+    }
+  }
+
   updateStats();
 }
 
 function selectOpt(idx, oi){
   if(submitted) return;
   answers[idx] = oi;
-  const q = BANK[idx];
+  // تحديث عرض الأوبشن
   document.querySelectorAll(`[id^="opt-${idx}-"]`).forEach(el=>{
     el.classList.remove('selected');
   });
   document.getElementById(`opt-${idx}-${oi}`).classList.add('selected');
   document.getElementById(`qcard-${idx}`).classList.add('answered');
+  saveState(); // حفظ تلقائي
   updateStats();
 }
 
 function updateStats(){
   const filtered = getFiltered();
-  const answered = filtered.filter(q=>answers[BANK.indexOf(q)] !== undefined).length;
+  const answered = filtered.filter(q=>answers[_BANK.indexOf(q)] !== undefined).length;
   const total = filtered.length;
   document.getElementById('s-answered').textContent = answered;
   document.getElementById('prog-fill').style.width = (answered/total*100)+'%';
@@ -1050,7 +1515,7 @@ function updateStats(){
   if(submitted){
     let correct = 0;
     filtered.forEach(q=>{
-      const idx = BANK.indexOf(q);
+      const idx = _BANK.indexOf(q);
       if(answers[idx] === q.ans) correct++;
     });
     const pct = Math.round(correct/total*100);
@@ -1061,44 +1526,23 @@ function updateStats(){
   }
 }
 
-function submitAll(){
-  if(submitted) return;
+function restoreSubmittedUI(){
+  // إعادة عرض نتيجة التسليم من الإجابات المحفوظة
   const filtered = getFiltered();
-  const answered = filtered.filter(q=>answers[BANK.indexOf(q)]!==undefined).length;
+  let correct=0, wrong=0, skip=0;
+  filtered.forEach(q=>{
+    const idx = _BANK.indexOf(q);
+    const userAns = answers[idx];
+    if(userAns === undefined) skip++;
+    else if(userAns === q.ans) correct++;
+    else wrong++;
+  });
   const total = filtered.length;
+  const answered = correct + wrong;
+  const pct = Math.round(correct/total*100);
 
-  if(answered < total * 0.5){
-    if(!confirm(`لسه ما أجبتش على ${total-answered} سؤال. تأكيد التسليم؟`)) return;
-  }
-
-  submitted = true;
   document.getElementById('btn-submit').disabled = true;
   document.getElementById('btn-submit').textContent = '✅ تم التسليم — شوف الإجابات تحت';
-
-  let correct=0, wrong=0, skip=0;
-  filtered.forEach((q) => {
-    const idx = BANK.indexOf(q);
-    const userAns = answers[idx];
-    const opts = document.querySelectorAll(`[id^="opt-${idx}-"]`);
-    opts.forEach(o=>o.classList.add('locked'));
-
-    // Highlight correct
-    document.getElementById(`opt-${idx}-${q.ans}`).classList.add('correct');
-
-    if(userAns === undefined){
-      skip++;
-    } else if(userAns === q.ans){
-      correct++;
-    } else {
-      document.getElementById(`opt-${idx}-${userAns}`).classList.add('wrong');
-      wrong++;
-    }
-
-    // Show explanation
-    document.getElementById(`exp-${idx}`).classList.add('show');
-  });
-
-  const pct = Math.round(correct/total*100);
   document.getElementById('res-score').textContent = `${correct}/${total}`;
   document.getElementById('rb-correct').textContent = correct;
   document.getElementById('rb-wrong').textContent = wrong;
@@ -1115,25 +1559,66 @@ function submitAll(){
   document.getElementById('res-grade').style.color = color;
   document.getElementById('res-sub').textContent = `أجبت على ${answered} سؤال من ${total} — درجتك ${pct}%`;
   document.getElementById('result-box').classList.add('show');
+}
+
+function submitAll(){
+  if(submitted) return;
+  const filtered = getFiltered();
+  const answered = filtered.filter(q=>answers[_BANK.indexOf(q)]!==undefined).length;
+  const total = filtered.length;
+
+  if(answered < total * 0.5){
+    if(!confirm(`لسه ما أجبتش على ${total-answered} سؤال. تأكيد التسليم؟`)) return;
+  }
+
+  submitted = true;
+  saveState(); // حفظ حالة التسليم
+  renderQuestions(); // إعادة رسم مع الألوان والتفاسير
   document.getElementById('result-box').scrollIntoView({behavior:'smooth'});
   updateStats();
 }
 
 function retryAll(){
+  if(!confirm('هتبدأ من الأول؟ كل إجاباتك هتتمسح.')) return;
   answers = {};
   submitted = false;
+  activeFilter = 'all';
+  clearState(); // مسح الحفظ
   document.getElementById('btn-submit').disabled = false;
   document.getElementById('btn-submit').textContent = '📋 تسليم الامتحان — شوف نتيجتك مع التفسير';
   document.getElementById('result-box').classList.remove('show');
   document.getElementById('float-score').style.display='none';
   document.getElementById('s-correct').textContent='0';
   document.getElementById('s-pct').textContent='0%';
+  document.getElementById('s-answered').textContent='0';
   renderQuestions();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// Init
-renderQuestions();
+// =====================================================================
+// INIT — تحميل الحالة المحفوظة عند فتح الصفحة
+// =====================================================================
+(function init(){
+  const hasSaved = loadState();
+  if(hasSaved){
+    // إضافة بانر يُعلم الطالب إنه استأنف
+    const hero = document.querySelector('.hero');
+    if(hero && (Object.keys(answers).length > 0)){
+      const banner = document.createElement('div');
+      banner.style.cssText = `background:rgba(30,144,255,.1);border:1px solid rgba(30,144,255,.3);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;`;
+      const answeredCount = Object.keys(answers).length;
+      banner.innerHTML = `
+        <div style="font-size:13px;color:var(--t2);">
+          <span style="color:var(--blue);font-weight:700;">📌 استأنفت من حيث وقفت</span><br>
+          <span style="font-size:12px;">عندك ${answeredCount} إجابة محفوظة على الجهاز ده</span>
+        </div>
+        <button onclick="retryAll()" style="background:transparent;border:1.5px solid var(--red);color:var(--red);padding:8px 16px;border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">🔄 ابدأ من الأول</button>
+      `;
+      hero.insertBefore(banner, hero.querySelector('.filter-row'));
+    }
+  }
+  renderQuestions();
+})();
 </script>
 </body>
 </html>

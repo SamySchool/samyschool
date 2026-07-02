@@ -340,8 +340,13 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
 
       <!-- UNITS -->
       <div class="panel active" id="panel-units">
-        <div class="sh"><div class="sh-title">📚 Units — Step by Step</div><div class="sh-sub">Grammar, Vocabulary, Audio & Practice for every unit</div></div>
-        <div class="ulist" id="units-c"><div class="empty"><b>Loading units...</b></div></div>
+        <div class="sh">
+          <div class="sh-title">📚 Units — Full Curriculum</div>
+          <div class="sh-sub">Grammar, Vocabulary & Question Banks — شامل كل الوحدات</div>
+        </div>
+        <div class="sg" id="units-c">
+          <div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div>
+        </div>
       </div>
 
       <!-- STORY -->
@@ -548,61 +553,32 @@ document.querySelectorAll('.tab').forEach(b=>{
 });
 
 /* ============================================================
-   UNITS
+   UNITS — محتوى شامل واحد للمنهج كله
    ============================================================ */
-let UNITS=[];let activeAudio=null;
+let UNITS=[];
 
 async function loadUnits(){
   const c=document.getElementById('units-c');
   try{
-    const snap=await window.__db.collection('units').orderBy('createdAt').get();
-    UNITS=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!UNITS.length){c.innerHTML='<div class="empty"><b>No units yet</b>Units will appear here once added.</div>';buildPUnits();return;}
-    c.innerHTML=UNITS.map((u,i)=>{
-      const n=i+1;
-      return `<div class="ucard">
-        <div class="uhead"><div class="unum" style="font-size:13px;font-family:inherit;font-weight:800;color:var(--t1);background:transparent;border:none;padding:0;">UNIT ${n}</div></div>
-        <div class="ures" style="grid-template-columns:repeat(2,1fr);">
-          ${rb(u.pdfGrammar,'📄','Grammar File','اضغط للفتح',`openUrl('${u.pdfGrammar}')`)}
-          ${rb(u.bankGrammar,'❓','Grammar Quiz','بنك أسئلة جرامر',`openUrl('${u.bankGrammar}')`)}
-          ${rb(u.pdfVocab,'📖','Vocabulary Guide','دليل الكلمات',`openUrl('${u.pdfVocab}')`)}
-          ${rb(u.bankVocab,'🔤','Vocab Quiz','بنك أسئلة كلمات',`openUrl('${u.bankVocab}')`)}
-        </div>
-      </div>`;
-    }).join('');
+    const snap=await window.__db.collection('curriculum').doc('main').get();
+    const d=snap.exists?snap.data():{};
+    c.innerHTML=`
+      ${uCard('📄','Grammar File','ملف شرح الجرامر الشامل',d.pdfGrammar,`openUrl('${d.pdfGrammar}')`)}
+      ${uCard('❓','Grammar Quiz','بنك أسئلة الجرامر الشامل',d.bankGrammar,`openUrl('${d.bankGrammar}')`)}
+      ${uCard('📖','Vocabulary Guide','الدليل الشامل للكلمات والمصطلحات',d.pdfVocab,`openUrl('${d.pdfVocab}')`)}
+      ${uCard('🔤','Vocab Quiz','بنك أسئلة الكلمات الشامل',d.bankVocab,`openUrl('${d.bankVocab}')`)}
+    `;
     buildPUnits();
-  }catch(e){c.innerHTML=`<div class="empty"><b>Error</b>${e.message}</div>`;}
+  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
 }
 
-function rb(url,ico,name,sub,act){
-  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
-  return`<button class="rbtn" onclick="${act}"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
+function uCard(ico,name,sub,url,act){
+  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></div>`;
+  return`<button class="sc" onclick="${act}"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></button>`;
 }
-function rbVid(url,ico,name,sub,i){
-  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
-  const vid=ytId(url);
-  if(vid)return`<button class="rbtn" onclick="openVid('${vid}','${name}')"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
-  return`<button class="rbtn" onclick="openUrl('${url}')"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
-}
-function rbAud(url,ico,name,sub,i){
-  if(!url)return`<div class="rbtn dis"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">Not yet</div></div>`;
-  return`<button class="rbtn" onclick="showABar(${i})"><div class="rico">${ico}</div><div class="rname">${name}</div><div class="rsub">${sub}</div></button>`;
-}
+
 function openUrl(u){if(u)window.open(u,'_blank');}
 function ytId(u){if(!u)return null;const m=u.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null;}
-function showABar(i){
-  document.querySelectorAll('.abar').forEach(b=>{if(b.id!=='ab-'+i){b.classList.remove('show');const a=b.querySelector('audio');if(a){a.pause();const p=b.id.replace('ab-','');const pb=document.getElementById('ap-'+p);if(pb)pb.textContent='▶';}}});
-  const bar=document.getElementById('ab-'+i);if(bar)bar.classList.toggle('show');
-}
-function togAudio(i){
-  const a=document.getElementById('ae-'+i);const p=document.getElementById('ap-'+i);
-  const f=document.getElementById('af-'+i);const t=document.getElementById('at-'+i);
-  if(activeAudio&&activeAudio!==a){activeAudio.pause();document.querySelectorAll('.apbtn').forEach(b=>b.textContent='▶');}
-  if(a.paused){a.play();p.textContent='❚❚';activeAudio=a;}else{a.pause();p.textContent='▶';}
-  a.ontimeupdate=()=>{if(a.duration){f.style.width=(a.currentTime/a.duration*100)+'%';const m=Math.floor(a.currentTime/60);const s=Math.floor(a.currentTime%60);t.textContent=m+':'+String(s).padStart(2,'0');}};
-  a.onended=()=>{p.textContent='▶';f.style.width='0%';};
-}
-function seekA(e,i){const a=document.getElementById('ae-'+i);if(!a.duration)return;const r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*a.duration;}
 
 /* ============================================================
    STORY
@@ -624,21 +600,32 @@ function stCard(ico,name,sub,url,act){
 }
 function stCardAudio(ico,name,sub,url){
   if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
-  // تحويل رابط Drive لرابط Stream مباشر عبر Google Drive viewer
-  let streamUrl = url;
-  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(m) streamUrl = `https://drive.google.com/file/d/${m[1]}/preview`;
+  // يقبل رابط YouTube (Unlisted) أو رابط Drive
+  const ytMatch = url.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);
+  const drMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  let embedHtml='';
+  if(ytMatch){
+    const vid=ytMatch[1];
+    embedHtml=`<iframe
+      src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1"
+      style="width:100%;height:90px;border:none;border-radius:8px;"
+      allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+  } else if(drMatch){
+    embedHtml=`<iframe
+      src="https://drive.google.com/file/d/${drMatch[1]}/preview"
+      style="width:100%;height:80px;border:none;border-radius:8px;"
+      allow="autoplay" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>`;
+  } else {
+    embedHtml=`<audio controls style="width:100%;" src="${url}"></audio>`;
+  }
   return`<div class="sc" style="cursor:default;">
     <div class="sico">${ico}</div>
     <div class="sname">${name}</div>
     <div class="ssub" style="margin-bottom:10px;">${sub}</div>
-    <iframe
-      src="${streamUrl}"
-      style="width:100%;height:80px;border:none;border-radius:8px;background:rgba(30,144,255,.06);"
-      allow="autoplay"
-      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-      title="Story Audio Player">
-    </iframe>
+    <div style="width:100%;border-radius:8px;overflow:hidden;border:1px solid rgba(30,144,255,.2);">
+      ${embedHtml}
+    </div>
+    <div style="font-size:10.5px;color:var(--t3);margin-top:6px;">💡 ارفع الملف الصوتي على YouTube كـ Unlisted للتشغيل الأمثل</div>
   </div>`;
 }
 

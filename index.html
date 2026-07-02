@@ -283,7 +283,17 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
   </div>
 
   <!-- COUNTDOWN -->
-  <div class="cbar">
+  <div class="cbar" style="position:relative;">
+    <!-- اللوجو فوق التايمر على اليمين -->
+    <div style="position:absolute;left:24px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:10px;z-index:2;">
+      <img src="logo.png" alt="SamySchool"
+        style="width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px rgba(30,144,255,.5),0 4px 16px rgba(0,0,0,.4);"
+        onerror="this.style.display='none'">
+      <div style="text-align:right;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--blue);">SamySchool</div>
+        <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;">English Night Exam</div>
+      </div>
+    </div>
     <div class="cinner">
       <span class="clbl">⏳ EXAM COUNTDOWN</span>
       <div class="cblocks">
@@ -392,15 +402,11 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
       <div class="pcard">
         <div class="ptitle">🏆 Achievement Board</div>
         <div class="pbtrack"><div class="pbfill" id="pb-fill" style="width:0%"></div></div>
-        <div class="pbtext" id="pb-text">0 / 44</div>
+        <div class="pbtext" id="pb-text">0 / 68</div>
       </div>
       <div class="pcard">
-        <div class="pslbl">📚 مذاكرة الوحدات (12)</div>
+        <div class="pslbl">📚 الوحدات (48 عنصر)</div>
         <div class="pitems" id="p-units"></div>
-      </div>
-      <div class="pcard">
-        <div class="pslbl">📝 امتحانات الوحدات (12)</div>
-        <div class="pitems" id="p-uexams"></div>
       </div>
       <div class="pcard">
         <div class="pslbl">📋 امتحانات شاملة ث.ع (20)</div>
@@ -549,18 +555,15 @@ async function loadUnits(){
     UNITS=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(!UNITS.length){c.innerHTML='<div class="empty"><b>No units yet</b>Units will appear here once added.</div>';buildPUnits();return;}
     c.innerHTML=UNITS.map((u,i)=>{
-      const n=i+1;const ttl=u.titleEn||u.title||'Unit '+n;
+      const n=i+1;
       return `<div class="ucard">
-        <div class="uhead"><div class="utitle">${ttl}</div><div class="unum">UNIT ${n}</div></div>
-        <div class="ures">
+        <div class="uhead"><div class="unum" style="font-size:13px;font-family:inherit;font-weight:800;color:var(--t1);background:transparent;border:none;padding:0;">UNIT ${n}</div></div>
+        <div class="ures" style="grid-template-columns:repeat(2,1fr);">
           ${rb(u.pdfGrammar,'📄','Grammar File','اضغط للفتح',`openUrl('${u.pdfGrammar}')`)}
-          ${rbVid(u.videoGrammar,'🎬','Grammar Video','شرح بالفيديو',i)}
           ${rb(u.bankGrammar,'❓','Grammar Quiz','بنك أسئلة جرامر',`openUrl('${u.bankGrammar}')`)}
           ${rb(u.pdfVocab,'📖','Vocabulary Guide','دليل الكلمات',`openUrl('${u.pdfVocab}')`)}
           ${rb(u.bankVocab,'🔤','Vocab Quiz','بنك أسئلة كلمات',`openUrl('${u.bankVocab}')`)}
-          ${rbAud(u.audioGrammar,'🎧','Grammar Voice','فويس الجرامر',i)}
         </div>
-        ${u.audioGrammar?`<div class="abar" id="ab-${i}"><div class="actrl"><button class="apbtn" id="ap-${i}" onclick="togAudio(${i})">▶</button><div class="aprog" onclick="seekA(event,${i})"><div class="afill" id="af-${i}"></div></div><span class="atime" id="at-${i}">0:00</span><audio id="ae-${i}" src="${u.audioGrammar}" preload="none"></audio></div></div>`:''}
       </div>`;
     }).join('');
     buildPUnits();
@@ -607,13 +610,26 @@ async function loadStory(){
     const d=snap.exists?snap.data():{};
     c.innerHTML=`
       ${stCard('📚','Story Study File','الملف الشامل للقصة',d.pdfStudy,`openUrl('${d.pdfStudy}')`)}
-      ${stCard('🎧','Story Audio','فويس سماعي للقصة',d.audioStory,`openUrl('${d.audioStory}')`)}
+      ${stCardAudio('🎧','Story Audio','فويس سماعي للقصة',d.audioStory)}
     `;
   }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
 }
 function stCard(ico,name,sub,url,act){
   if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
   return`<button class="sc" onclick="${act}"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></button>`;
+}
+function stCardAudio(ico,name,sub,url){
+  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
+  return`<div class="sc" style="cursor:default;">
+    <div class="sico">${ico}</div>
+    <div class="sname">${name}</div>
+    <div class="ssub" style="margin-bottom:10px;">${sub}</div>
+    <div style="width:100%;background:rgba(30,144,255,.06);border:1px solid rgba(30,144,255,.25);border-radius:8px;padding:10px 12px;">
+      <audio controls style="width:100%;accent-color:var(--blue);height:36px;" src="${url}" preload="metadata">
+        متصفحك لا يدعم تشغيل الصوت
+      </audio>
+    </div>
+  </div>`;
 }
 
 /* ============================================================
@@ -757,10 +773,22 @@ async function loadProgress(code){
 async function saveP(code){try{await window.__db.collection('progress').doc(code).set(pData,{merge:true});}catch(e){}}
 
 function buildPUnits(){
-  const c1=document.getElementById('p-units'),c2=document.getElementById('p-uexams');
+  const c=document.getElementById('p-units');
   const units=UNITS.length?UNITS:Array.from({length:12},(_,i)=>({id:'u'+i}));
-  c1.innerHTML=units.map((u,i)=>{const k='unit-'+u.id;const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Unit ${i+1}','📚')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Unit ${i+1}</div></div>`;}).join('');
-  c2.innerHTML=units.map((u,i)=>{const k='ue-'+u.id;const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Unit ${i+1} Exam','📝')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Unit ${i+1} Exam</div></div>`;}).join('');
+  // 4 عناصر لكل وحدة: مراجعة الكلمات، الحل على الكلمات، مراجعة الجرامر، الحل على الجرامر
+  const items=[];
+  units.forEach((u,i)=>{
+    const n=i+1;
+    const k1=`wrev-${u.id}`,k2=`wsol-${u.id}`,k3=`grev-${u.id}`,k4=`gsol-${u.id}`;
+    items.push(`
+      <div style="font-size:10px;font-weight:800;color:var(--blue);margin:8px 0 4px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;">UNIT ${n}</div>
+      <div class="pitem ${pData[k1]?'done':''}" id="pi-${k1}" onclick="togP('${k1}','Unit ${n} — مراجعة الكلمات','📖')"><div class="pchk">${pData[k1]?'✓':''}</div><div class="plbl">مراجعة الكلمات</div></div>
+      <div class="pitem ${pData[k2]?'done':''}" id="pi-${k2}" onclick="togP('${k2}','Unit ${n} — الحل على الكلمات','✅')"><div class="pchk">${pData[k2]?'✓':''}</div><div class="plbl">الحل على الكلمات</div></div>
+      <div class="pitem ${pData[k3]?'done':''}" id="pi-${k3}" onclick="togP('${k3}','Unit ${n} — مراجعة الجرامر','📄')"><div class="pchk">${pData[k3]?'✓':''}</div><div class="plbl">مراجعة الجرامر</div></div>
+      <div class="pitem ${pData[k4]?'done':''}" id="pi-${k4}" onclick="togP('${k4}','Unit ${n} — الحل على الجرامر','✅')"><div class="pchk">${pData[k4]?'✓':''}</div><div class="plbl">الحل على الجرامر</div></div>
+    `);
+  });
+  c.innerHTML=items.join('');
   updOverall();
 }
 function buildPGeneral(){
@@ -781,7 +809,7 @@ function markGenDone(examId){
   if(next<=20){const k='gen-'+next;if(!pData[k]){pData[k]=true;buildPGeneral();const code=document.getElementById('sc-tag').textContent;saveP(code);updOverall();}}
 }
 function updOverall(){
-  const total=44,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
+  const total=68,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
   document.getElementById('pb-fill').style.width=(done/total*100)+'%';
   document.getElementById('pb-text').textContent=done+' / '+total;
 }

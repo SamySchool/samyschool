@@ -307,41 +307,43 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
 
     <!-- ===== تبويب الوحدات ===== -->
     <div class="admin-panel active" id="panel-units">
-      <div class="section-title">📚 إضافة وحدة جديدة <span>هتظهر للطلاب فوراً</span></div>
+      <div class="section-title">📚 المحتوى الشامل للمنهج <span>ملف واحد شامل لكل الوحدات</span></div>
       <div class="form-card">
-        <div style="border-bottom:1px solid var(--line);margin-bottom:16px;padding-bottom:14px;">
-          <div style="font-size:12px;font-weight:700;color:var(--highlight);margin-bottom:12px;">📎 محتوى الوحدة — 4 عناصر</div>
-          <div class="form-grid">
-            <div class="form-field">
-              <label>📄 A — ملف شرح الجرامر (PDF)</label>
-              <input type="text" id="unit-pdf-grammar" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">PDF شرح قواعد الوحدة — من Google Drive</div>
-            </div>
-            <div class="form-field">
-              <label>❓ B — بنك أسئلة الجرامر (HTML/رابط)</label>
-              <input type="text" id="unit-bank-grammar" placeholder="رابط ملف HTML أو صفحة تفاعلية">
-              <div class="form-hint">بنك أسئلة تفاعلي على الجرامر</div>
-            </div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:16px;line-height:1.8;">
+          هنا هترفع ملف شامل واحد لكل عنصر — مش لكل وحدة لوحدها.<br>
+          <b style="color:var(--highlight);">مثال:</b> ملف PDF واحد فيه الجرامر كامل لكل الوحدات الـ 12.
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>📄 ملف شرح الجرامر الشامل (PDF)</label>
+            <input type="text" id="curr-pdf-grammar" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+            <div class="form-hint">PDF شامل لجرامر كل الوحدات</div>
           </div>
-          <div class="form-grid">
-            <div class="form-field">
-              <label>📖 C — الدليل الشامل للكلمات (PDF)</label>
-              <input type="text" id="unit-pdf-vocab" placeholder="https://drive.google.com/file/d/FILE_ID/view">
-              <div class="form-hint">دليل الكلمات والمصطلحات — من Google Drive</div>
-            </div>
-            <div class="form-field">
-              <label>🔤 D — بنك أسئلة الكلمات (HTML/رابط)</label>
-              <input type="text" id="unit-bank-vocab" placeholder="رابط بنك أسئلة تفاعلي للكلمات">
-              <div class="form-hint">بنك أسئلة تفاعلي على الكلمات والمصطلحات</div>
-            </div>
+          <div class="form-field">
+            <label>❓ بنك أسئلة الجرامر الشامل (رابط)</label>
+            <input type="text" id="curr-bank-grammar" placeholder="رابط ملف HTML تفاعلي">
+            <div class="form-hint">بنك أسئلة شامل على الجرامر</div>
           </div>
         </div>
-        <button class="btn-add" id="btn-add-unit">➕ إضافة الوحدة</button>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>📖 الدليل الشامل للكلمات (PDF)</label>
+            <input type="text" id="curr-pdf-vocab" placeholder="https://drive.google.com/file/d/FILE_ID/view">
+            <div class="form-hint">PDF شامل للكلمات والمصطلحات</div>
+          </div>
+          <div class="form-field">
+            <label>🔤 بنك أسئلة الكلمات الشامل (رابط)</label>
+            <input type="text" id="curr-bank-vocab" placeholder="رابط ملف HTML تفاعلي">
+            <div class="form-hint">بنك أسئلة شامل على الكلمات</div>
+          </div>
+        </div>
+        <button class="btn-add" id="btn-save-curriculum">💾 حفظ المحتوى الشامل</button>
       </div>
 
-      <div class="items-list">
-        <div class="items-list-title">الوحدات الموجودة دلوقتي</div>
-        <div id="units-list"><div style="color:var(--text-3); font-size:13px;">جاري التحميل...</div></div>
+      <!-- عرض المحتوى الحالي -->
+      <div class="items-list" id="curriculum-current">
+        <div class="items-list-title">المحتوى المحفوظ حالياً</div>
+        <div id="curriculum-display"><div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div></div>
       </div>
     </div>
 
@@ -746,42 +748,67 @@ function loadAll(){
 /* ============================================================
    الوحدات
    ============================================================ */
-document.getElementById('btn-add-unit').addEventListener('click', async () => {
-  const pdfGrammar = document.getElementById('unit-pdf-grammar').value.trim();
-  const bankGrammar = document.getElementById('unit-bank-grammar').value.trim();
-  const pdfVocab = document.getElementById('unit-pdf-vocab').value.trim();
-  const bankVocab = document.getElementById('unit-bank-vocab').value.trim();
+/* ============================================================
+   المحتوى الشامل للمنهج (curriculum)
+   ============================================================ */
+document.getElementById('btn-save-curriculum').addEventListener('click', async () => {
+  const pdfGrammar = document.getElementById('curr-pdf-grammar').value.trim();
+  const bankGrammar = document.getElementById('curr-bank-grammar').value.trim();
+  const pdfVocab = document.getElementById('curr-pdf-vocab').value.trim();
+  const bankVocab = document.getElementById('curr-bank-vocab').value.trim();
 
-  if(!pdfGrammar && !bankGrammar && !pdfVocab && !bankVocab){
-    showToast('أضف محتوى للوحدة على الأقل', 'error'); return;
-  }
-
-  const btn = document.getElementById('btn-add-unit');
+  const btn = document.getElementById('btn-save-curriculum');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
 
-  function drivePreview(url){
+  function drivePdf(url){
     if(!url) return '';
     const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     return m ? `https://drive.google.com/file/d/${m[1]}/preview` : url;
   }
 
   try{
-    await db.collection('units').add({
-      pdfGrammar: drivePreview(pdfGrammar),
+    await db.collection('curriculum').doc('main').set({
+      pdfGrammar: drivePdf(pdfGrammar),
       bankGrammar: bankGrammar,
-      pdfVocab: drivePreview(pdfVocab),
+      pdfVocab: drivePdf(pdfVocab),
       bankVocab: bankVocab,
-      done: false,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    ['unit-pdf-grammar','unit-bank-grammar','unit-pdf-vocab','unit-bank-vocab'].forEach(id => {
-      const el = document.getElementById(id); if(el) el.value = '';
-    });
-    showToast('✅ الوحدة اتضافت — هتظهر للطلاب فوراً');
-    loadUnits();
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+    showToast('✅ المحتوى الشامل اتحفظ — هيظهر للطلاب فوراً');
+    loadCurriculum();
   }catch(e){ showToast('خطأ: ' + e.message, 'error'); }
-  finally{ btn.disabled = false; btn.textContent = '➕ إضافة الوحدة'; }
+  finally{ btn.disabled = false; btn.textContent = '💾 حفظ المحتوى الشامل'; }
 });
+
+async function loadCurriculum(){
+  const disp = document.getElementById('curriculum-display');
+  try{
+    const snap = await db.collection('curriculum').doc('main').get();
+    const d = snap.exists ? snap.data() : {};
+    const items = [
+      {lbl:'📄 ملف الجرامر الشامل', val:d.pdfGrammar, inp:'curr-pdf-grammar'},
+      {lbl:'❓ بنك أسئلة الجرامر', val:d.bankGrammar, inp:'curr-bank-grammar'},
+      {lbl:'📖 ملف الكلمات الشامل', val:d.pdfVocab, inp:'curr-pdf-vocab'},
+      {lbl:'🔤 بنك أسئلة الكلمات', val:d.bankVocab, inp:'curr-bank-vocab'},
+    ];
+    // ملء الحقول بالقيم الموجودة
+    items.forEach(item => {
+      const el = document.getElementById(item.inp);
+      if(el && item.val) el.value = item.val;
+    });
+    disp.innerHTML = items.map(item => `
+      <div class="item-row">
+        <div class="item-row-info">
+          <div class="item-row-title">${item.lbl}</div>
+          <div class="item-row-sub" style="word-break:break-all;">${item.val ? '✅ محفوظ' : '⬜ لسه مش محفوظ'}</div>
+        </div>
+        ${item.val ? `<button onclick="window.open('${item.val}','_blank')" style="background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:7px 12px;border-radius:7px;font-size:11px;cursor:pointer;white-space:nowrap;">معاينة</button>` : ''}
+      </div>
+    `).join('');
+  }catch(e){ disp.innerHTML = `<div style="color:#F0998A;font-size:13px;">خطأ: ${e.message}</div>`; }
+}
+
+async function loadUnits(){ await loadCurriculum(); }
 
 async function loadUnits(){
   const list = document.getElementById('units-list');

@@ -451,7 +451,40 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
 
     <!-- ===== تبويب الامتحانات ===== -->
     <div class="admin-panel" id="panel-exams">
-      <div class="section-title">📝 إنشاء امتحان جديد <span>اختيار متعدد + أسئلة مقالية</span></div>
+      <div class="section-title">📝 الامتحانات الشاملة <span>رابط الملف التفاعلي + إنشاء امتحانات يدوية</span></div>
+
+      <!-- ===== رابط الامتحانات التفاعلية ===== -->
+      <div class="form-card" style="margin-bottom:24px;border-color:rgba(212,225,87,.3);">
+        <div style="font-size:13px;font-weight:800;color:var(--highlight);margin-bottom:14px;">
+          🔗 رابط ملف الامتحانات التفاعلية الجاهز
+        </div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.8;">
+          لو رافع ملف امتحانات تفاعلي جاهز على GitHub (مثل النماذج الاسترشادية) — حط رابطه هنا.<br>
+          الطالب هيضغط زرار واحد في المنصة يفتح الملف مباشرة.
+        </div>
+        <div class="form-field">
+          <label>📋 رابط ملف الامتحانات التفاعلي (HTML على GitHub)</label>
+          <input type="text" id="exams-external-url"
+            placeholder="https://samyschool.github.io/samyschool/النماذج_الاسترشادية_التفاعلية.html">
+          <div class="form-hint">
+            بعد ما ترفع الملف على GitHub — انسخ رابطه هنا. مثال: <b>samyschool.github.io/samyschool/اسم_الملف.html</b>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
+          <button class="btn-add" id="btn-save-exams-url" style="width:auto;padding:12px 24px;">
+            💾 حفظ الرابط
+          </button>
+          <button id="btn-preview-exams-url" style="background:transparent;border:1.5px solid var(--line-strong);color:var(--text-2);padding:12px 20px;border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;font-size:13px;cursor:pointer;">
+            👁 معاينة الرابط
+          </button>
+        </div>
+        <div id="exams-url-status" style="display:none;margin-top:10px;font-size:12px;"></div>
+      </div>
+
+      <div style="border-top:1px solid var(--line);margin-bottom:20px;padding-top:20px;">
+        <div style="font-size:13px;font-weight:800;color:var(--text-2);margin-bottom:14px;">أو أنشئ امتحان يدوي</div>
+      </div>
+
       <div class="form-card">
         <div class="form-grid">
           <div class="form-field">
@@ -743,7 +776,45 @@ function loadAll(){
   initExamBuilder();
   initMinistryBuilder();
   loadLiveStatus();
+  loadExamsExternalUrl();
 }
+
+/* ============================================================
+   رابط الامتحانات التفاعلية الخارجية
+   ============================================================ */
+async function loadExamsExternalUrl(){
+  try{
+    const snap = await db.collection('settings').doc('exams').get();
+    const d = snap.exists ? snap.data() : {};
+    if(d.externalUrl){
+      const inp = document.getElementById('exams-external-url');
+      if(inp) inp.value = d.externalUrl;
+      const st = document.getElementById('exams-url-status');
+      if(st){ st.style.display='block'; st.style.color='#4CAF50'; st.innerHTML='✅ رابط محفوظ — الطلاب يشوفوه في المنصة'; }
+    }
+  }catch(e){}
+}
+
+document.getElementById('btn-save-exams-url').addEventListener('click', async()=>{
+  const url = document.getElementById('exams-external-url').value.trim();
+  if(!url){ showToast('حط الرابط الأول', 'error'); return; }
+  const btn = document.getElementById('btn-save-exams-url');
+  btn.disabled=true; btn.textContent='جاري الحفظ...';
+  try{
+    await db.collection('settings').doc('exams').set({ externalUrl: url, updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true});
+    await db.collection('curriculum').doc('main').set({ examsUrl: url },{merge:true});
+    const st = document.getElementById('exams-url-status');
+    if(st){ st.style.display='block'; st.style.color='#4CAF50'; st.innerHTML='✅ الرابط اتحفظ — الطلاب يشوفوه دلوقتي في المنصة'; }
+    showToast('✅ رابط الامتحانات اتحفظ');
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+  finally{ btn.disabled=false; btn.textContent='💾 حفظ الرابط'; }
+});
+
+document.getElementById('btn-preview-exams-url').addEventListener('click',()=>{
+  const url = document.getElementById('exams-external-url').value.trim();
+  if(!url){ showToast('حط الرابط الأول', 'error'); return; }
+  window.open(url,'_blank');
+});
 
 /* ============================================================
    الوحدات

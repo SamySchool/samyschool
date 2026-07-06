@@ -293,13 +293,16 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
   <div class="wrap">
     <nav class="admin-tabs">
       <button class="admin-tab active" data-tab="units">📚 الوحدات</button>
+      <button class="admin-tab" data-tab="units-new">📗 Units جديد</button>
       <button class="admin-tab" data-tab="story">📖 Story</button>
       <button class="admin-tab" data-tab="skills">✏️ Skills</button>
       <button class="admin-tab" data-tab="ministry">🏛 استرشادية</button>
       <button class="admin-tab" data-tab="videos">🎥 فيديوهات</button>
       <button class="admin-tab" data-tab="exams">📝 امتحانات شاملة</button>
+      <button class="admin-tab" data-tab="tabs-control">⚙️ تفعيل القوائم</button>
       <button class="admin-tab" data-tab="codes">🔑 الأكواد</button>
       <button class="admin-tab" data-tab="students">👥 الطلاب</button>
+      <button class="admin-tab" data-tab="activity">📋 سجل الطلاب</button>
       <button class="admin-tab" data-tab="results">📊 النتائج</button>
       <button class="admin-tab" data-tab="questions">💬 أسئلة البث</button>
       <button class="admin-tab" data-tab="live" style="color:#ff4444;">🔴 البث</button>
@@ -558,11 +561,88 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       </div>
 
       <div class="items-list">
-        <div class="items-list-title" style="display:flex; justify-content:space-between;">
+        <div class="items-list-title" style="display:flex; justify-content:space-between;align-items:center;">
           <span>الأكواد الموجودة</span>
-          <button onclick="loadCodes()" style="background:transparent; border:none; color:var(--highlight); font-size:12px; cursor:pointer; font-family:'Cairo',sans-serif;">🔄 تحديث</button>
+          <div style="display:flex;gap:8px;">
+            <button onclick="loadCodes()" style="background:transparent;border:none;color:var(--highlight);font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;">🔄 تحديث</button>
+            <button onclick="deleteAllCodes()" style="background:transparent;border:1px solid rgba(224,101,79,.4);color:#F0998A;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;padding:4px 10px;border-radius:6px;">🗑 حذف الكل</button>
+          </div>
         </div>
         <div class="codes-grid" id="codes-list"><div style="color:var(--text-3); font-size:13px;">جاري التحميل...</div></div>
+      </div>
+    </div>
+
+    <!-- ===== تبويب Units الجديد ===== -->
+    <div class="admin-panel" id="panel-units-new">
+      <div class="section-title">📗 Units الجديد <span>وحدة بوحدة للدفعة الجديدة</span></div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>رقم الوحدة *</label>
+            <input type="number" id="un-order" min="1" max="12" placeholder="1" value="1">
+          </div>
+          <div class="form-field">
+            <label>عنوان الوحدة</label>
+            <input type="text" id="un-title" placeholder="مثال: My Digital World">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>📄 رابط مراجعة الوحدة (HTML)</label>
+            <input type="text" id="un-review" placeholder="https://samyschool.github.io/samyschool/unit1_review.html">
+            <div class="form-hint">ملف HTML مراجعة الوحدة بعد رفعه على GitHub</div>
+          </div>
+          <div class="form-field">
+            <label>⏱ رابط امتحان الوحدة (HTML — تايمر ساعة)</label>
+            <input type="text" id="un-exam" placeholder="https://samyschool.github.io/samyschool/unit1_exam.html">
+            <div class="form-hint">ملف HTML الامتحان — لازم يكون فيه تايمر ساعة</div>
+          </div>
+        </div>
+        <button class="btn-add" id="btn-save-unit-new">➕ إضافة الوحدة</button>
+      </div>
+      <div class="items-list">
+        <div class="items-list-title">الوحدات المضافة (12 وحدة)</div>
+        <div id="units-new-list"><div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div></div>
+      </div>
+    </div>
+
+    <!-- ===== تفعيل/إلغاء القوائم ===== -->
+    <div class="admin-panel" id="panel-tabs-control">
+      <div class="section-title">⚙️ تفعيل وإلغاء القوائم <span>التحكم في ما يظهر للطلاب</span></div>
+      <div class="form-card">
+        <div style="font-size:12.5px;color:var(--text-2);margin-bottom:16px;line-height:1.8;">
+          فعّل أو ألغِ أي تبويب في المنصة. لما تلغي تبويب — الطلاب مش هيشوفوه خالص.<br>
+          <b style="color:var(--highlight);">مثال:</b> ألغِ "امتحانات شاملة" في أول السنة وفعّلها لما يجي وقتها.
+        </div>
+        <div id="tabs-toggle-list">
+          <div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== سجل تحركات الطلاب ===== -->
+    <div class="admin-panel" id="panel-activity">
+      <div class="section-title">📋 سجل تحركات الطلاب <span>كل ما فعله الطالب على المنصة</span></div>
+
+      <!-- واتساب تقرير -->
+      <div class="form-card" style="margin-bottom:20px;border-color:rgba(37,211,102,.3);">
+        <div style="font-size:13px;font-weight:800;color:#25D366;margin-bottom:10px;">📱 تقرير واتساب</div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;">اضغط الزرار — هيجهّز تقرير بكل الطلاب وينجازاتهم ويفتحلك واتساب جاهز للإرسال.</div>
+        <button onclick="sendWhatsAppReport()"
+          style="background:#25D366;color:#fff;border:none;padding:12px 24px;border-radius:9px;font-family:'Cairo',sans-serif;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          إرسال تقرير على واتساب
+        </button>
+      </div>
+
+      <!-- فلتر + سجل -->
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+        <input type="text" id="activity-filter-code" placeholder="فلتر بكود الطالب (اختياري)"
+          style="background:rgba(0,0,0,.2);border:1.5px solid var(--line-strong);border-radius:8px;padding:9px 14px;color:var(--text-1);font-family:'Cairo',sans-serif;font-size:13px;min-width:200px;">
+        <button onclick="loadActivityLog()" style="background:var(--highlight);color:var(--ink);border:none;padding:9px 18px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;font-family:'Cairo',sans-serif;">🔍 عرض السجل</button>
+      </div>
+      <div id="activity-log-container">
+        <div style="color:var(--text-3);font-size:13px;text-align:center;padding:24px;">اضغط "عرض السجل" لتحميل البيانات</div>
       </div>
     </div>
 
@@ -766,6 +846,7 @@ function showToast(msg, type='success'){
 /* ===== تحميل كل البيانات ===== */
 function loadAll(){
   loadUnits();
+  loadUnitsNew();
   loadVideos();
   loadExams();
   loadMinistryExams();
@@ -777,7 +858,28 @@ function loadAll(){
   initMinistryBuilder();
   loadLiveStatus();
   loadExamsExternalUrl();
+  loadTabsSettings();
 }
+
+/* Units الجديد — حفظ وحدة */
+document.getElementById('btn-save-unit-new').addEventListener('click', async()=>{
+  const order = parseInt(document.getElementById('un-order').value)||1;
+  const title = document.getElementById('un-title').value.trim()||`Unit ${order}`;
+  const reviewUrl = document.getElementById('un-review').value.trim();
+  const examUrl = document.getElementById('un-exam').value.trim();
+  if(!reviewUrl && !examUrl){ showToast('أضف رابط مراجعة أو امتحان على الأقل','error'); return; }
+  const btn = document.getElementById('btn-save-unit-new');
+  btn.disabled=true; btn.textContent='جاري الحفظ...';
+  try{
+    await db.collection('units_new').doc(`unit_${order}`).set({
+      order, title, reviewUrl, examUrl,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showToast(`✅ الوحدة ${order} اتحفظت`);
+    loadUnitsNew();
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+  finally{ btn.disabled=false; btn.textContent='➕ إضافة الوحدة'; }
+});
 
 /* ============================================================
    رابط الامتحانات التفاعلية الخارجية
@@ -1209,10 +1311,14 @@ async function loadCodes(){
       const badge = data.used
         ? `<span class="code-badge used">مستخدم 🔒</span>`
         : `<span class="code-badge free">متاح ✅</span>`;
+      const name = data.studentName ? `<div style="font-size:10px;color:var(--text-2);margin-top:3px;">${data.studentName}</div>` : '';
       return `<div class="code-card">
         <div class="code-val">${d.id}</div>
-        ${badge}
-        ${data.used ? `<button onclick="resetCode('${d.id}')" style="margin-top:8px;background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Cairo',sans-serif;">🔄 Reset</button>` : `<button onclick="deleteCode('${d.id}')" style="margin-top:8px;background:transparent;border:1px solid rgba(224,101,79,.3);color:#F0998A;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Cairo',sans-serif;">حذف</button>`}
+        ${badge}${name}
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+          ${data.used ? `<button onclick="resetCode('${d.id}')" style="background:transparent;border:1px solid var(--line-strong);color:var(--text-2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Cairo',sans-serif;">🔄 Reset</button>` : ''}
+          <button onclick="deleteCode('${d.id}')" style="background:transparent;border:1px solid rgba(224,101,79,.4);color:#F0998A;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Cairo',sans-serif;">🗑 حذف</button>
+        </div>
       </div>`;
     }).join('');
   }catch(e){ list.innerHTML = '<div style="color:#F0998A;font-size:13px;grid-column:1/-1;">خطأ في التحميل</div>'; }
@@ -1228,17 +1334,171 @@ async function resetCode(code){
 }
 
 async function deleteCode(code){
-  if(!confirm(`هتحذف الكود ${code} نهائياً؟`)) return;
+  if(!confirm(`هتحذف الكود ${code} نهائياً؟ الطالب مش هيقدر يدخل المنصة تاني.`)) return;
   try{
     await db.collection('students').doc(code).delete();
-    showToast('🗑 الكود اتحذف');
+    showToast('🗑 الكود اتحذف نهائياً');
+    loadCodes();
+  }catch(e){ showToast('خطأ: ' + e.message, 'error'); }
+}
+
+async function deleteAllCodes(){
+  if(!confirm('⚠️ هتحذف كل الأكواد الموجودة نهائياً؟ الطلاب كلهم مش هيقدروا يدخلوا. تأكيد؟')) return;
+  if(!confirm('تأكيد تاني — ده قرار نهائي مش هيرجع. موافق؟')) return;
+  try{
+    const snap = await db.collection('students').get();
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    showToast(`✅ اتحذف ${snap.size} كود بنجاح`);
     loadCodes();
   }catch(e){ showToast('خطأ: ' + e.message, 'error'); }
 }
 
 /* ============================================================
-   الطلاب
+   نظام تفعيل/إلغاء التبويبات
    ============================================================ */
+const TABS_CONFIG = {
+  'revision': { label: '📚 Units Revision', default: true },
+  'units':    { label: '📗 Units', default: true },
+  'story':    { label: '📖 Story', default: true },
+  'skills':   { label: '✏️ Skills', default: true },
+  'exams':    { label: '📝 General Exams', default: true },
+  'live':     { label: '🔴 Live', default: false },
+};
+
+async function loadTabsSettings(){
+  try{
+    const snap = await db.collection('settings').doc('tabs').get();
+    const saved = snap.exists ? snap.data() : {};
+    const cont = document.getElementById('tabs-toggle-list');
+    if(!cont) return;
+    cont.innerHTML = Object.entries(TABS_CONFIG).map(([key, cfg])=>{
+      const isOn = saved[key] !== undefined ? saved[key] : cfg.default;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card-bg);border:1px solid var(--line-strong);border-radius:10px;margin-bottom:8px;">
+        <div>
+          <div style="font-weight:700;font-size:14px;">${cfg.label}</div>
+          <div style="font-size:11px;color:var(--text-3);">key: ${key}</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <span style="font-size:12px;color:${isOn?'var(--highlight)':'var(--text-3)'};" id="tab-lbl-${key}">${isOn?'مفعّل':'معطّل'}</span>
+          <div onclick="toggleTab('${key}')" id="tab-sw-${key}" style="width:44px;height:24px;border-radius:12px;background:${isOn?'var(--highlight)':'var(--line-strong)'};cursor:pointer;position:relative;transition:background .2s;">
+            <div style="position:absolute;top:3px;${isOn?'left:22px':'left:2px'};width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s;" id="tab-dot-${key}"></div>
+          </div>
+        </label>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+
+async function toggleTab(key){
+  try{
+    const snap = await db.collection('settings').doc('tabs').get();
+    const saved = snap.exists ? snap.data() : {};
+    const current = saved[key] !== undefined ? saved[key] : TABS_CONFIG[key].default;
+    const newVal = !current;
+    await db.collection('settings').doc('tabs').set({[key]: newVal},{merge:true});
+    showToast(`${TABS_CONFIG[key].label} — ${newVal?'✅ مفعّل':'⭕ معطّل'}`);
+    loadTabsSettings();
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+}
+
+/* ============================================================
+   سجل تحركات الطلاب
+   ============================================================ */
+async function loadActivityLog(){
+  const cont = document.getElementById('activity-log-container');
+  if(!cont) return;
+  cont.innerHTML = '<div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div>';
+  try{
+    const filterCode = document.getElementById('activity-filter-code')?.value.trim().toUpperCase() || '';
+    let query = db.collection('activity_log').orderBy('timestamp','desc').limit(200);
+    const snap = await query.get();
+    let logs = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(filterCode) logs = logs.filter(l=>l.studentCode===filterCode);
+
+    if(!logs.length){ cont.innerHTML='<div style="color:var(--text-3);text-align:center;padding:24px;">لسه مفيش سجل</div>'; return; }
+
+    // تجميع حسب الطالب
+    const byStudent = {};
+    logs.forEach(l=>{
+      if(!byStudent[l.studentCode]) byStudent[l.studentCode]=[];
+      byStudent[l.studentCode].push(l);
+    });
+
+    cont.innerHTML = Object.entries(byStudent).map(([code, acts])=>`
+      <div style="background:var(--card-bg);border:1px solid var(--line-strong);border-radius:10px;padding:14px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="font-weight:800;font-size:14px;">${acts[0]?.studentName||code}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--highlight);">${code}</div>
+          </div>
+          <div style="font-size:12px;color:var(--text-3);">${acts.length} نشاط</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${acts.slice(0,20).map(a=>`
+            <span style="background:rgba(255,255,255,.05);border:1px solid var(--line-strong);padding:4px 10px;border-radius:999px;font-size:11px;color:var(--text-2);">
+              ${a.description||a.action} <span style="color:var(--text-3);margin-right:4px;">${a.date||''}</span>
+            </span>`).join('')}
+        </div>
+      </div>`).join('');
+  }catch(e){ cont.innerHTML=`<div style="color:#F0998A;">خطأ: ${e.message}</div>`; }
+}
+
+/* ============================================================
+   زرار تقرير واتساب
+   ============================================================ */
+async function sendWhatsAppReport(){
+  try{
+    const snap = await db.collection('students').get();
+    const progressSnaps = await db.collection('progress').get();
+    const progressMap = {};
+    progressSnaps.docs.forEach(d=>{ progressMap[d.id]=Object.values(d.data()).filter(v=>v===true).length; });
+
+    const students = snap.docs.map(d=>({code:d.id,...d.data()}));
+    const used = students.filter(s=>s.used);
+
+    let report = `📊 *تقرير SamySchool الأسبوعي*\n`;
+    report += `📅 ${new Date().toLocaleDateString('ar-EG')}\n\n`;
+    report += `👥 إجمالي الطلاب: ${snap.size}\n`;
+    report += `✅ دخلوا المنصة: ${used.length}\n`;
+    report += `⬜ لم يدخلوا بعد: ${snap.size - used.length}\n\n`;
+    report += `*تفاصيل الطلاب:*\n`;
+    used.slice(0,20).forEach(s=>{
+      const prog = progressMap[s.code]||0;
+      const date = s.usedAt?.toDate ? s.usedAt.toDate().toLocaleDateString('ar-EG') : '—';
+      report += `• ${s.studentName||s.code} — إنجاز: ${prog}/26 — آخر دخول: ${date}\n`;
+    });
+    if(used.length>20) report += `\n... و ${used.length-20} طالب آخر\n`;
+
+    const encoded = encodeURIComponent(report);
+    window.open(`https://wa.me/?text=${encoded}`, '_blank');
+  }catch(e){ showToast('خطأ في تجهيز التقرير: '+e.message,'error'); }
+}
+
+/* ============================================================
+   Units الجديد في الأدمن — وحدة بوحدة
+   ============================================================ */
+async function loadUnitsNew(){
+  const list = document.getElementById('units-new-list');
+  if(!list) return;
+  try{
+    const snap = await db.collection('units_new').orderBy('order').get();
+    if(snap.empty){ list.innerHTML='<div style="color:var(--text-3);font-size:13px;padding:16px;">لسه مفيش وحدات</div>'; return; }
+    list.innerHTML = snap.docs.map(d=>{
+      const u=d.data();
+      return `<div class="item-row">
+        <div class="item-row-info">
+          <div class="item-row-title">الوحدة ${u.order} — ${u.title}</div>
+          <div class="item-row-sub">${u.reviewUrl?'📄 مراجعة ✅':'📄 بدون مراجعة'} | ${u.examUrl?'⏱ امتحان ✅':'⏱ بدون امتحان'}</div>
+        </div>
+        <button onclick="deleteDoc('units_new','${d.id}','units-new-list',loadUnitsNew)" class="btn-delete">حذف</button>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+
+
 async function loadStudents(){
   const tbody = document.getElementById('students-tbody');
   try{

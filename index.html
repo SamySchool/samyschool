@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SamySchool | English Night Exam</title>
+<title>SamySchool | منصة اللغة الإنجليزية للثانوية العامة 2027</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -229,17 +229,46 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  .mlayout{flex-direction:column-reverse;padding:13px 12px 40px;}
-  .ppanel{width:100%;position:static;}
-  .ures{grid-template-columns:repeat(2,1fr);}
+  .mlayout{flex-direction:column-reverse;padding:10px 10px 40px;}
+  .ppanel{width:100%;position:static;min-width:unset;}
+  .ures{grid-template-columns:repeat(2,1fr);gap:8px;}
   .sg{grid-template-columns:1fr;}
-  .cnum{font-size:34px;}.csep{font-size:28px;}
-  .blogo{width:58px;height:58px;}
+  .cnum{font-size:30px;}.csep{font-size:24px;}
+  .cblocks{gap:10px;}.cbar{padding:14px 12px;}
+  .blogo{width:50px;height:50px;}
+  .btitle{font-size:clamp(16px,4vw,28px)!important;}
+  .tabs{gap:2px;padding-bottom:2px;}
+  .tab{padding:9px 10px;font-size:12px;}
+  .tbi{padding:10px 14px;}
+  .tbname{font-size:13px;}
+  .sntag{font-size:12px;}.sctag{font-size:10px;}
+  .pcard{padding:12px;}
+  .plbl{font-size:10.5px;}
+  .rbtn{padding:10px 6px;}
+  .rico{font-size:18px;}
+  .rname{font-size:10.5px;}
+  .rsub{font-size:9px;}
+  .uhead{padding:12px 14px;}
+  .utitle{font-size:13px;}
+  /* لوحة الإنجاز على الموبايل */
+  .prog-panel, .ppanel{border-radius:10px;}
+  /* banner */
+  .banner-inner{gap:12px;padding:0 4px;}
+  .main-banner{padding:16px 14px;}
 }
 @media(max-width:480px){
   .ures{grid-template-columns:1fr 1fr;}
-  .cnum{font-size:26px;}.csep{font-size:20px;}
-  .lcard{padding:26px 18px;}
+  .cnum{font-size:24px;}.csep{font-size:18px;}
+  .cblocks{gap:7px;}
+  .lcard{padding:22px 16px;}
+  .lbrand{font-size:24px;}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;}
+  .tab{min-width:fit-content;font-size:11.5px;padding:8px 9px;}
+  .mlayout{padding:8px 8px 40px;}
+  /* progress panel صغير */
+  .pcard{padding:10px;}
+  .ptitle{font-size:11px;}
+  .pbtext{font-size:10px;}
 }
 </style>
 </head>
@@ -276,7 +305,7 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
     <div class="banner-inner">
       <img src="logo.png" class="blogo" alt="SamySchool" onerror="this.style.display='none'">
       <div class="btxt">
-        <div class="btitle">English Night Exam</div>
+        <div class="btitle">منصة اللغة الإنجليزية للثانوية العامة 2027</div>
         <div class="bsub">Mr. Mohamed Samy</div>
       </div>
     </div>
@@ -291,7 +320,7 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
         onerror="this.style.display='none'">
       <div style="text-align:right;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--blue);">SamySchool</div>
-        <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;">English Night Exam</div>
+        <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;">2027</div>
       </div>
     </div>
     <div class="cinner">
@@ -331,21 +360,33 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
     <div class="content">
 
       <nav class="tabs">
-        <button class="tab active" data-tab="units">📚 Units</button>
+        <button class="tab active" data-tab="revision">📚 Units Revision</button>
+        <button class="tab" id="tab-units-new" data-tab="units">📗 Units</button>
         <button class="tab" data-tab="story">📖 Story</button>
         <button class="tab" data-tab="skills">✏️ Skills</button>
         <button class="tab" data-tab="exams">📝 General Exams</button>
         <button class="tab ltab" data-tab="live" id="ltab"><span class="ldot"></span> Live</button>
       </nav>
 
-      <!-- UNITS -->
-      <div class="panel active" id="panel-units">
+      <!-- UNITS REVISION (قديم) -->
+      <div class="panel active" id="panel-revision">
         <div class="sh">
-          <div class="sh-title">📚 Units — Full Curriculum</div>
+          <div class="sh-title">📚 Units Revision — Full Curriculum</div>
           <div class="sh-sub">Grammar, Vocabulary & Question Banks — شامل كل الوحدات</div>
         </div>
         <div class="sg" id="units-c">
           <div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div>
+        </div>
+      </div>
+
+      <!-- UNITS جديد — وحدة بوحدة -->
+      <div class="panel" id="panel-units">
+        <div class="sh">
+          <div class="sh-title">📗 Units — Step by Step</div>
+          <div class="sh-sub">شرح كل وحدة + امتحان الوحدة بتايمر ساعة</div>
+        </div>
+        <div id="units-new-c">
+          <div class="empty"><b>جاري التحميل...</b><br>الوحدات هتظهر هنا لما المستر سامي يضيفها</div>
         </div>
       </div>
 
@@ -490,6 +531,12 @@ function switchScreen(id){
    ============================================================ */
 function devId(){let i=localStorage.getItem('ss_d');if(!i){i='d-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('ss_d',i);}return i;}
 
+/* ===== حفظ بيانات الطالب ===== */
+const LS_AUTH = 'ss_auth';
+function saveAuth(code, name){ try{ localStorage.setItem(LS_AUTH, JSON.stringify({code,name})); }catch(e){} }
+function loadAuth(){ try{ const d=localStorage.getItem(LS_AUTH); return d?JSON.parse(d):null; }catch(e){return null;} }
+function clearAuth(){ try{ localStorage.removeItem(LS_AUTH); }catch(e){} }
+
 document.getElementById('btn-login').addEventListener('click',doLogin);
 document.getElementById('scode').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
@@ -515,6 +562,7 @@ async function doValidate(code,name){
     if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
     if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
     else await ref.set({studentName:name},{merge:true});
+    saveAuth(code,name); // ← حفظ بيانات الدخول
     onLogin(code,name);
   }catch(e){showErr('في مشكلة في الاتصال. حاول تاني.');}
 }
@@ -524,15 +572,61 @@ function showErr(m){const e=document.getElementById('lerr');e.textContent=m;e.cl
 function onLogin(code,name){
   document.getElementById('sn-tag').textContent=name;
   document.getElementById('sc-tag').textContent=code;
+  const loginScreen=document.getElementById('screen-login');
+  loginScreen.style.display='none';
+  loginScreen.classList.remove('active');
   switchScreen('screen-dashboard');
   startCD();loadProgress(code);
-  loadUnits();loadStory();loadSkills();loadExams();
+  loadTabsVisibility(); // تحميل إعدادات التبويبات
+  loadUnits();loadUnitsNew();loadStory();loadSkills();loadExams();
   loadLive();setInterval(loadLive,30000);
+  logActivity(code,'login','دخل المنصة');
+}
+
+/* تحميل إعدادات التبويبات من Firebase */
+async function loadTabsVisibility(){
+  try{
+    const snap = await window.__db.collection('settings').doc('tabs').get();
+    const cfg = snap.exists ? snap.data() : {};
+    const defaults = {revision:true,units:true,story:true,skills:true,exams:true,live:false};
+    Object.entries(defaults).forEach(([key,def])=>{
+      const isOn = cfg[key]!==undefined ? cfg[key] : def;
+      const btn = document.querySelector(`.tab[data-tab="${key}"]`);
+      if(btn){ btn.style.display = isOn ? '' : 'none'; }
+      const panel = document.getElementById('panel-'+key);
+      if(panel && !isOn){ panel.style.display='none'; }
+    });
+    // لو التبويب الأول معطّل، نفعّل أول تبويب ظاهر
+    const firstVisible = document.querySelector('.tab:not([style*="none"])');
+    if(firstVisible && !document.querySelector('.tab.active:not([style*="none"])')){
+      firstVisible.click();
+    }
+  }catch(e){}
 }
 
 document.getElementById('btn-logout').addEventListener('click',()=>{
+  clearAuth(); // ← مسح بيانات الدخول المحفوظة
   document.getElementById('scode').value='';document.getElementById('sname').value='';
-  document.getElementById('lerr').classList.remove('show');switchScreen('screen-login');
+  document.getElementById('lerr').classList.remove('show');
+  document.getElementById('screen-login').style.display='flex';
+  switchScreen('screen-login');
+});
+
+/* ===== Auto-login من localStorage ===== */
+window.addEventListener('load', async ()=>{
+  const saved = loadAuth();
+  if(!saved) return;
+  // نتحقق إن الكود لسه صالح على نفس الجهاز
+  try{
+    if(!window.__firebaseReady) return;
+    const snap = await window.__db.collection('students').doc(saved.code).get();
+    if(!snap.exists){ clearAuth(); return; }
+    const d = snap.data();
+    const dev = devId();
+    if(d.deviceId && d.deviceId !== dev){ clearAuth(); return; }
+    // كل حاجة تمام — دخول تلقائي
+    onLogin(saved.code, saved.name);
+  }catch(e){ /* لو في مشكلة اتصال، اسيب شاشة الدخول */ }
 });
 
 /* ============================================================
@@ -560,6 +654,52 @@ document.querySelectorAll('.tab').forEach(b=>{
     b.classList.add('active');document.getElementById('panel-'+b.dataset.tab).classList.add('active');
   });
 });
+
+
+/* ============================================================
+   سجل تحركات الطالب
+   ============================================================ */
+async function logActivity(code, action, desc){
+  if(!code||code==='--'||!window.__firebaseReady)return;
+  try{
+    await window.__db.collection('activity_log').add({
+      studentCode:code, action, description:desc,
+      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+      date:new Date().toLocaleDateString('ar-EG')
+    });
+  }catch(e){}
+}
+
+/* ============================================================
+   UNITS الجديد — وحدة بوحدة مع تايمر ساعة
+   ============================================================ */
+async function loadUnitsNew(){
+  const c=document.getElementById('units-new-c');
+  if(!c)return;
+  try{
+    const snap=await window.__db.collection('units_new').orderBy('order').get();
+    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش وحدات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
+    c.innerHTML=snap.docs.map((d,i)=>{
+      const u=d.data();
+      return `<div class="ucard" style="margin-bottom:14px;">
+        <div class="uhead">
+          <div class="utitle" style="font-family:\'Cairo\',sans-serif;">الوحدة ${u.order||i+1} — ${u.title||'Unit '+(i+1)}</div>
+          <div class="unum">UNIT ${u.order||i+1}</div>
+        </div>
+        <div class="ures" style="grid-template-columns:1fr 1fr;padding:14px 16px;gap:10px;">
+          ${u.reviewUrl?`<button class="rbtn" onclick="openUrlLog('${u.reviewUrl}','unit_review_${i+1}')"><div class="rico">📄</div><div class="rname">مراجعة الوحدة</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">مراجعة الوحدة</div><div class="rsub">قريباً</div></div>`}
+          ${u.examUrl?`<button class="rbtn" style="border-color:rgba(212,225,87,.4);" onclick="openUrlLog('${u.examUrl}','unit_exam_${i+1}')"><div class="rico">⏱</div><div class="rname">امتحان الوحدة</div><div class="rsub">تايمر ساعة</div></button>`:`<div class="rbtn dis"><div class="rico">⏱</div><div class="rname">امتحان الوحدة</div><div class="rsub">قريباً</div></div>`}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';}
+}
+
+function openUrlLog(url,action){
+  const code=document.getElementById('sc-tag').textContent;
+  logActivity(code,action,'فتح محتوى');
+  openUrl(url);
+}
 
 /* ============================================================
    UNITS — محتوى شامل واحد للمنهج كله

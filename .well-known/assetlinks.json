@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "io.github.samyschool.twa",
-        "sha256_cert_fingerprints": ["D7:E2:6B:45:4C:C2:E2:D6:9E:CF:B3:B1:62:AA:F2:F9:78:25:CB:E5:D1:3C:A2:3E:EB:B9:9F:47:3C:92:1D:ED"]
+        "sha256_cert_fingerprints": ["3B:C2:0A:A5:B5:4C:D5:FA:4A:02:3B:2A:EE:51:11:53:17:04:26:86:A8:8F:BC:B9:FD:DB:F1:4A:56:9B:AB:0B"]
       }
     }]

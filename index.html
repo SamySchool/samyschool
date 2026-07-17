@@ -625,8 +625,8 @@ window.addEventListener('load', async ()=>{
     const d = snap.data();
     const dev = devId();
     if(d.deviceId && d.deviceId !== dev){ clearAuth(); return; }
-    // كل حاجة تمام — دخول تلقائي
-    onLogin(saved.code, saved.name);
+// كل حاجة تمام — دخول تلقائي
+onLogin(saved.code, saved.name, d.track||saved.track||'SEC3');
   }catch(e){ /* لو في مشكلة اتصال، اسيب شاشة الدخول */ }
 });
 

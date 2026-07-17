@@ -1283,9 +1283,18 @@ async function loadMinistryExams(){
 }
 
 
+async function loadTracksDropdown(){
+  const sel = document.getElementById('codes-track');
+  if(!sel) return;
+  try{
+    const snap = await db.collection('tracks').where('active','==',true).orderBy('order').get();
+    sel.innerHTML = snap.docs.map(d=>`<option value="${d.id}">${d.data().label} (${d.id})</option>`).join('');
+  }catch(e){ sel.innerHTML = '<option value="SEC3">تالتة ثانوي (SEC3)</option>'; }
+}
+
 document.getElementById('btn-generate-codes').addEventListener('click', async () => {
   const count = parseInt(document.getElementById('codes-count').value) || 10;
-  const prefix = document.getElementById('codes-prefix').value.trim().toUpperCase() || 'SAM';
+  const track = document.getElementById('codes-track').value || 'SEC3';
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
   const btn = document.getElementById('btn-generate-codes');
@@ -1297,13 +1306,13 @@ document.getElementById('btn-generate-codes').addEventListener('click', async ()
     for(let i=0; i<count; i++){
       let suffix = '';
       for(let j=0;j<6;j++) suffix += chars[Math.floor(Math.random()*chars.length)];
-      const code = `${prefix}-${suffix}`;
+      const code = `${track}-${suffix}`;
       generated.push(code);
       const ref = db.collection('students').doc(code);
-      batch.set(ref, { used:false, deviceId:null, usedAt:null });
+      batch.set(ref, { used:false, deviceId:null, usedAt:null, track });
     }
     await batch.commit();
-    showToast(`✅ تم توليد ورفع ${count} كود بنجاح`);
+    showToast(`✅ تم توليد ورفع ${count} كود لمسار ${track}`);
     loadCodes();
   }catch(e){ showToast('حصل خطأ: ' + e.message, 'error'); }
   finally{ btn.disabled = false; btn.textContent = '⚡ توليد ورفع الأكواد على Firebase'; }

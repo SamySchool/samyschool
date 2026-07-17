@@ -299,6 +299,7 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       <button class="admin-tab" data-tab="ministry">🏛 استرشادية</button>
       <button class="admin-tab" data-tab="videos">🎥 فيديوهات</button>
       <button class="admin-tab" data-tab="exams">📝 امتحانات شاملة</button>
+      <button class="admin-tab" data-tab="tracks">🗂 المسارات</button>
       <button class="admin-tab" data-tab="tabs-control">⚙️ تفعيل القوائم</button>
       <button class="admin-tab" data-tab="codes">🔑 الأكواد</button>
       <button class="admin-tab" data-tab="students">👥 الطلاب</button>
@@ -606,6 +607,17 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
       </div>
     </div>
 
+   <!-- ===== تبويب المسارات ===== -->
+<div class="admin-panel" id="panel-tracks">
+  <div class="section-title">🗂 المسارات الدراسية <span>تفعيل كل مرحلة وتبويباتها الفرعية</span></div>
+  <div style="font-size:12.5px;color:var(--text-2);margin-bottom:16px;line-height:1.8;">
+    فعّل المسار الأساسي الأول، وبعدين اختار التبويبات الفرعية اللي جاهزة له بس.<br>
+    <b style="color:var(--highlight);">مثال:</b> فعّل "أولى إعدادي" لكن سيب Story معطّلة لحد ما تجهزلها محتوى.
+  </div>
+  <div id="tracks-list">
+    <div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div>
+  </div>
+</div>
     <!-- ===== تفعيل/إلغاء القوائم ===== -->
     <div class="admin-panel" id="panel-tabs-control">
       <div class="section-title">⚙️ تفعيل وإلغاء القوائم <span>التحكم في ما يظهر للطلاب</span></div>
@@ -846,6 +858,7 @@ function showToast(msg, type='success'){
 /* ===== تحميل كل البيانات ===== */
 function loadAll(){
   loadUnits();
+  loadTracksPanel();
   loadUnitsNew();
   loadVideos();
   loadExams();
@@ -1358,7 +1371,71 @@ async function deleteAllCodes(){
 /* ============================================================
    نظام تفعيل/إلغاء التبويبات
    ============================================================ */
-const TABS_CONFIG = {
+/* ============================================================
+   نظام المسارات (Tracks)
+   ============================================================ */
+const SUB_TABS_CONFIG = {
+  units:  '📗 Units',
+  story:  '📖 Story',
+  skills: '✏️ Skills',
+  exams:  '📝 Exams',
+};
+
+async function loadTracksPanel(){
+  const cont = document.getElementById('tracks-list');
+  if(!cont) return;
+  cont.innerHTML = '<div style="color:var(--text-3);font-size:13px;">جاري التحميل...</div>';
+  try{
+    const snap = await db.collection('tracks').orderBy('order').get();
+    const tabsSnap = await db.collection('track_tabs').get();
+    const tabsMap = {};
+    tabsSnap.docs.forEach(d => tabsMap[d.id] = d.data());
+
+    cont.innerHTML = snap.docs.map(d=>{
+      const t = d.data();
+      const subTabs = tabsMap[d.id] || {};
+      const subTabsHtml = Object.entries(SUB_TABS_CONFIG).map(([key,label])=>{
+        const isOn = subTabs[key] === true;
+        return `<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;">
+          <input type="checkbox" ${isOn?'checked':''} onchange="toggleSubTab('${d.id}','${key}',this.checked)">
+          ${label}
+        </label>`;
+      }).join('');
+
+      return `<div style="background:var(--ink-3);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${t.active?'12px':'0'};">
+          <div>
+            <div style="font-weight:700;font-size:14px;">${t.label}</div>
+            <div style="font-size:10.5px;color:var(--text-3);font-family:'JetBrains Mono',monospace;">${d.id}</div>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <span style="font-size:12px;color:${t.active?'var(--highlight)':'var(--text-3)'};">${t.active?'مفعّل':'معطّل'}</span>
+            <div onclick="toggleTrack('${d.id}',${!t.active})" style="width:44px;height:24px;border-radius:12px;background:${t.active?'var(--highlight)':'var(--line-strong)'};cursor:pointer;position:relative;">
+              <div style="position:absolute;top:3px;${t.active?'left:22px':'left:2px'};width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s;"></div>
+            </div>
+          </label>
+        </div>
+        ${t.active ? `<div style="display:flex;gap:8px;flex-wrap:wrap;">${subTabsHtml}</div>` : ''}
+      </div>`;
+    }).join('');
+  }catch(e){ cont.innerHTML = '<div style="color:#F0998A;font-size:13px;">خطأ في التحميل</div>'; }
+}
+
+async function toggleTrack(trackId, newVal){
+  try{
+    await db.collection('tracks').doc(trackId).set({active:newVal},{merge:true});
+    showToast(`${trackId} — ${newVal?'✅ اتفعّل':'⭕ اتعطّل'}`);
+    loadTracksPanel();
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+}
+
+async function toggleSubTab(trackId, key, newVal){
+  try{
+    await db.collection('track_tabs').doc(trackId).set({[key]:newVal},{merge:true});
+    showToast(`${SUB_TABS_CONFIG[key]} لمسار ${trackId} — ${newVal?'✅':'⭕'}`);
+  }catch(e){ showToast('خطأ: '+e.message,'error'); }
+}
+  const TABS_CONFIG = {
   'revision': { label: '📚 Units Revision', default: true },
   'units':    { label: '📗 Units', default: true },
   'story':    { label: '📖 Story', default: true },

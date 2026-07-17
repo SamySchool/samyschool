@@ -551,9 +551,11 @@ body{ background:var(--ink); color:var(--text-1); font-family:'Cairo',sans-serif
             <input type="number" id="codes-count" value="10" min="1" max="200">
           </div>
           <div class="form-field">
-            <label>بادئة الكود</label>
-            <input type="text" id="codes-prefix" value="SAM" maxlength="5">
-          </div>
+            <div class="form-field">
+  <label>المسار الدراسي *</label>
+  <select id="codes-track"></select>
+  <div class="form-hint">الأكواد هتتولد ببادئة المسار تلقائياً (مثال: SEC3-A1B2C3)</div>
+</div>
         </div>
         <button class="btn-add" id="btn-generate-codes">⚡ توليد ورفع الأكواد على Firebase</button>
         <div style="margin-top:12px; font-size:12px; color:var(--text-3); line-height:1.7;">

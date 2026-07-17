@@ -530,7 +530,7 @@ function devId(){let i=localStorage.getItem('ss_d');if(!i){i='d-'+Date.now().toS
 
 /* ===== حفظ بيانات الطالب ===== */
 const LS_AUTH = 'ss_auth';
-function saveAuth(code, name){ try{ localStorage.setItem(LS_AUTH, JSON.stringify({code,name})); }catch(e){} }
+function saveAuth(code, name, track){ try{ localStorage.setItem(LS_AUTH, JSON.stringify({code,name,track})); }catch(e){} }
 function loadAuth(){ try{ const d=localStorage.getItem(LS_AUTH); return d?JSON.parse(d):null; }catch(e){return null;} }
 function clearAuth(){ try{ localStorage.removeItem(LS_AUTH); }catch(e){} }
 
@@ -558,33 +558,37 @@ async function doValidate(code,name){
     const d=snap.data();const dev=devId();
     if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
     if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
-    else await ref.set({studentName:name},{merge:true});
-    saveAuth(code,name); // ← حفظ بيانات الدخول
-    onLogin(code,name);
+else await ref.set({studentName:name},{merge:true});
+const track=d.track||'SEC3';
+saveAuth(code,name,track); // ← حفظ بيانات الدخول
+onLogin(code,name,track);
   }catch(e){showErr('في مشكلة في الاتصال. حاول تاني.');}
 }
 
 function showErr(m){const e=document.getElementById('lerr');e.textContent=m;e.classList.add('show');}
 
-function onLogin(code,name){
-  document.getElementById('sn-tag').textContent=name;
-  document.getElementById('sc-tag').textContent=code;
-  const loginScreen=document.getElementById('screen-login');
-  loginScreen.style.display='none';
-  loginScreen.classList.remove('active');
-  switchScreen('screen-dashboard');
-  startCD();loadProgress(code);
-  loadTabsVisibility(); // تحميل إعدادات التبويبات
-  loadUnits();loadUnitsNew();loadStory();loadSkills();loadExams();
-  loadLive();setInterval(loadLive,30000);
-  logActivity(code,'login','دخل المنصة');
+let studentTrack='SEC3'; // المسار الافتراضي احتياطي
+
+function onLogin(code,name,track){
+studentTrack=track||'SEC3';
+document.getElementById('sn-tag').textContent=name;
+document.getElementById('sc-tag').textContent=code;
+const loginScreen=document.getElementById('screen-login');
+loginScreen.style.display='none';
+loginScreen.classList.remove('active');
+switchScreen('screen-dashboard');
+startCD();loadProgress(code);
+loadTabsVisibility(studentTrack); // تحميل إعدادات التبويبات الخاصة بالمسار
+loadUnits();loadUnitsNew();loadStory();loadSkills();loadExams();
+loadLive();setInterval(loadLive,30000);
+logActivity(code,'login','دخل المنصة');
 }
 
 /* تحميل إعدادات التبويبات من Firebase */
-async function loadTabsVisibility(){
-  try{
-    const snap = await window.__db.collection('settings').doc('tabs').get();
-    const cfg = snap.exists ? snap.data() : {};
+async function loadTabsVisibility(track){
+try{
+const snap = await window.__db.collection('track_tabs').doc(track||'SEC3').get();
+const cfg = snap.exists ? snap.data() : {};
     const defaults = {revision:true,units:true,story:true,skills:true,exams:true,live:false};
     Object.entries(defaults).forEach(([key,def])=>{
       const isOn = cfg[key]!==undefined ? cfg[key] : def;
@@ -674,7 +678,7 @@ async function loadUnitsNew(){
   const c=document.getElementById('units-new-c');
   if(!c)return;
   try{
-    const snap=await window.__db.collection('units_new').orderBy('order').get();
+    const snap=await window.__db.collection('units_new').where('track','==',studentTrack).orderBy('order').get();
     if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش وحدات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
     c.innerHTML=snap.docs.map((d,i)=>{
       const u=d.data();
@@ -706,7 +710,7 @@ let UNITS=[];
 async function loadUnits(){
   const c=document.getElementById('units-c');
   try{
-    const snap=await window.__db.collection('curriculum').doc('main').get();
+    const snap=await window.__db.collection('curriculum').doc(studentTrack).get();
     const d=snap.exists?snap.data():{};
     c.innerHTML=`
       ${uCard('📄','Grammar File','ملف شرح الجرامر الشامل',d.pdfGrammar,`openUrl('${d.pdfGrammar}')`)}
@@ -732,7 +736,7 @@ function ytId(u){if(!u)return null;const m=u.match(/(?:v=|youtu\.be\/|embed\/|li
 async function loadStory(){
   const c=document.getElementById('story-c');
   try{
-    const snap=await window.__db.collection('story').doc('main').get();
+    const snap=await window.__db.collection('story').doc(studentTrack).get();
     const d=snap.exists?snap.data():{};
     c.innerHTML=`
       ${stCard('📚','Story Study File','الملف الشامل للقصة',d.pdfStudy,`openUrl('${d.pdfStudy}')`)}
@@ -781,7 +785,7 @@ function stCardAudio(ico,name,sub,url){
 async function loadSkills(){
   const c=document.getElementById('skills-c');
   try{
-    const snap=await window.__db.collection('skills').doc('main').get();
+    const snap=await window.__db.collection('skills').doc(studentTrack).get();
     const d=snap.exists?snap.data():{};
     c.innerHTML=`
       ${stCard('💡','Skills Summary','ملخص أفكار المهارات',d.pdfSkills,`openUrl('${d.pdfSkills}')`)}

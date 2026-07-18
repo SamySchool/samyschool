@@ -1190,7 +1190,7 @@ document.getElementById('btn-save-story').addEventListener('click', async()=>{
   function driveP(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/file/d/${m[1]}/preview`:url;}
   function driveA(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/uc?export=download&id=${m[1]}`:url;}
   try{
-    await db.collection('story').doc('main').set({pdfStudy:driveP(pdf),audioStory:driveA(audio),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    await db.collection('story').doc(contentTrack).set({pdfStudy:driveP(pdf),audioStory:driveA(audio),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
     showToast('✅ محتوى القصة اتحفظ');
   }catch(e){showToast('خطأ: '+e.message,'error');}
   finally{btn.disabled=false;btn.textContent='💾 حفظ محتوى القصة';}

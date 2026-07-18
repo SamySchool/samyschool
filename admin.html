@@ -906,8 +906,8 @@ document.getElementById('btn-save-unit-new').addEventListener('click', async()=>
   const btn = document.getElementById('btn-save-unit-new');
   btn.disabled=true; btn.textContent='جاري الحفظ...';
   try{
-    await db.collection('units_new').doc(`unit_${order}`).set({
-      order, title, reviewUrl, examUrl,
+    await db.collection('units_new').doc(`${contentTrack}_unit_${order}`).set({
+      order, title, reviewUrl, examUrl, track: contentTrack,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     showToast(`✅ الوحدة ${order} اتحفظت`);
@@ -1569,7 +1569,7 @@ async function loadUnitsNew(){
   const list = document.getElementById('units-new-list');
   if(!list) return;
   try{
-    const snap = await db.collection('units_new').orderBy('order').get();
+    const snap = await db.collection('units_new').where('track','==',contentTrack).orderBy('order').get();
     if(snap.empty){ list.innerHTML='<div style="color:var(--text-3);font-size:13px;padding:16px;">لسه مفيش وحدات</div>'; return; }
     list.innerHTML = snap.docs.map(d=>{
       const u=d.data();

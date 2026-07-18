@@ -819,6 +819,21 @@ const ADMIN_PASSWORD = "3541505";
 const db = window.__db;
 let mcqCount = 0;
 let essayCount = 0;
+let contentTrack = 'SEC3'; // المسار المختار حالياً لرفع المحتوى
+
+async function loadContentTrackSelector(){
+  const sel = document.getElementById('content-track-select');
+  if(!sel) return;
+  try{
+    const snap = await db.collection('tracks').orderBy('order').get();
+    sel.innerHTML = snap.docs.map(d=>`<option value="${d.id}" ${d.id===contentTrack?'selected':''}>${d.data().label} (${d.id})</option>`).join('');
+  }catch(e){ sel.innerHTML = '<option value="SEC3">تالتة ثانوي (SEC3)</option>'; }
+  sel.addEventListener('change', ()=>{
+    contentTrack = sel.value;
+    showToast(`🔄 بتحرر دلوقتي محتوى مسار: ${contentTrack}`);
+    loadAll();
+  });
+}
 
 /* ===== تسجيل الدخول ===== */
 document.getElementById('btn-admin-login').addEventListener('click', checkPassword);

@@ -999,29 +999,7 @@ async function loadCurriculum(){
 
 async function loadUnits(){ await loadCurriculum(); }
 
-async function loadUnits(){
-  const list = document.getElementById('units-list');
-  try{
-    const snap = await db.collection('units').orderBy('createdAt').get();
-    if(snap.empty){ list.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:16px;">لسه مفيش وحدات</div>'; return; }
-    list.innerHTML = snap.docs.map(d => {
-      const u = d.data();
-      const resources = [
-        u.pdfBoard ? '📋 سبورة' : '',
-        u.pdfWords ? '📖 كلمات' : '',
-        u.examUrl  ? '📝 امتحان' : '',
-        u.audioUrl ? '🎧 فويس' : '',
-      ].filter(Boolean).join(' · ') || 'لا يوجد محتوى بعد';
-      return `<div class="item-row">
-        <div class="item-row-info">
-          <div class="item-row-title">${u.titleAr} ${u.titleEn ? '— '+u.titleEn : ''}</div>
-          <div class="item-row-sub">${resources}</div>
-        </div>
-        <button class="btn-delete" onclick="deleteDoc('units','${d.id}','units-list',loadUnits)">حذف</button>
-      </div>`;
-    }).join('');
-  }catch(e){ list.innerHTML = '<div style="color:#F0998A;font-size:13px;">خطأ في التحميل</div>'; }
-}
+
 
 /* ============================================================
    الفيديوهات

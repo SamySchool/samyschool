@@ -938,8 +938,8 @@ document.getElementById('btn-save-exams-url').addEventListener('click', async()=
   const btn = document.getElementById('btn-save-exams-url');
   btn.disabled=true; btn.textContent='جاري الحفظ...';
   try{
-    await db.collection('settings').doc('exams').set({ externalUrl: url, updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true});
-    await db.collection('curriculum').doc('main').set({ examsUrl: url },{merge:true});
+    await db.collection('settings').doc('exams_'+contentTrack).set({ externalUrl: url, updatedAt: firebase.firestore.FieldValue.serverTimestamp() },{merge:true});
+    await db.collection('curriculum').doc(contentTrack).set({ examsUrl: url },{merge:true});
     const st = document.getElementById('exams-url-status');
     if(st){ st.style.display='block'; st.style.color='#4CAF50'; st.innerHTML='✅ الرابط اتحفظ — الطلاب يشوفوه دلوقتي في المنصة'; }
     showToast('✅ رابط الامتحانات اتحفظ');
@@ -1150,7 +1150,7 @@ document.getElementById('btn-save-exam').addEventListener('click', async () => {
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
   try{
     await db.collection('exams').add({
-      title, timeMin, mcq, essay,
+      title, timeMin, mcq, essay, track: contentTrack,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     showToast('✅ الامتحان اتحفظ بنجاح');

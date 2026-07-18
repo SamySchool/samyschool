@@ -1206,7 +1206,7 @@ document.getElementById('btn-save-skills').addEventListener('click', async()=>{
   btn.disabled=true; btn.textContent='جاري الحفظ...';
   function driveP(url){if(!url)return '';const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?`https://drive.google.com/file/d/${m[1]}/preview`:url;}
   try{
-    await db.collection('skills').doc('main').set({pdfSkills:driveP(pdf),bankSkills:bank,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    await db.collection('skills').doc(contentTrack).set({pdfSkills:driveP(pdf),bankSkills:bank,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
     showToast('✅ محتوى المهارات اتحفظ');
   }catch(e){showToast('خطأ: '+e.message,'error');}
   finally{btn.disabled=false;btn.textContent='💾 حفظ محتوى المهارات';}

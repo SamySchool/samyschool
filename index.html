@@ -803,7 +803,7 @@ const EX_SECS=7200;
 async function loadExams(){
   try{
     // نجيب الرابط الخارجي من settings
-    const settingSnap = await window.__db.collection('settings').doc('exams').get();
+    const settingSnap = await window.__db.collection('settings').doc('exams_'+studentTrack).get();
     const externalUrl = settingSnap.exists ? settingSnap.data().externalUrl : null;
 
     const btnWrap = document.getElementById('exams-btn-wrap');

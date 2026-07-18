@@ -975,7 +975,7 @@ document.getElementById('btn-save-curriculum').addEventListener('click', async (
   }
 
   try{
-    await db.collection('curriculum').doc('main').set({
+    await db.collection('curriculum').doc(contentTrack).set({
       pdfGrammar: drivePdf(pdfGrammar),
       bankGrammar: bankGrammar,
       pdfVocab: drivePdf(pdfVocab),
@@ -991,7 +991,7 @@ document.getElementById('btn-save-curriculum').addEventListener('click', async (
 async function loadCurriculum(){
   const disp = document.getElementById('curriculum-display');
   try{
-    const snap = await db.collection('curriculum').doc('main').get();
+    const snap = await db.collection('curriculum').doc(contentTrack).get();
     const d = snap.exists ? snap.data() : {};
     const items = [
       {lbl:'📄 ملف الجرامر الشامل', val:d.pdfGrammar, inp:'curr-pdf-grammar'},

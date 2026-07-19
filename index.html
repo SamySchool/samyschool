@@ -9,15 +9,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>SamySchool | منصة اللغة الإنجليزية 2027</title>
+<title>SamySchool | منصة اللغة الإنجليزية</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",authDomain:"samyschool-2014.firebaseapp.com",projectId:"samyschool-2014",storageBucket:"samyschool-2014.firebasestorage.app",messagingSenderId:"950744024303",appId:"1:950744024303:web:b01d36410b80749b43471a"};
 try{firebase.initializeApp(firebaseConfig);window.__db=firebase.firestore();window.__firebaseReady=true;}catch(e){window.__firebaseReady=false;}
-/* ===== LOGO URL — استبدل برابط اللوجو الحقيقي بعد رفعه على GitHub ===== */
-const LOGO_URL="logo.png";
 </script>
 <style>
 :root{
@@ -64,16 +62,11 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .btxt .btitle{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,42px);font-weight:700;color:#F6F4EC;letter-spacing:.04em;}
 .btxt .bsub{font-family:'Lora',serif;font-style:italic;font-size:clamp(13px,2vw,18px);color:rgba(30,144,255,.9);margin-top:4px;}
 
-/* COUNTDOWN */
-.cbar{background:linear-gradient(135deg,rgba(30,144,255,.1),rgba(30,144,255,.04));border-bottom:1px solid rgba(30,144,255,.2);padding:18px 24px;text-align:center;z-index:4;position:relative;}
-.cinner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;}
-.clbl{font-size:13px;font-weight:800;color:rgba(30,144,255,.8);letter-spacing:.08em;font-family:'JetBrains Mono',monospace;}
-.cblocks{display:flex;gap:14px;align-items:center;}
-.cunit{text-align:center;}
-.cnum{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;line-height:1;}
-.cunlbl{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-top:4px;color:var(--t3);}
-.csep{font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;margin-bottom:14px;color:rgba(30,144,255,.6);animation:blink 1s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+/* SESSION TIMER BAR (بديل العد التنازلي القديم) */
+.sbar-wrap{background:linear-gradient(135deg,rgba(30,144,255,.1),rgba(30,144,255,.04));border-bottom:1px solid rgba(30,144,255,.2);padding:14px 24px;text-align:center;z-index:4;position:relative;}
+.sbar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.sbar-lbl{font-size:13px;font-weight:800;color:rgba(30,144,255,.85);letter-spacing:.05em;font-family:'JetBrains Mono',monospace;}
+.sbar-time{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--t1);letter-spacing:.05em;}
 
 /* TOPBAR */
 .topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
@@ -88,9 +81,8 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .btnout{background:transparent;border:1px solid var(--lineS);color:var(--t2);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;}
 .btnout:hover{border-color:var(--coral);color:#F0998A;}
 
-/* LAYOUT */
-.mlayout{display:flex;gap:20px;max-width:1080px;margin:0 auto;padding:22px 24px 60px;position:relative;z-index:1;}
-.content{flex:1;min-width:0;}
+/* LAYOUT (بدون سايدبار إنجازات) */
+.mlayout{max-width:820px;margin:0 auto;padding:22px 24px 60px;position:relative;z-index:1;}
 
 /* TABS */
 .tabs{display:flex;gap:3px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -104,13 +96,14 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .ltab{display:none;color:#ff4444 !important;}
 .ltab.show{display:inline-flex;align-items:center;gap:6px;}
 .ldot{width:7px;height:7px;background:#ff4444;border-radius:50%;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 /* SECTION HEAD */
 .sh{margin-bottom:16px;}
 .sh-title{font-size:17px;font-weight:800;margin-bottom:3px;}
 .sh-sub{font-size:12px;color:var(--t3);}
 
-/* UNIT CARDS */
+/* UNIT / CHAPTER CARDS */
 .ulist{display:flex;flex-direction:column;gap:13px;}
 .ucard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .2s;}
 .ucard:hover{border-color:var(--lineS);}
@@ -124,31 +117,16 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .rico{font-size:20px;}
 .rname{font-size:11px;font-weight:700;color:var(--t1);line-height:1.3;}
 .rsub{font-size:9.5px;color:var(--t3);}
-.abar{padding:0 16px 13px;display:none;}
-.abar.show{display:block;}
-.actrl{display:flex;align-items:center;gap:9px;background:rgba(30,144,255,.06);border:1px solid rgba(30,144,255,.2);border-radius:8px;padding:9px 12px;}
-.apbtn{width:26px;height:26px;background:var(--blue);border:none;border-radius:50%;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.aprog{flex:1;height:3px;background:var(--lineS);border-radius:2px;overflow:hidden;}
-.afill{height:100%;background:var(--blue);width:0%;transition:width .1s;}
-.atime{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);min-width:32px;}
 
-/* STORY & SKILLS */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.sc{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color .2s;}
-.sc:hover:not(.dis){border-color:var(--blue);background:var(--blueL);}
-.sc.dis{opacity:.4;cursor:not-allowed;}
-.sico{font-size:38px;}
-.sname{font-weight:800;font-size:14px;}
-.ssub{font-size:11.5px;color:var(--t3);}
-
-/* EXAMS */
-.esec{margin-bottom:26px;}
-.eslbl{font-size:13px;font-weight:800;color:var(--t2);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+/* EXAMS LIST */
 .egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px;}
 .ecard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:17px;transition:border-color .2s;}
 .ecard:hover{border-color:var(--lineS);}
 .etitle{font-weight:800;font-size:14px;margin-bottom:4px;}
 .emeta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);margin-bottom:13px;}
+.etypebadge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:800;margin-right:6px;}
+.etypebadge.full{background:rgba(212,225,87,.12);color:var(--hl);}
+.etypebadge.partial{background:rgba(30,144,255,.12);color:var(--blue);}
 .btnst{width:100%;background:transparent;border:1.5px solid var(--blue);color:var(--blue);padding:9px;border-radius:8px;font-weight:800;font-size:13px;transition:background .2s,color .2s;}
 .btnst:hover{background:var(--blue);color:#fff;}
 
@@ -171,62 +149,6 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .lfr{aspect-ratio:16/9;background:#000;position:relative;}
 .lfr iframe{width:100%;height:100%;border:none;}
 
-/* EXAM SCREEN */
-#screen-exam{padding:0 0 80px;position:relative;z-index:1;}
-.etbar{background:rgba(11,18,32,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:10px;}
-.etitle{font-weight:800;font-size:15px;}
-.etimbox{display:flex;align-items:center;gap:8px;background:rgba(224,101,79,.1);border:1.5px solid rgba(224,101,79,.4);padding:7px 13px;border-radius:8px;}
-.etimlbl{font-size:12px;color:#F0998A;font-weight:700;}
-.etim{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:#F0998A;}
-.btnex{background:transparent;border:1px solid var(--lineS);color:var(--t2);padding:7px 13px;border-radius:7px;font-size:12px;font-weight:700;}
-.ebody{max-width:800px;margin:0 auto;padding:22px;}
-.qblock{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:12px;}
-.qnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:7px;}
-.qtext{font-family:'Lora',serif;font-size:16px;line-height:1.7;margin-bottom:14px;font-weight:600;}
-.qopts{display:flex;flex-direction:column;gap:7px;}
-.qopt{display:flex;align-items:center;gap:9px;padding:11px 13px;border:1.5px solid var(--lineS);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s;}
-.qopt:hover{border-color:var(--t2);}
-.qopt.sel{border-color:var(--blue);background:var(--blueL);}
-.qopt.ok{border-color:var(--green);background:rgba(76,175,80,.1);}
-.qopt.no{border-color:var(--coral);background:rgba(224,101,79,.1);}
-.qlbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);min-width:16px;}
-.qexp{display:none;margin-top:8px;padding:9px 12px;background:rgba(30,144,255,.06);border-right:3px solid var(--blue);border-radius:6px;font-size:12.5px;color:var(--t2);line-height:1.6;}
-.qexp.show{display:block;}
-.qessay{width:100%;background:rgba(0,0,0,.2);border:1.5px solid var(--lineS);border-radius:8px;padding:12px 14px;color:var(--t1);font-family:'Lora',serif;font-size:14px;min-height:90px;resize:vertical;}
-.qessay:focus{border-color:var(--blue);outline:none;}
-.sbar{display:flex;justify-content:space-between;align-items:center;margin-top:17px;padding-top:15px;border-top:1px solid var(--line);}
-.btnsub{background:var(--blue);color:#fff;border:none;padding:12px 27px;border-radius:8px;font-weight:800;font-size:14px;}
-.rbox{text-align:center;padding:38px 22px;background:var(--ink3);border:1px solid var(--lineS);border-radius:var(--r);margin-top:18px;display:none;}
-.rscore{font-family:'JetBrains Mono',monospace;font-size:46px;font-weight:700;color:var(--blue);margin-bottom:7px;}
-.rlbl{color:var(--t2);font-weight:700;font-size:13px;}
-
-/* PROGRESS */
-.ppanel{width:226px;min-width:226px;position:sticky;top:70px;height:fit-content;}
-.pcard{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:11px;}
-.ptitle{font-size:11.5px;font-weight:800;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px;}
-.pbtrack{height:5px;background:var(--lineS);border-radius:3px;overflow:hidden;margin-bottom:5px;}
-.pbfill{height:100%;background:var(--blue);border-radius:3px;transition:width .5s;}
-.pbtext{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);text-align:center;}
-.pslbl{font-size:11px;color:var(--t3);font-weight:700;margin:9px 0 6px;}
-.pitems{display:flex;flex-direction:column;gap:3px;}
-.pitem{display:flex;align-items:center;gap:7px;padding:5px 6px;border-radius:6px;cursor:pointer;transition:background .15s;}
-.pitem:hover{background:rgba(255,255,255,.04);}
-.pitem.done{background:rgba(30,144,255,.06);}
-.pchk{width:15px;height:15px;min-width:15px;border:1.5px solid var(--lineS);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s;}
-.pitem.done .pchk{background:var(--blue);border-color:var(--blue);color:#fff;}
-.plbl{font-size:11px;font-weight:600;color:var(--t2);line-height:1.3;}
-.pitem.done .plbl{color:var(--t1);}
-
-/* CELEBRATE */
-.celmod{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.77);align-items:center;justify-content:center;}
-.celmod.show{display:flex;}
-.celbox{background:var(--ink3);border:2px solid var(--blue);border-radius:20px;padding:38px 42px;text-align:center;max-width:350px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes pop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-.celemo{font-size:52px;margin-bottom:13px;display:block;}
-.celtit{font-size:19px;font-weight:900;color:var(--blue);margin-bottom:6px;}
-.celsub{color:var(--t2);font-size:13px;margin-bottom:20px;line-height:1.6;}
-.celbtn{background:var(--blue);color:#fff;border:none;padding:11px 28px;border-radius:8px;font-weight:800;font-size:13px;}
-
 /* EMPTY / FOOTER */
 .empty{text-align:center;padding:44px 20px;color:var(--t3);border:1.5px dashed var(--lineS);border-radius:var(--r);font-size:13px;line-height:1.8;}
 .empty b{color:var(--t2);display:block;margin-bottom:6px;font-size:14.5px;}
@@ -235,12 +157,9 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  .mlayout{flex-direction:column-reverse;padding:10px 10px 40px;}
-  .ppanel{width:100%;position:static;min-width:unset;}
-  .ures{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .sg{grid-template-columns:1fr;}
-  .cnum{font-size:30px;}.csep{font-size:24px;}
-  .cblocks{gap:10px;}.cbar{padding:14px 12px;}
+  .mlayout{padding:10px 10px 40px;}
+  .ures{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .sbar-time{font-size:20px;}
   .blogo{width:50px;height:50px;}
   .btitle{font-size:clamp(16px,4vw,28px)!important;}
   .tabs{gap:2px;padding-bottom:2px;}
@@ -248,34 +167,19 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
   .tbi{padding:10px 14px;}
   .tbname{font-size:13px;}
   .sntag{font-size:12px;}.sctag{font-size:10px;}
-  .pcard{padding:12px;}
-  .plbl{font-size:10.5px;}
-  .rbtn{padding:10px 6px;}
-  .rico{font-size:18px;}
-  .rname{font-size:10.5px;}
-  .rsub{font-size:9px;}
   .uhead{padding:12px 14px;}
   .utitle{font-size:13px;}
-  /* لوحة الإنجاز على الموبايل */
-  .prog-panel, .ppanel{border-radius:10px;}
-  /* banner */
   .banner-inner{gap:12px;padding:0 4px;}
   .main-banner{padding:16px 14px;}
-  .cbar-brand-float{display:none;}
 }
 @media(max-width:480px){
-  .ures{grid-template-columns:1fr 1fr;}
-  .cnum{font-size:24px;}.csep{font-size:18px;}
-  .cblocks{gap:7px;}
+  .ures{grid-template-columns:1fr 1fr 1fr;gap:5px;}
+  .rname{font-size:9.5px;}
   .lcard{padding:22px 16px;}
   .lbrand{font-size:24px;}
   .tabs{flex-wrap:nowrap;overflow-x:auto;}
   .tab{min-width:fit-content;font-size:11.5px;padding:8px 9px;}
   .mlayout{padding:8px 8px 40px;}
-  /* progress panel صغير */
-  .pcard{padding:10px;}
-  .ptitle{font-size:11px;}
-  .pbtext{font-size:10px;}
 }
 </style>
 </head>
@@ -289,14 +193,14 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
         <img src="logo.png" class="llogo" alt="SamySchool" onerror="this.style.display='none'">
         <div>
           <div class="lbrand">Samy<span>School</span></div>
-          <div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;">منصة اللغة الإنجليزية 2027</div>
+          <div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;">منصة اللغة الإنجليزية</div>
         </div>
       </div>
-      <p class="lsub">منصة اللغة الإنجليزية 2027</p>
+      <p class="lsub">منصة اللغة الإنجليزية</p>
       <label class="fl" for="sname">اسمك الثنائي بالإنجليزي <span style="font-size:10px;color:var(--t3);">(First Last)</span></label>
       <input type="text" id="sname" class="inp" placeholder="Ahmed Mohamed" maxlength="40" autocomplete="name">
       <label class="fl" for="scode">كود الكارت</label>
-      <input type="text" id="scode" class="inp cinp" placeholder="SAM-XXXXXX" maxlength="20" autocomplete="off">
+      <input type="text" id="scode" class="inp cinp" placeholder="SEC3-XXXXXX" maxlength="20" autocomplete="off">
       <button class="btnl" id="btn-login">دخول المنصة</button>
       <div class="lerr" id="lerr">الكود غير صحيح أو الاسم غير مكتمل.</div>
       <div class="lfoot">الكود يُفعَّل على أول جهاز فقط. لأي مشكلة تواصل مع المستر سامي.</div>
@@ -312,26 +216,17 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
     <div class="banner-inner">
       <img src="logo.png" class="blogo" alt="SamySchool" onerror="this.style.display='none'">
       <div class="btxt">
-        <div class="btitle">منصة اللغة الإنجليزية 2027</div>
+        <div class="btitle">منصة اللغة الإنجليزية</div>
         <div class="bsub">Mr. Mohamed Samy</div>
       </div>
     </div>
   </div>
 
- <!-- COUNTDOWN -->
-  <div class="cbar" style="position:relative;">
-    <div class="cinner">
-      <span class="clbl">⏳ EXAM COUNTDOWN</span>
-      <div class="cblocks">
-        <div class="cunit"><div class="cnum" id="cd-d" style="color:#ff4444;">--</div><div class="cunlbl">DAYS</div></div>
-        <span class="csep">:</span>
-        <div class="cunit"><div class="cnum" id="cd-h" style="color:#F6F4EC;">--</div><div class="cunlbl">HRS</div></div>
-        <span class="csep">:</span>
-        <div class="cunit"><div class="cnum" id="cd-m" style="color:#ff4444;">--</div><div class="cunlbl">MIN</div></div>
-        <span class="csep">:</span>
-        <div class="cunit"><div class="cnum" id="cd-s" style="color:#F6F4EC;">--</div><div class="cunlbl">SEC</div></div>
-      </div>
-      <span class="clbl">July 5 — 9:00 AM</span>
+  <!-- SESSION TIMER (بديل العد التنازلي) -->
+  <div class="sbar-wrap">
+    <div class="sbar-inner">
+      <span class="sbar-lbl">⏱ وقتك على المنصة اليوم</span>
+      <span class="sbar-time" id="session-timer">00:00:00</span>
     </div>
   </div>
 
@@ -357,68 +252,35 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
     <div class="content">
 
       <nav class="tabs">
-        <button class="tab active" data-tab="revision">📚 Units Revision</button>
-        <button class="tab" id="tab-units-new" data-tab="units">📗 Units</button>
+        <button class="tab active" data-tab="units">📗 Units</button>
         <button class="tab" data-tab="story">📖 Story</button>
         <button class="tab" data-tab="skills">✏️ Skills</button>
-        <button class="tab" data-tab="exams">📝 General Exams</button>
+        <button class="tab" data-tab="exams">📝 Exams</button>
         <button class="tab ltab" data-tab="live" id="ltab"><span class="ldot"></span> Live</button>
       </nav>
 
-      <!-- UNITS REVISION (قديم) -->
-      <div class="panel active" id="panel-revision">
-        <div class="sh">
-          <div class="sh-title">📚 Units Revision — Full Curriculum</div>
-          <div class="sh-sub">Grammar, Vocabulary & Question Banks — شامل كل الوحدات</div>
-        </div>
-        <div class="sg" id="units-c">
-          <div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div>
-        </div>
-      </div>
-
-      <!-- UNITS جديد — وحدة بوحدة -->
-      <div class="panel" id="panel-units">
-        <div class="sh">
-          <div class="sh-title">📗 Units — Step by Step</div>
-          <div class="sh-sub">شرح كل وحدة + امتحان الوحدة بتايمر ساعة</div>
-        </div>
-        <div id="units-new-c">
-          <div class="empty"><b>جاري التحميل...</b><br>الوحدات هتظهر هنا لما المستر سامي يضيفها</div>
-        </div>
+      <!-- UNITS -->
+      <div class="panel active" id="panel-units">
+        <div class="sh"><div class="sh-title">📗 Units</div><div class="sh-sub">فيديو شرح + مراجعة تفاعلية + امتحان لكل وحدة</div></div>
+        <div class="ulist" id="units-c"><div class="empty"><b>جاري التحميل...</b></div></div>
       </div>
 
       <!-- STORY -->
       <div class="panel" id="panel-story">
-        <div class="sh"><div class="sh-title">📖 Story — The Count of Monte Cristo</div><div class="sh-sub">Complete story study materials</div></div>
-        <div class="sg" id="story-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
+        <div class="sh"><div class="sh-title">📖 Story</div><div class="sh-sub">فيديو شرح + تدريب لكل فصل</div></div>
+        <div class="ulist" id="story-c"><div class="empty"><b>جاري التحميل...</b></div></div>
       </div>
 
       <!-- SKILLS -->
       <div class="panel" id="panel-skills">
-        <div class="sh"><div class="sh-title">✏️ Skills</div><div class="sh-sub">All skills strategies and interactive question banks</div></div>
-        <div class="sg" id="skills-c"><div class="empty" style="grid-column:1/-1;"><b>Loading...</b></div></div>
+        <div class="sh"><div class="sh-title">✏️ Skills</div><div class="sh-sub">فيديو شرح + تدريب لكل فصل</div></div>
+        <div class="ulist" id="skills-c"><div class="empty"><b>جاري التحميل...</b></div></div>
       </div>
 
       <!-- EXAMS -->
       <div class="panel" id="panel-exams">
-        <div class="sh"><div class="sh-title">📝 General Exams</div><div class="sh-sub">النماذج الاسترشادية الرسمية — Mr. Mohamed Samy</div></div>
-        <div id="exams-btn-wrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;">
-          <div style="font-size:64px;margin-bottom:20px;">📋</div>
-          <div style="font-size:20px;font-weight:900;margin-bottom:8px;">النماذج الاسترشادية التفاعلية</div>
-          <div style="font-size:14px;color:var(--t2);margin-bottom:32px;line-height:1.8;max-width:420px;">
-            جميع النماذج الاسترشادية الرسمية لعام 2026 في مكان واحد —<br>اختيار من متعدد + تصحيح فوري + تفسير لكل سؤال
-          </div>
-          <button onclick="openUrl('النماذج_الاسترشادية_التفاعلية.html')"
-            style="background:var(--blue);color:#fff;border:none;padding:18px 48px;border-radius:12px;font-family:'Cairo',sans-serif;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 28px -8px rgba(30,144,255,.6);transition:transform .15s;display:inline-flex;align-items:center;gap:12px;"
-            onmouseover="this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.transform='translateY(0)'">
-            <span style="font-size:22px;">🚀</span>
-            ابدأ الامتحانات الاسترشادية
-          </button>
-          <div style="margin-top:14px;font-size:12px;color:var(--t3);font-family:'JetBrains Mono',monospace;">
-            يفتح في صفحة جديدة · تأكد من الاتصال بالإنترنت
-          </div>
-        </div>
+        <div class="sh"><div class="sh-title">📝 Exams</div><div class="sh-sub">امتحانات شاملة وجزئية</div></div>
+        <div class="egrid" id="exams-c"><div class="empty" style="grid-column:1/-1;"><b>جاري التحميل...</b></div></div>
       </div>
 
       <!-- LIVE -->
@@ -448,50 +310,6 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
         <div>SamySchool © 2027 — منصة اللغة الإنجليزية · Mr. Mohamed Samy</div>
       </footer>
     </div>
-
-    <!-- PROGRESS PANEL -->
-    <aside class="ppanel">
-      <div class="pcard">
-        <div class="ptitle">🏆 Achievement Board</div>
-        <div class="pbtrack"><div class="pbfill" id="pb-fill" style="width:0%"></div></div>
-        <div class="pbtext" id="pb-text">0 / 26</div>
-      </div>
-      <div class="pcard">
-        <div class="pslbl">📚 الوحدات</div>
-        <div class="pitems" id="p-units"></div>
-      </div>
-      <div class="pcard">
-        <div class="pslbl">✏️ Skills</div>
-        <div class="pitems" id="p-skills"></div>
-      </div>
-      <div class="pcard">
-        <div class="pslbl">📋 امتحانات شاملة ث.ع (20)</div>
-        <div class="pitems" id="p-general"></div>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- EXAM SCREEN -->
-<section id="screen-exam" class="screen">
-  <div class="etbar">
-    <div class="etitle" id="exam-ttl">Exam</div>
-    <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;">
-      <div class="etimbox"><span class="etimlbl">⏱ Time:</span><span class="etim" id="etimer">02:00:00</span></div>
-      <button class="btnex" id="btn-ex">Exit without submitting</button>
-    </div>
-  </div>
-  <div class="ebody">
-    <div id="exam-qs"></div>
-    <div class="sbar">
-      <span style="color:var(--t3);font-size:12px;font-family:'JetBrains Mono',monospace;">Review all answers before submitting</span>
-      <button class="btnsub" id="btn-sub">Submit Exam ✓</button>
-    </div>
-    <div class="rbox" id="rbox">
-      <div class="rscore" id="rscore">--</div>
-      <div class="rlbl">Your score (MCQ auto-graded · Essay reviewed by Mr. Samy)</div>
-      <button onclick="switchScreen('screen-dashboard')" style="margin-top:16px;background:var(--blue);color:#fff;border:none;padding:10px 26px;border-radius:8px;font-weight:800;font-size:13px;">Back to Dashboard</button>
-    </div>
   </div>
 </section>
 
@@ -500,16 +318,6 @@ footer{padding:20px 24px;text-align:center;color:var(--t3);font-size:11.5px;bord
   <div class="vbox">
     <div class="vhead"><h4 id="vm-ttl"></h4><button class="vcls" id="vm-cls">✕</button></div>
     <div class="vframe"><iframe id="vm-fr" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>
-  </div>
-</div>
-
-<!-- Celebrate -->
-<div class="celmod" id="celmod">
-  <div class="celbox">
-    <span class="celemo" id="cel-e">🎉</span>
-    <div class="celtit" id="cel-t">Excellent!</div>
-    <div class="celsub" id="cel-s">Keep going!</div>
-    <button class="celbtn" onclick="closeCel()">Thanks! 💪</button>
   </div>
 </div>
 
@@ -528,7 +336,6 @@ function switchScreen(id){
    ============================================================ */
 function devId(){let i=localStorage.getItem('ss_d');if(!i){i='d-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('ss_d',i);}return i;}
 
-/* ===== حفظ بيانات الطالب ===== */
 const LS_AUTH = 'ss_auth';
 function saveAuth(code, name, track){ try{ localStorage.setItem(LS_AUTH, JSON.stringify({code,name,track})); }catch(e){} }
 function loadAuth(){ try{ const d=localStorage.getItem(LS_AUTH); return d?JSON.parse(d):null; }catch(e){return null;} }
@@ -558,38 +365,37 @@ async function doValidate(code,name){
     const d=snap.data();const dev=devId();
     if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
     if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
-else await ref.set({studentName:name},{merge:true});
-const track=d.track||'SEC3';
-saveAuth(code,name,track); // ← حفظ بيانات الدخول
-onLogin(code,name,track);
+    else await ref.set({studentName:name},{merge:true});
+    const track=d.track||'SEC3';
+    saveAuth(code,name,track);
+    onLogin(code,name,track);
   }catch(e){showErr('في مشكلة في الاتصال. حاول تاني.');}
 }
 
 function showErr(m){const e=document.getElementById('lerr');e.textContent=m;e.classList.add('show');}
 
-let studentTrack='SEC3'; // المسار الافتراضي احتياطي
+let studentTrack='SEC3';
 
 function onLogin(code,name,track){
-studentTrack=track||'SEC3';
-document.getElementById('sn-tag').textContent=name;
-document.getElementById('sc-tag').textContent=code;
-const loginScreen=document.getElementById('screen-login');
-loginScreen.style.display='none';
-loginScreen.classList.remove('active');
-switchScreen('screen-dashboard');
-startCD();loadProgress(code);
-loadTabsVisibility(studentTrack); // تحميل إعدادات التبويبات الخاصة بالمسار
-loadUnits();loadUnitsNew();loadStory();loadSkills();loadExams();
-loadLive();setInterval(loadLive,30000);
-logActivity(code,'login','دخل المنصة');
+  studentTrack=track||'SEC3';
+  document.getElementById('sn-tag').textContent=name;
+  document.getElementById('sc-tag').textContent=code;
+  const loginScreen=document.getElementById('screen-login');
+  loginScreen.style.display='none';
+  loginScreen.classList.remove('active');
+  switchScreen('screen-dashboard');
+  startSessionTimer();
+  loadTabsVisibility(studentTrack);
+  loadUnits();loadStory();loadSkills();loadExams();
+  loadLive();setInterval(loadLive,30000);
+  logActivity(code,'login','دخل المنصة');
 }
 
-/* تحميل إعدادات التبويبات من Firebase */
 async function loadTabsVisibility(track){
-try{
-const snap = await window.__db.collection('track_tabs').doc(track||'SEC3').get();
-const cfg = snap.exists ? snap.data() : {};
-    const defaults = {revision:true,units:true,story:true,skills:true,exams:true,live:false};
+  try{
+    const snap = await window.__db.collection('track_tabs').doc(track||'SEC3').get();
+    const cfg = snap.exists ? snap.data() : {};
+    const defaults = {units:true,story:true,skills:true,exams:true,live:false};
     Object.entries(defaults).forEach(([key,def])=>{
       const isOn = cfg[key]!==undefined ? cfg[key] : def;
       const btn = document.querySelector(`.tab[data-tab="${key}"]`);
@@ -597,7 +403,6 @@ const cfg = snap.exists ? snap.data() : {};
       const panel = document.getElementById('panel-'+key);
       if(panel && !isOn){ panel.style.display='none'; }
     });
-    // لو التبويب الأول معطّل، نفعّل أول تبويب ظاهر
     const firstVisible = document.querySelector('.tab:not([style*="none"])');
     if(firstVisible && !document.querySelector('.tab.active:not([style*="none"])')){
       firstVisible.click();
@@ -606,18 +411,18 @@ const cfg = snap.exists ? snap.data() : {};
 }
 
 document.getElementById('btn-logout').addEventListener('click',()=>{
-  clearAuth(); // ← مسح بيانات الدخول المحفوظة
+  clearAuth();
+  stopSessionTimer();
   document.getElementById('scode').value='';document.getElementById('sname').value='';
   document.getElementById('lerr').classList.remove('show');
   document.getElementById('screen-login').style.display='flex';
   switchScreen('screen-login');
 });
 
-/* ===== Auto-login من localStorage ===== */
+/* Auto-login */
 window.addEventListener('load', async ()=>{
   const saved = loadAuth();
   if(!saved) return;
-  // نتحقق إن الكود لسه صالح على نفس الجهاز
   try{
     if(!window.__firebaseReady) return;
     const snap = await window.__db.collection('students').doc(saved.code).get();
@@ -625,25 +430,29 @@ window.addEventListener('load', async ()=>{
     const d = snap.data();
     const dev = devId();
     if(d.deviceId && d.deviceId !== dev){ clearAuth(); return; }
-// كل حاجة تمام — دخول تلقائي
-onLogin(saved.code, saved.name, d.track||saved.track||'SEC3');
-  }catch(e){ /* لو في مشكلة اتصال، اسيب شاشة الدخول */ }
+    onLogin(saved.code, saved.name, d.track||saved.track||'SEC3');
+  }catch(e){}
 });
 
 /* ============================================================
-   COUNTDOWN — July 5 2026 9:00 AM
+   SESSION TIMER — الوقت الي الطالب قضاه من وقت الدخول
    ============================================================ */
-function startCD(){
-  const t=new Date('2026-07-05T09:00:00');
+let sessionStartMs=null, sessionTmrInterval=null;
+function startSessionTimer(){
+  sessionStartMs = Date.now();
+  const el = document.getElementById('session-timer');
   function upd(){
-    const diff=t-new Date();if(diff<=0)return;
-    document.getElementById('cd-d').textContent=Math.floor(diff/86400000);
-    document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-    document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    const diff = Date.now() - sessionStartMs;
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    el.textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   }
-  upd();setInterval(upd,1000);
+  upd();
+  if(sessionTmrInterval) clearInterval(sessionTmrInterval);
+  sessionTmrInterval = setInterval(upd,1000);
 }
+function stopSessionTimer(){ if(sessionTmrInterval){ clearInterval(sessionTmrInterval); sessionTmrInterval=null; } }
 
 /* ============================================================
    TABS
@@ -656,227 +465,126 @@ document.querySelectorAll('.tab').forEach(b=>{
   });
 });
 
-
 /* ============================================================
    سجل تحركات الطالب
    ============================================================ */
-async function logActivity(code, action, desc){
+async function logActivity(code, action, detail){
   if(!code||code==='--'||!window.__firebaseReady)return;
   try{
     await window.__db.collection('activity_log').add({
-      studentCode:code, action, description:desc,
-      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
-      date:new Date().toLocaleDateString('ar-EG')
+      code, action, detail, track: studentTrack,
+      at:firebase.firestore.FieldValue.serverTimestamp()
     });
   }catch(e){}
 }
 
-/* ============================================================
-   UNITS الجديد — وحدة بوحدة مع تايمر ساعة
-   ============================================================ */
-async function loadUnitsNew(){
-  const c=document.getElementById('units-new-c');
-  if(!c)return;
-  try{
-    const snap=await window.__db.collection('units_new').where('track','==',studentTrack).orderBy('order').get();
-    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش وحدات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
-    c.innerHTML=snap.docs.map((d,i)=>{
-      const u=d.data();
-      return `<div class="ucard" style="margin-bottom:14px;">
-        <div class="uhead">
-          <div class="utitle" style="font-family:\'Cairo\',sans-serif;">الوحدة ${u.order||i+1} — ${u.title||'Unit '+(i+1)}</div>
-          <div class="unum">UNIT ${u.order||i+1}</div>
-        </div>
-        <div class="ures" style="grid-template-columns:1fr 1fr;padding:14px 16px;gap:10px;">
-          ${u.reviewUrl?`<button class="rbtn" onclick="openUrlLog('${u.reviewUrl}','unit_review_${i+1}')"><div class="rico">📄</div><div class="rname">مراجعة الوحدة</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">مراجعة الوحدة</div><div class="rsub">قريباً</div></div>`}
-          ${u.examUrl?`<button class="rbtn" style="border-color:rgba(212,225,87,.4);" onclick="openUrlLog('${u.examUrl}','unit_exam_${i+1}')"><div class="rico">⏱</div><div class="rname">امتحان الوحدة</div><div class="rsub">تايمر ساعة</div></button>`:`<div class="rbtn dis"><div class="rico">⏱</div><div class="rname">امتحان الوحدة</div><div class="rsub">قريباً</div></div>`}
-        </div>
-      </div>`;
-    }).join('');
-  }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';}
-}
-
+/* Helpers */
+function openUrl(u){if(u)window.open(u,'_blank');}
 function openUrlLog(url,action){
   const code=document.getElementById('sc-tag').textContent;
   logActivity(code,action,'فتح محتوى');
   openUrl(url);
 }
+function openVidLog(id,title,action){
+  const code=document.getElementById('sc-tag').textContent;
+  logActivity(code,action,'شاهد فيديو');
+  openVid(id,title);
+}
 
 /* ============================================================
-   UNITS — محتوى شامل واحد للمنهج كله
+   UNITS — رقم الوحدة / فيديو / مراجعة تفاعلية / امتحان
    ============================================================ */
-let UNITS=[];
-
 async function loadUnits(){
   const c=document.getElementById('units-c');
   try{
-    const snap=await window.__db.collection('curriculum').doc(studentTrack).get();
-    const d=snap.exists?snap.data():{};
-    c.innerHTML=`
-      ${uCard('📄','Grammar File','ملف شرح الجرامر الشامل',d.pdfGrammar,`openUrl('${d.pdfGrammar}')`)}
-      ${uCard('❓','Grammar Quiz','بنك أسئلة الجرامر الشامل',d.bankGrammar,`openUrl('${d.bankGrammar}')`)}
-      ${uCard('📖','Vocabulary Guide','الدليل الشامل للكلمات والمصطلحات',d.pdfVocab,`openUrl('${d.pdfVocab}')`)}
-      ${uCard('🔤','Vocab Quiz','بنك أسئلة الكلمات الشامل',d.bankVocab,`openUrl('${d.bankVocab}')`)}
-    `;
-    buildPUnits();
-  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
+    const snap=await window.__db.collection('units_new').where('track','==',studentTrack).orderBy('order').get();
+    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش وحدات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
+    c.innerHTML=snap.docs.map((d)=>{
+      const u=d.data();
+      const ord=u.order;
+      return `<div class="ucard">
+        <div class="uhead">
+          <div class="utitle">Unit ${ord}</div>
+          <div class="unum">UNIT ${ord}</div>
+        </div>
+        <div class="ures">
+          ${u.videoId?`<button class="rbtn" onclick="openVidLog('${u.videoId}','Unit ${ord}','unit_video_${ord}')"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">اضغط للمشاهدة</div></button>`:`<div class="rbtn dis"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">قريباً</div></div>`}
+          ${u.reviewUrl?`<button class="rbtn" onclick="openUrlLog('${u.reviewUrl}','unit_review_${ord}')"><div class="rico">📄</div><div class="rname">مراجعة تفاعلية</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">مراجعة تفاعلية</div><div class="rsub">قريباً</div></div>`}
+          ${u.examUrl?`<button class="rbtn" style="border-color:rgba(212,225,87,.4);" onclick="openUrlLog('${u.examUrl}','unit_exam_${ord}')"><div class="rico">📝</div><div class="rname">امتحان الوحدة</div><div class="rsub">اضغط للبدء</div></button>`:`<div class="rbtn dis"><div class="rico">📝</div><div class="rname">امتحان الوحدة</div><div class="rsub">قريباً</div></div>`}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';console.error(e);}
 }
-
-function uCard(ico,name,sub,url,act){
-  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></div>`;
-  return`<button class="sc" onclick="${act}"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></button>`;
-}
-
-function openUrl(u){if(u)window.open(u,'_blank');}
-function ytId(u){if(!u)return null;const m=u.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);return m?m[1]:null;}
 
 /* ============================================================
-   STORY
+   STORY — فصول: رقم / عنوان / فيديو / تدريب
    ============================================================ */
 async function loadStory(){
   const c=document.getElementById('story-c');
   try{
-    const snap=await window.__db.collection('story').doc(studentTrack).get();
-    const d=snap.exists?snap.data():{};
-    c.innerHTML=`
-      ${stCard('📚','Story Study File','الملف الشامل للقصة',d.pdfStudy,`openUrl('${d.pdfStudy}')`)}
-      ${stCardAudio('🎧','Story Audio','فويس سماعي للقصة',d.audioStory)}
-    `;
-  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
-}
-function stCard(ico,name,sub,url,act){
-  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
-  return`<button class="sc" onclick="${act}"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">${sub}</div></button>`;
-}
-function stCardAudio(ico,name,sub,url){
-  if(!url)return`<div class="sc dis"><div class="sico">${ico}</div><div class="sname">${name}</div><div class="ssub">Not available yet</div></div>`;
-  // يقبل رابط YouTube (Unlisted) أو رابط Drive
-  const ytMatch = url.match(/(?:v=|youtu\.be\/|embed\/|live\/)([a-zA-Z0-9_-]{11})/);
-  const drMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  let embedHtml='';
-  if(ytMatch){
-    const vid=ytMatch[1];
-    embedHtml=`<iframe
-      src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1"
-      style="width:100%;height:90px;border:none;border-radius:8px;"
-      allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
-  } else if(drMatch){
-    embedHtml=`<iframe
-      src="https://drive.google.com/file/d/${drMatch[1]}/preview"
-      style="width:100%;height:80px;border:none;border-radius:8px;"
-      allow="autoplay" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>`;
-  } else {
-    embedHtml=`<audio controls style="width:100%;" src="${url}"></audio>`;
-  }
-  return`<div class="sc" style="cursor:default;">
-    <div class="sico">${ico}</div>
-    <div class="sname">${name}</div>
-    <div class="ssub" style="margin-bottom:10px;">${sub}</div>
-    <div style="width:100%;border-radius:8px;overflow:hidden;border:1px solid rgba(30,144,255,.2);">
-      ${embedHtml}
-    </div>
-    <div style="font-size:10.5px;color:var(--t3);margin-top:6px;">💡 ارفع الملف الصوتي على YouTube كـ Unlisted للتشغيل الأمثل</div>
-  </div>`;
+    const snap=await window.__db.collection('story_chapters').where('track','==',studentTrack).orderBy('order').get();
+    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش فصول قصة</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
+    c.innerHTML=snap.docs.map((d)=>{
+      const s=d.data();
+      const ord=s.order;
+      return `<div class="ucard">
+        <div class="uhead">
+          <div class="utitle">Ch.${ord} — ${s.title||''}</div>
+          <div class="unum">CH ${ord}</div>
+        </div>
+        <div class="ures" style="grid-template-columns:1fr 1fr;">
+          ${s.videoId?`<button class="rbtn" onclick="openVidLog('${s.videoId}','${(s.title||'').replace(/'/g,"\\'")}','story_video_${ord}')"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">اضغط للمشاهدة</div></button>`:`<div class="rbtn dis"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">قريباً</div></div>`}
+          ${s.trainUrl?`<button class="rbtn" onclick="openUrlLog('${s.trainUrl}','story_train_${ord}')"><div class="rico">📄</div><div class="rname">تدريب الفصل</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">تدريب الفصل</div><div class="rsub">قريباً</div></div>`}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';console.error(e);}
 }
 
 /* ============================================================
-   SKILLS
+   SKILLS — فصول: رقم / عنوان / فيديو / تدريب
    ============================================================ */
 async function loadSkills(){
   const c=document.getElementById('skills-c');
   try{
-    const snap=await window.__db.collection('skills').doc(studentTrack).get();
-    const d=snap.exists?snap.data():{};
-    c.innerHTML=`
-      ${stCard('💡','Skills Summary','ملخص أفكار المهارات',d.pdfSkills,`openUrl('${d.pdfSkills}')`)}
-      ${stCard('❓','Skills Question Bank','بنك تفاعلي لأسئلة المهارات',d.bankSkills,`openUrl('${d.bankSkills}')`)}
-    `;
-  }catch(e){c.innerHTML=`<div class="empty" style="grid-column:1/-1;"><b>Error</b>${e.message}</div>`;}
+    const snap=await window.__db.collection('skills_chapters').where('track','==',studentTrack).orderBy('order').get();
+    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش فصول مهارات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
+    c.innerHTML=snap.docs.map((d)=>{
+      const s=d.data();
+      const ord=s.order;
+      return `<div class="ucard">
+        <div class="uhead">
+          <div class="utitle">Ch.${ord} — ${s.title||''}</div>
+          <div class="unum">CH ${ord}</div>
+        </div>
+        <div class="ures" style="grid-template-columns:1fr 1fr;">
+          ${s.videoId?`<button class="rbtn" onclick="openVidLog('${s.videoId}','${(s.title||'').replace(/'/g,"\\'")}','skills_video_${ord}')"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">اضغط للمشاهدة</div></button>`:`<div class="rbtn dis"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">قريباً</div></div>`}
+          ${s.trainUrl?`<button class="rbtn" onclick="openUrlLog('${s.trainUrl}','skills_train_${ord}')"><div class="rico">📄</div><div class="rname">تدريب الفصل</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">تدريب الفصل</div><div class="rsub">قريباً</div></div>`}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';console.error(e);}
 }
 
 /* ============================================================
-   GENERAL EXAMS
+   EXAMS — رقم / عنوان / نوع (شامل-جزئي) / رابط
    ============================================================ */
-let MIN_EX=[],GEN_EX=[],curEx=null,exAns={},exTmr=null;
-const EX_SECS=7200;
-
 async function loadExams(){
+  const c=document.getElementById('exams-c');
   try{
-    // نجيب الرابط الخارجي من settings
-    const settingSnap = await window.__db.collection('settings').doc('exams_'+studentTrack).get();
-    const externalUrl = settingSnap.exists ? settingSnap.data().externalUrl : null;
-
-    const btnWrap = document.getElementById('exams-btn-wrap');
-    if(externalUrl && btnWrap){
-      btnWrap.innerHTML = `
-        <button onclick="openUrl('${externalUrl}')"
-          style="background:var(--blue);color:#fff;border:none;padding:18px 48px;border-radius:12px;font-family:'Cairo',sans-serif;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 28px -8px rgba(30,144,255,.6);transition:transform .15s;display:inline-flex;align-items:center;gap:12px;"
-          onmouseover="this.style.transform='translateY(-2px)'"
-          onmouseout="this.style.transform='translateY(0)'">
-          <span style="font-size:22px;">🚀</span>
-          ابدأ الامتحانات الاسترشادية
-        </button>
-        <div style="margin-top:14px;font-size:12px;color:var(--t3);font-family:'JetBrains Mono',monospace;">يفتح في صفحة جديدة</div>`;
-    }
-  }catch(e){console.error(e);}
-}
-function renderEGrid(cId,exs,type){
-  const c=document.getElementById(cId);
-  if(!exs.length){c.innerHTML='<div class="empty" style="grid-column:1/-1;"><b>No exams yet</b></div>';return;}
-  c.innerHTML=exs.map((ex,i)=>`<div class="ecard"><div class="etitle">${ex.title}</div><div class="emeta">⏱ 2 hrs | ${(ex.mcq||[]).length+(ex.essay||[]).length} Q</div><button class="btnst" onclick="startExam('${type}',${i})">Start Exam</button></div>`).join('');
-}
-
-function startExam(type,i){
-  curEx=type==='m'?MIN_EX[i]:GEN_EX[i];exAns={};
-  document.getElementById('exam-ttl').textContent=curEx.title;
-  let html='';
-  (curEx.mcq||[]).forEach((q,qi)=>{
-    html+=`<div class="qblock"><div class="qnum">Q${qi+1} — Multiple Choice</div><div class="qtext">${q.q}</div><div class="qopts">${(q.options||[]).map((o,oi)=>`<label class="qopt" onclick="selOpt(this,${qi},${oi})"><span class="qlbl">${String.fromCharCode(65+oi)}</span><span>${o}</span></label>`).join('')}</div><div class="qexp" id="exp-${qi}">${q.explanation||''}</div></div>`;
-  });
-  (curEx.essay||[]).forEach((q,qi)=>{
-    html+=`<div class="qblock"><div class="qnum">Q${(curEx.mcq||[]).length+qi+1} — Short Answer</div><div class="qtext">${q.q}</div><textarea class="qessay" placeholder="Write your answer here..." onchange="exAns['e${qi}']=this.value"></textarea></div>`;
-  });
-  document.getElementById('exam-qs').innerHTML=html;
-  document.getElementById('rbox').style.display='none';
-  switchScreen('screen-exam');startExTmr();
-}
-function selOpt(el,qi,oi){el.closest('.qopts').querySelectorAll('.qopt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');exAns['m'+qi]=oi;}
-function startExTmr(){
-  if(exTmr)clearInterval(exTmr);let rem=EX_SECS;
-  const el=document.getElementById('etimer');const box=el.closest('.etimbox');
-  function upd(){
-    const h=Math.floor(rem/3600),m=Math.floor((rem%3600)/60),s=rem%60;
-    el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-    if(rem<=600){box.style.borderColor='rgba(224,101,79,.8)';box.style.background='rgba(224,101,79,.18)';}
-    if(rem<=300)el.style.animation='blink .5s infinite';
-    if(rem<=0){clearInterval(exTmr);alert('⏰ Time is up! Submitting now.');doSubmit();return;}
-    rem--;
-  }
-  upd();exTmr=setInterval(upd,1000);
-}
-function stopTmr(){if(exTmr){clearInterval(exTmr);exTmr=null;}}
-document.getElementById('btn-ex').addEventListener('click',()=>{if(confirm('Exit without submitting?')){stopTmr();switchScreen('screen-dashboard');}});
-document.getElementById('btn-sub').addEventListener('click',doSubmit);
-
-function doSubmit(){
-  stopTmr();let correct=0;
-  (curEx.mcq||[]).forEach((q,qi)=>{
-    document.querySelectorAll(`#exam-qs .qblock:nth-child(${qi+1}) .qopt`).forEach((o,oi)=>{if(oi===q.correct)o.classList.add('ok');else if(o.classList.contains('sel'))o.classList.add('no');});
-    const ex=document.getElementById('exp-'+qi);if(ex&&ex.textContent.trim())ex.classList.add('show');
-    if(exAns['m'+qi]===q.correct)correct++;
-  });
-  const total=(curEx.mcq||[]).length,pct=total?Math.round(correct/total*100):0;
-  document.getElementById('rscore').textContent=`${correct} / ${total}`;
-  document.getElementById('rbox').style.display='block';
-  document.getElementById('rbox').scrollIntoView({behavior:'smooth'});
-  const code=document.getElementById('sc-tag').textContent;
-  const name=document.getElementById('sn-tag').textContent;
-  saveRes(code,name,curEx.id,curEx.title,correct,total,pct);
-  markGenDone(curEx.id);
-}
-async function saveRes(code,name,id,title,c,t,p){
-  if(!code||code==='--')return;
-  try{await window.__db.collection('results').add({studentCode:code,studentName:name,examId:id,examTitle:title,correct:c,total:t,pct:p,submittedAt:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){}
+    const snap=await window.__db.collection('exams_list').where('track','==',studentTrack).orderBy('order').get();
+    if(snap.empty){c.innerHTML='<div class="empty" style="grid-column:1/-1;"><b>لسه مفيش امتحانات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
+    c.innerHTML=snap.docs.map((d)=>{
+      const x=d.data();
+      const badgeClass = x.type==='شامل' ? 'full' : 'partial';
+      return `<div class="ecard">
+        <div class="etitle">${x.order}. ${x.title||''}</div>
+        <div class="emeta"><span class="etypebadge ${badgeClass}">${x.type||'—'}</span></div>
+        <button class="btnst" onclick="openUrlLog('${x.url}','exam_${x.order}')">ابدأ الامتحان</button>
+      </div>`;
+    }).join('');
+  }catch(e){c.innerHTML='<div class="empty" style="grid-column:1/-1;"><b>خطأ في التحميل</b></div>';console.error(e);}
 }
 
 /* VIDEO MODAL */
@@ -888,18 +596,17 @@ function openVid(id,title){
 document.getElementById('vm-cls').addEventListener('click',()=>{document.getElementById('vm-fr').src='';document.getElementById('vmodal').classList.remove('show');});
 document.getElementById('vmodal').addEventListener('click',e=>{if(e.target.id==='vmodal'){document.getElementById('vm-fr').src='';document.getElementById('vmodal').classList.remove('show');}});
 
-/* LIVE */
+/* ============================================================
+   LIVE — لكل مسار بثه المستقل
+   ============================================================ */
 async function loadLive(){
   try{
-    const snap=await window.__db.collection('settings').doc('live').get();
+    const snap=await window.__db.collection('settings').doc('live_'+studentTrack).get();
     const d=snap.exists?snap.data():{};
     const tab=document.getElementById('ltab');const c=document.getElementById('live-c');
-    if(d.active&&d.url){
-      const m=d.url.match(/(?:v=|youtu\.be\/|live\/)([a-zA-Z0-9_-]{11})/);const vid=m?m[1]:null;
-      if(vid){
-        tab.classList.add('show');
-        c.innerHTML=`<div style="margin-bottom:11px;"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,68,68,.15);border:1px solid rgba(255,68,68,.4);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;color:#ff6666;"><span class="ldot"></span> LIVE NOW — ${d.title||'Mr. Samy Live Session'}</div></div><div class="lcon"><div class="lfr"><iframe src="https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&showinfo=0&controls=1&fs=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe><div style="position:absolute;top:0;right:0;width:110px;height:38px;z-index:9;"></div><div style="position:absolute;top:0;left:0;width:110px;height:38px;z-index:9;"></div></div></div><div style="margin-top:10px;padding:9px 13px;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);border-radius:7px;font-size:12px;color:var(--t2);">⚠️ Exclusive to SamySchool students.</div>`;
-      }
+    if(d.status==='on'&&d.videoId){
+      tab.classList.add('show');
+      c.innerHTML=`<div style="margin-bottom:11px;"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,68,68,.15);border:1px solid rgba(255,68,68,.4);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800;color:#ff6666;"><span class="ldot"></span> LIVE NOW — Mr. Samy Live Session</div></div><div class="lcon"><div class="lfr"><iframe src="https://www.youtube-nocookie.com/embed/${d.videoId}?rel=0&modestbranding=1&showinfo=0&controls=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe></div></div><div style="margin-top:10px;padding:9px 13px;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);border-radius:7px;font-size:12px;color:var(--t2);">⚠️ Exclusive to SamySchool students.</div>`;
     } else {
       tab.classList.remove('show');
       c.innerHTML='<div class="loffline"><div class="loi">📡</div><h3>No Live Session Right Now</h3><p>When Mr. Samy starts, it will appear here.</p></div>';
@@ -914,92 +621,15 @@ async function sendQ(){
   const name=document.getElementById('sn-tag').textContent;
   const btn=document.querySelector('[onclick="sendQ()"]');btn.disabled=true;btn.textContent='Sending...';
   try{
-    await window.__db.collection('questions').add({studentCode:code,studentName:name,question:q,answered:false,sentAt:firebase.firestore.FieldValue.serverTimestamp()});
+    await window.__db.collection('questions').add({
+      text:q, code, studentName:name, track:studentTrack,
+      answered:false, createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
     inp.value='';const m=document.getElementById('q-sent');m.style.display='block';setTimeout(()=>m.style.display='none',4000);
   }catch(e){}finally{btn.disabled=false;btn.textContent='Send ✈';}
 }
-
-/* PROGRESS */
-let pData={};
-async function loadProgress(code){
-  try{const s=await window.__db.collection('progress').doc(code).get();pData=s.exists?(s.data()||{}):{};
-  }catch(e){pData={};}
-  buildPUnits();buildPGeneral();updOverall();
-}
-async function saveP(code){try{await window.__db.collection('progress').doc(code).set(pData,{merge:true});}catch(e){}}
-
-function buildPUnits(){
-  const c = document.getElementById('p-units');
-  // 4 عناصر كلية للوحدات كلها — مش لكل وحدة
-  const items = [
-    {k:'all-wrev', lbl:'مراجعة الكلمات والمصطلحات كلها', emo:'📖'},
-    {k:'all-wsol', lbl:'الحل على الكلمات والمصطلحات كلها', emo:'✅'},
-    {k:'all-grev', lbl:'مراجعة الجرامر كله', emo:'📄'},
-    {k:'all-gsol', lbl:'الحل على الجرامر كله', emo:'✅'},
-  ];
-  c.innerHTML = items.map(item => {
-    const done = pData[item.k];
-    return `<div class="pitem ${done?'done':''}" id="pi-${item.k}" onclick="togP('${item.k}','${item.lbl}','${item.emo}')">
-      <div class="pchk">${done?'✓':''}</div>
-      <div class="plbl">${item.lbl}</div>
-    </div>`;
-  }).join('');
-  buildPSkills();
-  updOverall();
-}
-
-function buildPSkills(){
-  const c = document.getElementById('p-skills');
-  const items = [
-    {k:'skills-rev', lbl:'مراجعة أفكار المهارات', emo:'💡'},
-    {k:'skills-sol', lbl:'حل بنك أسئلة المهارات', emo:'❓'},
-  ];
-  c.innerHTML = items.map(item => {
-    const done = pData[item.k];
-    return `<div class="pitem ${done?'done':''}" id="pi-${item.k}" onclick="togP('${item.k}','${item.lbl}','${item.emo}')">
-      <div class="pchk">${done?'✓':''}</div>
-      <div class="plbl">${item.lbl}</div>
-    </div>`;
-  }).join('');
-  updOverall();
-}
-function buildPGeneral(){
-  const c=document.getElementById('p-general');
-  c.innerHTML=Array.from({length:20},(_,i)=>{const k='gen-'+(i+1);const done=pData[k];return`<div class="pitem ${done?'done':''}" id="pi-${k}" onclick="togP('${k}','Exam ${i+1}','🏆')"><div class="pchk">${done?'✓':''}</div><div class="plbl">Exam ${i+1}</div></div>`;}).join('');
-  updOverall();
-}
-function togP(k,lbl,emo){
-  const code=document.getElementById('sc-tag').textContent;if(!code||code==='--')return;
-  const was=pData[k];pData[k]=!was;
-  const el=document.getElementById('pi-'+k);
-  if(el){el.classList.toggle('done',pData[k]);el.querySelector('.pchk').textContent=pData[k]?'✓':'';}
-  if(!was)showCel(lbl,emo);
-  saveP(code);updOverall();
-}
-function markGenDone(examId){
-  const next=Object.keys(pData).filter(k=>k.startsWith('gen-')).length+1;
-  if(next<=20){const k='gen-'+next;if(!pData[k]){pData[k]=true;buildPGeneral();const code=document.getElementById('sc-tag').textContent;saveP(code);updOverall();}}
-}
-function updOverall(){
-  const total=26,done=Math.min(Object.values(pData).filter(v=>v===true).length,total);
-  document.getElementById('pb-fill').style.width=(done/total*100)+'%';
-  document.getElementById('pb-text').textContent=done+' / '+total;
-}
-
-/* CELEBRATE */
-const CELS=[{e:'🎉',t:'Excellent!',s:'Keep going strong!'},{e:'🔥',t:'On Fire!',s:"You're doing great!"},{e:'⭐',t:'Well Done!',s:'One step closer!'},{e:'🏆',t:'Champion!',s:'Hard work pays off!'},{e:'💪',t:'Keep it up!',s:"You've got this!"}];
-function showCel(lbl,emo){
-  const r=CELS[Math.floor(Math.random()*CELS.length)];
-  document.getElementById('cel-e').textContent=emo||r.e;
-  document.getElementById('cel-t').textContent=r.t+' — '+lbl;
-  document.getElementById('cel-s').textContent=r.s;
-  document.getElementById('celmod').classList.add('show');
-  setTimeout(closeCel,4000);
-}
-function closeCel(){document.getElementById('celmod').classList.remove('show');}
 </script>
 <script>
-/* تسجيل Service Worker للـ PWA */
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('sw.js').catch(()=>{});

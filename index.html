@@ -527,24 +527,39 @@ function openVidLog(id,title,action){
 /* ============================================================
    UNITS — رقم الوحدة / فيديو / مراجعة تفاعلية / امتحان
    ============================================================ */
+const SITE_BASE_URL_S = 'https://samyschool.github.io/samyschool/';
+function normalizeUrlS(u){
+  u = (u||'').trim();
+  if(!u) return '';
+  if(/^https?:\/\//i.test(u)) return u;
+  return SITE_BASE_URL_S + u.replace(/^\/+/,'');
+}
+function escUnitDesc(s){ return (s||'').replace(/'/g,"\\'"); }
+
 async function loadUnits(){
   const c=document.getElementById('units-c');
   try{
-    const snap=await window.__db.collection('units_new').where('track','==',studentTrack).orderBy('order').get();
-    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش وحدات</b><br>المستر سامي هيضيفهم قريباً</div>';return;}
-    c.innerHTML=snap.docs.map((d)=>{
-      const u=d.data();
-      const ord=u.order;
+    const snap=await window.__db.collection('unit_content').where('track','==',studentTrack).orderBy('createdAt').get();
+    if(snap.empty){c.innerHTML='<div class="empty"><b>لسه مفيش محتوى</b><br>المستر سامي هيضيفه قريباً</div>';return;}
+    const groups={};
+    snap.docs.forEach(d=>{
+      const it={id:d.id,...d.data()};
+      it.url=normalizeUrlS(it.url);
+      (it.units||[]).forEach(n=>{ (groups[n]=groups[n]||[]).push(it); });
+    });
+    const unitNums=Object.keys(groups).map(Number).sort((a,b)=>a-b);
+    c.innerHTML=unitNums.map(n=>{
+      const items=groups[n];
+      const btns=items.map(it=>{
+        const safeDesc=escUnitDesc(it.description);
+        if(it.videoId){
+          return `<button class="rbtn" onclick="openVidLog('${it.videoId}','${safeDesc}','unit_${n}_${it.id}')"><div class="rico">🎥</div><div class="rname">${it.description||''}</div><div class="rsub">اضغط للمشاهدة</div></button>`;
+        }
+        return `<button class="rbtn" onclick="openUrlLog('${it.url}','unit_${n}_${it.id}')"><div class="rico">📄</div><div class="rname">${it.description||''}</div><div class="rsub">اضغط للفتح</div></button>`;
+      }).join('');
       return `<div class="ucard">
-        <div class="uhead">
-          <div class="utitle">Unit ${ord}</div>
-          <div class="unum">UNIT ${ord}</div>
-        </div>
-        <div class="ures">
-          ${u.videoId?`<button class="rbtn" onclick="openVidLog('${u.videoId}','Unit ${ord}','unit_video_${ord}')"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">اضغط للمشاهدة</div></button>`:`<div class="rbtn dis"><div class="rico">🎥</div><div class="rname">فيديو الشرح</div><div class="rsub">قريباً</div></div>`}
-          ${u.reviewUrl?`<button class="rbtn" onclick="openUrlLog('${u.reviewUrl}','unit_review_${ord}')"><div class="rico">📄</div><div class="rname">مراجعة تفاعلية</div><div class="rsub">اضغط للفتح</div></button>`:`<div class="rbtn dis"><div class="rico">📄</div><div class="rname">مراجعة تفاعلية</div><div class="rsub">قريباً</div></div>`}
-          ${u.examUrl?`<button class="rbtn" style="border-color:rgba(212,225,87,.4);" onclick="openUrlLog('${u.examUrl}','unit_exam_${ord}')"><div class="rico">📝</div><div class="rname">امتحان الوحدة</div><div class="rsub">اضغط للبدء</div></button>`:`<div class="rbtn dis"><div class="rico">📝</div><div class="rname">امتحان الوحدة</div><div class="rsub">قريباً</div></div>`}
-        </div>
+        <div class="uhead"><div class="utitle">Unit ${n}</div><div class="unum">UNIT ${n}</div></div>
+        <div class="ures" style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr));">${btns}</div>
       </div>`;
     }).join('');
   }catch(e){c.innerHTML='<div class="empty"><b>خطأ في التحميل</b></div>';console.error(e);}

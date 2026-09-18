@@ -11,11 +11,31 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>SamySchool | منصة اللغة الإنجليزية</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+window.__firebaseReady = false;
 const firebaseConfig={apiKey:"AIzaSyBUeni1HpD1Br7QlzdkkQpuzvsPNWIGfkw",authDomain:"samyschool-2014.firebaseapp.com",projectId:"samyschool-2014",storageBucket:"samyschool-2014.firebasestorage.app",messagingSenderId:"950744024303",appId:"1:950744024303:web:b01d36410b80749b43471a"};
-try{firebase.initializeApp(firebaseConfig);window.__db=firebase.firestore();window.__firebaseReady=true;}catch(e){window.__firebaseReady=false;}
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src=src; s.onload=resolve; s.onerror=reject;
+    document.head.appendChild(s);
+  });
+}
+async function initFirebaseWithRetry(maxTries){
+  for(let i=0;i<maxTries;i++){
+    try{
+      await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+      await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
+      firebase.initializeApp(firebaseConfig);
+      window.__db=firebase.firestore();
+      window.__firebaseReady=true;
+      return;
+    }catch(e){
+      await new Promise(r=>setTimeout(r,1200));
+    }
+  }
+}
+window.__firebaseInit = initFirebaseWithRetry(4);
 </script>
 <style>
 :root{
@@ -358,19 +378,31 @@ function doLogin(){
 }
 
 async function doValidate(code,name){
-  if(!window.__firebaseReady){showErr('في مشكلة في الاتصال. حاول تاني.');return;}
-  try{
-    const ref=window.__db.collection('students').doc(code);
-    const snap=await ref.get();
-    if(!snap.exists){showErr('الكود غير صحيح. تأكد من كتابته زي ما هو على الكارت.');return;}
-    const d=snap.data();const dev=devId();
-    if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
-    if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
-    else await ref.set({studentName:name},{merge:true});
-    const track=d.track||'SEC3';
-    saveAuth(code,name,track);
-    onLogin(code,name,track);
-  }catch(e){showErr('في مشكلة في الاتصال. حاول تاني.');}
+  if(!window.__firebaseReady && window.__firebaseInit){
+    await Promise.race([window.__firebaseInit, new Promise(r=>setTimeout(r,8000))]);
+  }
+  if(!window.__firebaseReady){
+    showErr('تعذر الاتصال بالسيرفر. جرب تبدّل بين الواي فاي وبيانات الموبايل وحاول تاني. لو المشكلة استمرت، كلم المستر سامي على واتساب.');
+    return;
+  }
+  for(let attempt=0; attempt<3; attempt++){
+    try{
+      const ref=window.__db.collection('students').doc(code);
+      const snap=await ref.get();
+      if(!snap.exists){showErr('الكود غير صحيح. تأكد من كتابته زي ما هو على الكارت.');return;}
+      const d=snap.data();const dev=devId();
+      if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
+      if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
+      else await ref.set({studentName:name},{merge:true});
+      const track=d.track||'SEC3';
+      saveAuth(code,name,track);
+      onLogin(code,name,track);
+      return;
+    }catch(e){
+      if(attempt<2) await new Promise(r=>setTimeout(r,1500));
+    }
+  }
+  showErr('تعذر الاتصال بالسيرفر بعد عدة محاولات. تأكد من اتصال الإنترنت. لو نفس الطالب بيفشل دايماً، كلم المستر سامي على واتساب.');
 }
 
 function showErr(m){const e=document.getElementById('lerr');e.textContent=m;e.classList.add('show');}

@@ -667,7 +667,9 @@ function normalizeUrl(u){
   u = (u||'').trim();
   if(!u) return '';
   if(/^https?:\/\//i.test(u)) return u;
-  return SITE_BASE_URL + u.replace(/^\/+/,'');
+  u = u.replace(/^\/+/,'');
+  if(!/\.html?$/i.test(u)) u += '.html';
+  return SITE_BASE_URL + u;
 }
 function parseUnitsField(raw){
   return [...new Set((raw||'').split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)&&n>0))].sort((a,b)=>a-b);

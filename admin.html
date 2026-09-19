@@ -308,7 +308,7 @@ box-shadow:0 10px 40px rgba(0,0,0,.4);
 </div>
 <div class="form-field">
 <label>رابط المحتوى *</label>
-<input type="text" id="uc-url" placeholder="https://samyschool.github.io/samyschool/....html">
+<input type="text" id="uc-url" placeholder="https://samyschool.github.io/samyschool/....html" autocomplete="off">
 <div class="form-hint">لو الرابط مش مكتوب بالكامل، هنكمله تلقائي بعنوان الموقع عشان نتجنب خطأ 404.</div>
 </div>
 <button class="btn-add" id="btn-save-unit">➕ رفع المحتوى</button>
@@ -663,11 +663,19 @@ loadResults();
 
 /* ================= Units — نظام مرن ================= */
 const SITE_BASE_URL = 'https://samyschool.github.io/samyschool/';
+function dedupeIfRepeated(s){
+  const len = s.length;
+  if(len > 1 && len % 2 === 0){
+    const half = len / 2;
+    if(s.slice(0, half) === s.slice(half)) return s.slice(0, half);
+  }
+  return s;
+}
 function normalizeUrl(u){
   u = (u||'').trim();
   if(!u) return '';
   if(/^https?:\/\//i.test(u)) return u;
-  u = u.replace(/^\/+/,'');
+  u = dedupeIfRepeated(u.replace(/^\/+/,''));
   if(!/\.html?$/i.test(u)) u += '.html';
   return SITE_BASE_URL + u;
 }

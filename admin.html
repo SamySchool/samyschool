@@ -524,7 +524,7 @@ setTimeout(()=>{ t.classList.remove('show'); }, 3200);
 function ytEmbed(url){
 if(!url) return '';
 const m = url.match(/(?:youtu\.be\/|v=|\/live\/|embed\/|shorts\/)([A-Za-z0-9_-]{6,20})/);
-return m ? m[1] : url;
+return m ? m[1] : '';
 }
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function fmtDate(ts){

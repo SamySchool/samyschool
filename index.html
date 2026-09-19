@@ -393,7 +393,7 @@ async function doValidate(code,name){
       const d=snap.data();const dev=devId();
       if(d.used&&d.deviceId&&d.deviceId!==dev){showErr('الكود اتفعّل على جهاز تاني. كلم المستر سامي.');return;}
       if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
-      else await ref.set({studentName:name},{merge:true});
+           if(!d.used)await ref.set({used:true,deviceId:dev,usedAt:firebase.firestore.FieldValue.serverTimestamp(),studentName:name},{merge:true});
       const track=d.track||'SEC3';
       saveAuth(code,name,track);
       onLogin(code,name,track);

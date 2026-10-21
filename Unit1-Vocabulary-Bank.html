@@ -278,13 +278,14 @@ let exFilterCat = null;
 const RESULTS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyjAmdQjBkdDAqWyBX2vp4hLSK08rcWOr8aiaVulMWbXu_nb_98GCrbSd-qUYcTQSxNyw/exec";
 
 let studentName = '';
-try{ studentName = localStorage.getItem('svb_studentName') || ''; }catch(e){}
+try{ studentName = (localStorage.getItem('svb_studentName')||'').replace(/^عرض الحصة \(بروجكتور\)$/,''); }catch(e){}
 
 function logEvent(eventType, extra){
   if(!RESULTS_WEBHOOK_URL) return;
   try{
     const payload = Object.assign({
       studentName: studentName || '',
+      fileTag: 'unit1-vocabulary-bank',
       eventType: eventType,
       timestamp: new Date().toISOString()
     }, extra || {});

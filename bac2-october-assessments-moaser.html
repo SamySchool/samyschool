@@ -375,7 +375,7 @@ const PROGRESS_KEY = 'svb_progress_bac2_oct_assess_moaser_v1';
 const EXAM_TIME_LIMIT = 45;
 
 let studentName = '';
-try{ studentName = localStorage.getItem('svb_studentName') || ''; }catch(e){}
+try{ studentName = (localStorage.getItem('svb_studentName')||'').replace(/^عرض الحصة \(بروجكتور\)$/,''); }catch(e){}
 let currentTab = DATA.exams[0];
 
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }

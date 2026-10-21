@@ -448,7 +448,7 @@ const RESULTS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyjAmdQjBkd
 const FILE_TAG = "bac2-u3-l1-moaser-gem";
 
 let studentName = '';
-try{ studentName = localStorage.getItem('svb_studentName') || ''; }catch(e){}
+try{ studentName = (localStorage.getItem('svb_studentName')||'').replace(/^عرض الحصة \(بروجكتور\)$/,''); }catch(e){}
 
 function logEvent(eventType, extra){
   if(!RESULTS_WEBHOOK_URL) return;

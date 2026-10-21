@@ -395,7 +395,7 @@ const D={"sections": [{"id": "l21", "label": "📗 تقييمات 2.1", "title":
 const RESULTS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyjAmdQjBkdDAqWyBX2vp4hLSK08rcWOr8aiaVulMWbXu_nb_98GCrbSd-qUYcTQSxNyw/exec";
 const FILE_TAG = "bac2-u2-assessments-october-tests";
 const PROGRESS_KEY = 'svb_progress_bac2_u2_assess_oct_v1';
-let studentName=''; try{ studentName=localStorage.getItem('svb_studentName')||''; }catch(e){}
+let studentName=''; try{ studentName=(localStorage.getItem('svb_studentName')||'').replace(/^عرض الحصة \(بروجكتور\)$/,''); }catch(e){}
 function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function arFmt(t){ return esc(t).replace(/[A-Za-z][A-Za-z0-9'\- +.,?!/()]*[A-Za-z0-9?!)]|[A-Za-z]/g, m=>`<bdi dir="ltr">${m}</bdi>`); }
 function logEvent(type,extra){ if(!RESULTS_WEBHOOK_URL) return; try{ const p=Object.assign({studentName:studentName||'',unit:'Unit 2 Assessments + Oct Tests',fileTag:FILE_TAG,eventType:type,timestamp:new Date().toISOString()},extra||{});

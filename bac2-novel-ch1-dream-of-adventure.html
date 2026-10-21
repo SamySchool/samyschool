@@ -156,7 +156,7 @@ let currentTab = "characters";
 // إن الملف اتفتح، بنفس الطريقة المتبعة في باقي ملفات السنتر.
 const RESULTS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyjAmdQjBkdDAqWyBX2vp4hLSK08rcWOr8aiaVulMWbXu_nb_98GCrbSd-qUYcTQSxNyw/exec";
 let studentName = '';
-try{ studentName = localStorage.getItem('svb_studentName') || ''; }catch(e){}
+try{ studentName = (localStorage.getItem('svb_studentName')||'').replace(/^عرض الحصة \(بروجكتور\)$/,''); }catch(e){}
 
 function logEvent(eventType, extra){
   if(!RESULTS_WEBHOOK_URL) return;
@@ -174,12 +174,20 @@ function logEvent(eventType, extra){
 }
 
 function initEntry(){
-  // ملف خاص بالحصة: بدون بوابة اسم إجبارية، عرض مباشر للمحتوى.
-  if(!studentName){
-    studentName = 'عرض الحصة (بروجكتور)';
-    try{ localStorage.setItem('svb_studentName', studentName); }catch(e){}
-  }
-  logEvent('entry', {});
+  // ملف منصة: لازم الطالب يكتب اسمه قبل البدء عشان النتيجة تتسجل باسمه في الشيت
+  if(studentName){ logEvent('entry', {}); return; }
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#050912,#0A1226,#14213D);display:flex;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML='<div style="background:#FFFDF8;border:3px solid #C9A227;border-radius:20px;padding:28px 26px;max-width:470px;width:100%;text-align:center;direction:rtl;box-shadow:0 10px 40px #0008">'
+   +'<h2 style="margin:0 0 8px;color:#14213D;font-size:1.3rem">مرحبًا بك في The Lost World — الفصل الأول</h2>'
+   +'<p style="margin:0 0 16px;color:#5B4636;font-size:1rem;line-height:1.6">من فضلك اكتب اسمك بالكامل قبل البدء، عشان تقدمك ونتيجتك توصل للمستر محمد سامي أول بأول.</p>'
+   +'<input id="ngIn" autocomplete="off" placeholder="اكتب اسمك بالكامل هنا" style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:1.1rem;border:2px solid #D9C9A8;border-radius:12px;direction:rtl">'
+   +'<button id="ngBtn" style="margin-top:14px;background:linear-gradient(120deg,#E0C05C,#C9A227);color:#3a2b06;border:none;border-radius:999px;padding:11px 30px;font-weight:800;font-size:1.05rem;cursor:pointer">ابدأ ✅</button></div>';
+  document.body.appendChild(ov);
+  const inp=document.getElementById('ngIn'), btn=document.getElementById('ngBtn');
+  function go(){ const v=(inp.value||'').trim(); if(!v){ inp.style.borderColor='#C62828'; inp.focus(); return; }
+    studentName=v; try{ localStorage.setItem('svb_studentName', v); }catch(e){} ov.remove(); logEvent('entry', {}); }
+  btn.onclick=go; inp.onkeydown=function(e){ if(e.key==='Enter') go(); }; setTimeout(function(){ inp.focus(); },50);
 }
 
 function esc(s){
